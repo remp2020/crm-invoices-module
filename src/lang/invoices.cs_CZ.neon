@@ -1,0 +1,145 @@
+menu:
+	invoice_details: Fakturační údaje
+
+frontend:
+	invoice_button:
+		no_invoice: Bez faktury
+		not_available_anymore: Faktura již nedostupná
+		generate: Vygeneruj
+		system_error: Systémová chyba! Prosím kontaktujte technickou podporu!
+		download: Stáhni
+		invoice_details: Fakturační údaje
+
+	invoice_details:
+		title: Fakturační údaje
+		invoices_link_prefix: Své vystavené faktury naleznete v části
+		invoices_link: Moje platby
+
+	change_invoice_details:
+		submit: Uložit
+		invoice: Chci fakturu
+		company_name:
+			label: Název firmy
+			placeholder: název firmy na faktuře
+			required: Název firmy musí být vyplněn
+		address:
+			label: Adresa
+			placeholder: fakturační adresa
+			required: Adresa musí být vyplněna
+		number:
+			label: Číslo domu
+			placeholder: například 134
+			required: Číslo domu musí být vyplněno
+		city:
+			label: Město
+			placeholder: napište město
+			required: Město musí být vyplněno
+		zip:
+			label: PSČ
+			placeholder: napište PSČ
+			required: PSČ musí být vyplněna
+		company_id:
+			label: IČO
+			placeholder: pokud nemáte zadejte 0
+			required: IČO musí být vyplněno
+		company_tax_id:
+			label: DIČ
+			placeholder: pokud nemáte zadejte 0
+			required: DIČ musí být vyplněno
+		company_vat_id:
+			label: IČ DPH
+			placeholder: pokud nemáte zadejte 0
+			required: IČ DPH musí být vyplněno
+	download_receipt: Stáhnout potvrzení
+	proforma_invoice:
+		title: Platba předfakturou
+		form_title: 'Pro dokončení objednávky prosím vyplňte fakturační údaje'
+		thank_you: 'Děkujeme za vaši objednávku, předfakturu Vám zašleme do 3 pracovních dnů e-mailem.'
+
+admin:
+	user_form:
+		invoices: Faktury
+		invoice: Povolit fakturaci
+		disable_autoinvoice: Zakázat automatické vytváření faktur
+
+component:
+	payment_success_invoice_widget:
+		require_invoice: Požaduji fakturu.
+		require_invoice_info: "Pokud požadujete fakturu, nezapomeňte vyplnit Vaše fakturační údaje. Pokud je nevyplníte v tomto kroku, už to nebude možné."
+		fill_invoice_address: Vyplnit fakturační adresu.
+		saved: Všechny údaje jsou uložené
+
+	invoice_label:
+		invoice: Faktura
+
+form:
+	invoice:
+		label:
+			company_name: Název firmy
+			address: Adresa
+			number: Číslo
+			city: Město
+			zip: PSČ
+			ico: IČO
+			dic: DIČ
+			icdph: IČDPH
+			invoice_country_id: Země
+			send: Uložit
+			save: Uložit údaje
+		placeholder:
+			company_name: název firmy na faktuře
+			address: fakturační adresa
+			number: napište číslo domu
+			city: napište město
+			zip: napište PSČ
+			ico: "pokud nemáte, zadejte 0"
+			dic: "pokud nemáte, zadejte 0"
+			icdph: "pokud nemáte, zadejte 0"
+		required:
+			company_name: Název firmy musí být vyplněn
+			address: Adresa firmy musí být vyplněna
+			number: Číslo domu musí být vyplněno
+			city: Město musí být vyplněno
+			zip: PSČ musí být vyplněno
+			ico: IČO musí být vyplněno
+			dic: DIČ musí být vyplněno
+			icdph: IČDPH musí být vyplněno
+		options:
+			foreign_country: "Pro informace o doručení do zahraničí nás prosím kontaktujte na %contactEmail%"
+
+invoice_template:
+	title: Faktura
+	date_issued: Datum vystavení
+	date_due: Datum splatnosti
+	date_delivered: Datum uskutečnění plnění
+	variable_symbol: Variabilní symbol
+	constant_symbol: Konstantní symbol
+	company_id: IČ
+	company_tax_id: DIČ
+	company_vat_id: IČ DPH
+	buyer: Konečný příjemce
+	supplier: Dodavatel
+	invoice_details: Fakturační údaje
+	item_name: Název položky
+	item_count: Počet
+	unit_price: JC bez DPH
+	vat: Sazba DPH
+	unit_price_with_vat: JC s DPH
+	vat_amount_per_item: DPH
+	item_sum_with_vat: Celkem s DPH
+	deposit: Záloha
+	note:
+		title: Poznámka
+		invoice_paid: "Faktura již byla uhrazena, prosím, neplaťte!"
+	price_no_vat: Základ DPH
+	vat_amount: Výše DPH
+	item_sum: Spolu
+	sum: Celková suma
+	sum_deposit: Uhrazené zálohy
+	sum_remains_to_pay: Zbývá k úhradě
+	summary: Shrnutí
+	bank_account: Bankovní účet
+	bank: Banka
+	bank_iban: IBAN
+	bank_swift: SWIFT
+	stamp_and_signature: Razítko a podpis

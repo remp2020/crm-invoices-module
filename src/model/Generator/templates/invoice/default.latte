@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{_'invoices.invoice_template.title'}</title>
+
+    <style>
+        html, body {
+            font-size: 14px;
+        }
+
+        .invoice_title {
+            font-size: 20px;
+            text-transform: uppercase;
+        }
+        .invoice_number {
+            font-size: 40px;
+            color: #b00c28;
+        }
+
+        .text-right {
+            text-align: right
+        }
+        .text-left {
+            text-align: left
+        }
+
+        .cell-xs-8 {
+            width: 66.66666666%;
+        }
+        .cell-xs-6 {
+            width: 50%;
+        }
+        .cell-xs-4 {
+            width: 33.33333333%;
+        }
+
+        hr {
+            margin: 24px 0;
+            width: 100%;
+        }
+
+        .float {
+            float: left;
+        }
+
+        .clearfix {
+            clear: both;
+        }
+
+        table {
+            width: 100%;
+            margin: 0 auto;
+            border-collapse: collapse
+        }
+
+        caption {
+            font-size: 18px;
+            font-weight: 600;
+            color: #b00c28;
+            text-transform: uppercase;
+            text-align: left;
+        }
+
+        table.items thead th {
+            font-size: 12px;
+        }
+
+        table.items thead th,
+        table.items tbody td {
+            padding-left: 10px;
+            text-align: right;
+            font-size: 12px;
+            vertical-align: middle;
+        }
+
+        table.items thead th {
+            font-size: 12px;
+        }
+
+        .items .item_name {
+            text-align: left;
+            padding-left: 0;
+            width: 40%;
+        }
+
+        table.vat_summary th,
+        table.vat_summary td {
+            text-align: right;
+        }
+
+        .amount_summary {
+            font-weight: 700;
+            font-size: 18px;
+            margin-top: 20px
+        }
+
+        table.amount_summary td {
+            text-align: right;
+        }
+
+        tr.identification_number td {
+            padding-top: 1.5em;
+        }
+
+        .vs {
+            font-size: 1.8em;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cell-xs-6 float">
+        <div>
+            <div class="invoice_title">
+                {_'invoices.invoice_template.title'}
+            </div>
+            <div class="invoice_number">
+                {$invoice->invoice_number->number}
+            </div>
+        </div>
+    </div>
+
+    <div class="cell-xs-6 float">
+        <table>
+            <tr>
+                <td colspan="2" class="cell-xs-8">
+                    {_'invoices.invoice_template.date_issued'}:
+                </td>
+                <td class="cell-xs-4">
+                    {if $invoice->created_date}
+                        {$invoice->created_date->format('d.m.Y')}
+                    {/if}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="cell-xs-8">
+                    {_'invoices.invoice_template.date_due'}:
+                </td>
+                <td class="cell-xs-4">
+                    {if $invoice->payment_date}
+                        {$invoice->payment_date->format('d.m.Y')}{/if}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="cell-xs-8">
+                    {_'invoices.invoice_template.date_delivered'}:
+                </td>
+                <td class="cell-xs-4">
+                    {if $invoice->delivery_date}
+                        <strong>{$invoice->delivery_date->format('d.m.Y')}</strong>
+                    {/if}
+                </td>
+            </tr>
+
+            <!-- payment identification number -->
+            <tr class="identification_number">
+                <td class="cell-xs-6">
+                    {_'invoices.invoice_template.variable_symbol'}:
+                </td>
+                <td colspan="2" class="cell-xs-6">
+                    <strong class="vs">{$invoice->variable_symbol}</strong>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <hr class="clearfix">
+
+    <!-- buyer-->
+    <div class="cell-xs-6 float" style="font-size: 1.2em">
+        <table>
+            <caption>{_'invoices.invoice_template.buyer'}</caption>
+            <tr>
+                <td>
+                    {$invoice->buyer_name|breaklines}<br />
+                    {$invoice->buyer_address}<br />
+                    {$invoice->buyer_zip} {$invoice->buyer_city}
+                </td>
+                <td>
+                    {_'invoices.invoice_template.company_id'}: {if !empty($invoice->buyer_id)}{$invoice->buyer_id}{/if}<br />
+                    {_'invoices.invoice_template.company_tax_id'}: {if !empty($invoice->buyer_tax_id)}{$invoice->buyer_tax_id}{/if}<br />
+                    {_'invoices.invoice_template.company_vat_id'}: {if !empty($invoice->buyer_vat_id)}{$invoice->buyer_vat_id}{/if}
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- supplier -->
+    <div class="cell-xs-6 float">
+        <table>
+            <caption>{_'invoices.invoice_template.supplier'}</caption>
+            <tr>
+                <td>
+                    {$invoice->supplier_name}<br />
+                    {$invoice->supplier_address}<br />
+                    {$invoice->supplier_zip} {$invoice->supplier_city}<br/>
+                    {$config->get('contact_email')}
+                </td>
+                <td>
+                    {_'invoices.invoice_template.company_id'}: {$invoice->supplier_id}<br />
+                    {_'invoices.invoice_template.company_tax_id'}: {$invoice->supplier_tax_id}<br />
+                    {_'invoices.invoice_template.company_vat_id'}: {$invoice->supplier_vat_id}
+                </td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    {$config->get('business_register_detail')|noescape}
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <hr class="clearfix">
+
+    {var $vatRates = []}
+
+    <!-- invoice items -->
+    <table class="items" autosize="1">
+        <caption>{_'invoices.invoice_template.invoice_details'}</caption>
+        <thead>
+            <tr>
+                <th class="item_name">{_'invoices.invoice_template.item_name'}</th>
+                <th>{_'invoices.invoice_template.item_count'}</th>
+                <th>{_'invoices.invoice_template.unit_price'}</th>
+                <th>{_'invoices.invoice_template.vat'}</th>
+                <th>{_'invoices.invoice_template.vat_amount_per_item'}</th>
+                <th>{_'invoices.invoice_template.unit_price_with_vat'}</th>
+                <th>{_'invoices.invoice_template.item_sum_with_vat'}</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        {var $itemsCount = $invoice->related('invoice_items')->count('*')}
+        {var $i = 0}
+        {var $currency = null}
+
+        {foreach $invoice->related('invoice_items') as $invoiceItem}
+            {var $vatRates[$invoiceItem->vat] = true}
+            {var $totalItemPrice = $invoiceItem->count * $invoiceItem->price}
+            {var $vatCoef = 1 + $invoiceItem->vat / 100}
+            {var $currency = $invoiceItem->currency}
+            {var $vatAmount = round($invoiceItem->price / $vatCoef * ($vatCoef - 1), 2)}
+            {var $itemAmount = $invoiceItem->price - $vatAmount}
+
+            <tr n:class="$i == 0 ? first-child, real-item">
+                <td class="item_name">{$invoiceItem->text|noescape}</td>
+                <td>{$invoiceItem->count}</td>
+                <td>{$itemAmount|price:$currency}</td>
+                <td>{$invoiceItem->vat}%</td>
+                <td>{$vatAmount|price:$currency}</td>
+                <td>{$invoiceItem->price|price:$currency}</td>
+                <td>{$totalItemPrice|price:$currency}</td>
+            </tr>
+
+            <tr n:class="$i == $itemsCount-1 ? last-child">
+                <td class="item_name">{_'invoices.invoice_template.deposit'}</td>
+                <td>{$invoiceItem->count}</td>
+                <td>{-1 * $invoiceItem->price|price:$currency}</td>
+                <td>0%</td>
+                <td>{0|price}</td>
+                <td>{-1 * $invoiceItem->price|price:$currency}</td>
+                <td>{-1 * $totalItemPrice|price:$currency}</td>
+            </tr>
+
+            {var $i += 1}
+        {/foreach}
+
+        </tbody>
+    </table>
+
+    <hr>
+
+    {php ksort($vatRates)}
+    {var $totalPrice = $invoice->related('invoice_items')->sum('price * count')}
+
+    <!-- notes -->
+    <div class="cell-xs-4 float">
+        <div>{_'invoices.invoice_template.note.title'}:</div>
+        <strong>{_'invoices.invoice_template.note.invoice_paid'}</strong>
+    </div>
+
+    <!-- price summary -->
+    <div class="cell-xs-8 float">
+        <table class="vat_summary">
+            <thead>
+                <tr>
+                    <th>
+                        {_'invoices.invoice_template.vat'}
+                    </th>
+                    <th>
+                        {_'invoices.invoice_template.price_no_vat'}
+                    </th>
+                    <th>
+                        {_'invoices.invoice_template.vat_amount'}
+                    </th>
+                    <th>
+                        {_'invoices.invoice_template.item_sum'}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            {foreach $vatRates as $rate => $_}
+                <tr>
+                    {var $itemsPrice = $invoice->related('invoice_items')->where('vat', $rate)->sum('price * count')}
+                    {var $vatCoef = 1 + $rate / 100}
+                    {var $vatAmount = round($itemsPrice / $vatCoef * ($vatCoef - 1), 2)}
+                    {var $itemAmount = $itemsPrice - $vatAmount}
+
+                    <td>{$rate}%</td>
+                    <td>{$itemAmount|price:$currency}</td>
+                    <td>{$vatAmount|price:$currency}</td>
+                    <td>{$itemsPrice|price:$currency}</td>
+                </tr>
+            {/foreach}
+            </tbody>
+        </table>
+        <br>
+
+        <table class="amount_summary">
+            <tr>
+                <td>
+                    {_'invoices.invoice_template.sum'}:
+                </td>
+                <td>
+                    {$totalPrice|price:$currency}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {_'invoices.invoice_template.sum_deposit'}:
+                </td>
+                <td>
+                    {-1 * $totalPrice|price:$currency}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {_'invoices.invoice_template.sum_remains_to_pay'}:
+                </td>
+                <td>
+                    <strong>{0|price:$currency}</strong>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <br class="clearfix">
+
+    <!-- summary-->
+    <div>
+        <div>{_'invoices.invoice_template.summary'}:</div>
+        <br>
+
+        <div>{_'invoices.invoice_template.bank_account'}:&nbsp;<strong>{$config->get('supplier_bank_account_number')}</strong></div>
+
+        <div>{_'invoices.invoice_template.bank'}:&nbsp;<strong>{$config->get('supplier_bank_name')}</strong></div>
+
+        <div>{_'invoices.invoice_template.bank_iban'}:&nbsp;<strong>{$config->get('supplier_iban')}</strong></div>
+
+        <div>{_'invoices.invoice_template.bank_swift'}:&nbsp;<strong>{$config->get('supplier_swift')}</strong></div>
+
+        <div>{_'invoices.invoice_template.variable_symbol'}:&nbsp;<strong>{$invoice->variable_symbol}</strong></div>
+
+        <div>{_'invoices.invoice_template.constant_symbol'}:&nbsp;<strong>{$config->get('invoice_constant_symbol')}</strong></div>
+    </div>
+
+</body>
+</html>

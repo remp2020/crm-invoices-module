@@ -1,0 +1,30 @@
+{block #title}Faktúry exporty{/block}
+
+{block #content}
+
+<div class="row">
+  <div class="col-md-12">
+    <h2>
+      Faktúry
+    </h2>
+  </div>
+  <div class="col-md-12">
+    <hr>
+    {control exportForm}
+    <hr>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <h4>Vysledne subory</h4>
+
+    {foreach $sandboxFiles as $file}
+      {date('d.m.Y H:i:s', $file->getCTime())}
+      <a href="/inv/{$file->getBaseName()}">{$file->getBaseName()}</a>
+      ({$file->getSize()|bytes})
+      <a n:href="delete! $file->getBaseName()"><small>zmazať</small></a>
+      <br>
+    {/foreach}
+  </div>
+</div>

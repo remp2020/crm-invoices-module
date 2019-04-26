@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Thank you for donation</title>
+    <style>
+        html, body {
+            font-size: 14px;
+        }
+        p {
+            margin: 0;
+        }
+
+        .big_thank_you {
+            text-align: center;
+            font-size: 2em;
+            margin: 3em 0;
+        }
+
+        .project {
+            text-align: center;
+            font-size: 1.5em;
+            margin: 1.5em 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>{$config->get('supplier_name')}</h1>
+
+    <p>{$config->get('supplier_address')}</p>
+    <p>{$config->get('supplier_city')}</p>
+    <p>{$config->get('supplier_zip')}</p>
+</div>
+
+<div>
+    <h1 class="big_thank_you">THANK YOU FOR MAKING DONATION<br>{$amount|price:$config->get('currency')}!</h1>
+
+    <p>Dear supporter,</p>
+    <p>we are very grateful that you decided to give a donation to the project:</p>
+
+    <h1 class="project">{$project}</h1>
+
+    <p>If you have any questions, please contact us via email: <a href="{$config->get('contact_email')}">{$config->get('contact_email')}</a>.</p>
+
+    <p>Sincerely,</p>
+    <p>{$config->get('supplier_name')}</p>
+
+</div>
+
+</body>
+</html>

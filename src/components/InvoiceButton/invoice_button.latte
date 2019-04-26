@@ -1,0 +1,41 @@
+
+{if $admin}
+	{if $payment->user->invoice && $payment->status == \Crm\PaymentsModule\Repository\PaymentsRepository::STATUS_PAID && $paymentInvoicable }
+		{if $payment->invoice}
+			<a href="{plink :Invoices:InvoicesAdmin:downloadInvoice $payment->id}" class="btn btn-success btn-sm" target="_bank"><i class="fa fa-download"></i> {_invoices.frontend.invoice_button.download}</a>
+		{else}
+			{var $invoiceAddress = $payment->user->related('addresses')->where('deleted_at IS NULL')->where(['type' => 'invoice'])->limit(1)->fetch()}
+			{if $invoiceAddress && $invoiceAddress->company_id !== null && $invoiceAddress->company_tax_id !== null}
+			    {if !$payment->paid_at}
+			        <span class="alert alert-danger"><i class="fa fa-warning"></i> CHYBA! chyba datum zaplatenia!</span>
+				{elseif (clone $payment->paid_at)->modify('+15 days') > new DateTime('now')}
+					<a href="{plink :Invoices:InvoicesAdmin:downloadInvoice $payment->id}" target="_bank" class="btn btn-primary btn-sm"><i class="fa fa-magic"></i> {_invoices.frontend.invoice_button.generate}</a>
+				{else}
+					<span class="label label-default"><i class="fa fa-file-text-o"></i> {_invoices.frontend.invoice_button.not_available_anymore}</span>
+				{/if}
+			{else}
+				<a href="{plink :Users:UsersAdmin:Edit $payment->user->id}" class="btn btn-primary btn-sm"><i class="fa fa fa-star-half-o"></i> {_invoices.frontend.invoice_button.invoice_details}</a>
+			{/if}
+		{/if}
+	{else}
+	   <span class="label label-default"><i class="fa fa-ban"></i> {_invoices.frontend.invoice_button.no_invoice}</span>
+	{/if}
+{else}
+	{if $payment->invoice}
+	   <a target="_blank" class="btn btn-sm btn-primary" href="{plink :Invoices:Invoices:DownloadInvoice $payment->id}"><i class="fa fa-download"></i> {_invoices.frontend.invoice_button.download}</a>
+	{else}
+		{if $payment->user->invoice == true && !$payment->user->disable_auto_invoice && $paymentInvoicable}
+			{if $payment->payment_gateway->code === Crm\ZlavomatModule\Gateways\Zlavomat::GATEWAY_CODE}
+				<span class="label label-info">Faktúru nájdete vo svojom Zľavomat konte</span>
+			{elseif !$payment->paid_at}
+				<span class="alert alert-danger"><i class="fa fa-warning"></i> {_invoices.frontend.invoice_button.system_error}</span>
+			{elseif $payment->paid_at->diff(new DateTime('now'))->days > 15}
+				<span class="label label-info">{_invoices.frontend.invoice_button.not_available_anymore}</span>
+			{else}
+				<a target="_blank" class="btn btn-sm btn-primary" href="{plink :Invoices:Invoices:DownloadInvoice $payment->id}"><i class="fa fa-magic"></i> {_invoices.frontend.invoice_button.generate}</a>
+			{/if}
+		{else}
+			<span class="label label-info">{_invoices.frontend.invoice_button.no_invoice}</span>
+		{/if}
+	{/if}
+{/if}

@@ -1,0 +1,41 @@
+services:
+	moduleManager:
+		setup:
+			- addModule(Crm\InvoicesModule\InvoicesModule())
+
+	invoiceGenerator:
+		class: Crm\InvoicesModule\InvoiceGenerator
+		setup:
+			- setTempDir('%tempDir%/../mpdf')
+	receiptGenerator:
+		class: Crm\InvoicesModule\ReceiptGenerator
+		setup:
+			- setTempDir('%tempDir%/../mpdf')
+
+	- Crm\InvoicesModule\Commands\SendInvoiceCommand
+
+	- Crm\InvoicesModule\Components\DownloadReceiptButtonFactory
+	- Crm\InvoicesModule\Components\InvoiceLabel
+	- Crm\InvoicesModule\Components\InvoiceAdminButtonFactory
+	- Crm\InvoicesModule\Components\InvoiceFrontendButtonFactory
+	- Crm\InvoicesModule\Components\PaymentSuccessInvoiceWidget
+
+	- Crm\InvoicesModule\DataProvider\UserFormDataProvider
+	- Crm\InvoicesModule\Events\AddressChangedHandler
+	- Crm\InvoicesModule\Forms\ChangeInvoiceDetailsFormFactory
+	- Crm\InvoicesModule\Forms\UserInvoiceFormFactory
+	- Crm\InvoicesModule\Gateways\ProformaInvoice
+	- Crm\InvoicesModule\Hermes\ZipInvoicesHandler
+
+	- Crm\InvoicesModule\Repository\InvoicesRepository()
+	- Crm\InvoicesModule\Repository\InvoiceItemsRepository
+	- Crm\InvoicesModule\Repository\InvoiceNumbersRepository
+
+	- Crm\InvoicesModule\Sandbox\InvoiceZipGenerator
+	invoiceSandbox: Crm\InvoicesModule\Sandbox\InvoiceSandbox('/tmp')
+
+	- Crm\InvoicesModule\Seeders\ConfigsSeeder
+	- Crm\InvoicesModule\Seeders\AddressTypesSeeder
+	- Crm\InvoicesModule\Seeders\PaymentGatewaysSeeder
+
+	- Crm\InvoicesModule\User\InvoicesUserDataProvider

@@ -1,0 +1,145 @@
+menu:
+	invoice_details: Invoice details
+
+frontend:
+	invoice_button:
+		no_invoice: No invoice
+		not_available_anymore: Invoice not available anymore
+		generate: Generate
+		system_error: System failure! Please contact tech support!
+		download: Download
+		invoice_details: Invoice details
+
+	invoice_details:
+		title: Invoice details
+		invoices_link_prefix: You can find your invoices in
+		invoices_link: my payments
+
+	change_invoice_details:
+		submit: Save
+		invoice: I want invoice
+		company_name:
+			label: Company name
+			placeholder: name of the company on the invoice
+			required: Company name is required
+		address:
+			label: Address
+			placeholder: invoice address
+			required: Invoice address is required
+		number:
+			label: House number
+			placeholder: e.g. 134
+			required: House number is required
+		city:
+			label: City
+			placeholder: fill in the city
+			required: City is required
+		zip:
+			label: ZIP
+			placeholder: fill in the ZIP code
+			required: ZIP is required
+		company_id:
+			label: Company ID
+			placeholder: enter 0 if you don't have one
+			required: Company ID is required
+		company_tax_id:
+			label: Tax ID
+			placeholder: enter 0 if you don't have one
+			required: Tax ID is required
+		company_vat_id:
+			label: VAT ID
+			placeholder: enter 0 if you don't have one
+			required: VAT ID is required
+	download_receipt: Download receipt
+	proforma_invoice:
+		title: Proforma invoice payment
+		form_title: 'Please fill up your invoice details to complete the order'
+		thank_you: 'Thank you for the order, the invoice will be sent to your email within 3 working days.'
+
+admin:
+	user_form:
+		invoices: Invoices
+		invoice: Enable invoicing
+		disable_autoinvoice: Disable automatic generation of invoices
+
+component:
+	payment_success_invoice_widget:
+		require_invoice: I need an invoice
+		require_invoice_info: "If you need invoice, please don't forget to fill your billing details. If you don't fill it in this step, it will not be possible in the future."
+		fill_invoice_address: Fill in the invoice address
+		saved: Saved
+
+	invoice_label:
+		invoice: Invoice
+
+form:
+	invoice:
+		label:
+			company_name: Company name
+			address: Address
+			number: Number
+			city: City
+			zip: ZIP
+			ico: Businness ID
+			dic: Tax ID
+			icdph: VAT number
+			invoice_country_id: Country
+			send: Save
+			save: Save
+		placeholder:
+			company_name: company name as writte on invoices
+			address: billing addresse
+			number: house number
+			city: fill your city
+			zip: fill your zip
+			ico: "if you don't have one enter 0"
+			dic: "if you don't have one enter 0"
+			icdph: "if you don't have one enter 0"
+		required:
+			company_name: Company name is required
+			address: Company address is required
+			number: House number is required
+			city: City is required
+			zip: ZIP is required
+			ico: Business ID is required
+			dic: Tax ID  is required
+			icdph: VAT number is required
+		options:
+			foreign_country: "For delivery to foreign countries please contact us through %contactEmail%"
+
+invoice_template:
+	title: Invoice
+	date_issued: Issue date
+	date_due: Due date
+	date_delivered: Date of delivery
+	variable_symbol: Variable symbol
+	constant_symbol: Constant symbol
+	company_id: Company ID
+	company_tax_id: Tax ID
+	company_vat_id: VAT ID
+	buyer: Buyer
+	supplier: Supplier
+	invoice_details: Invoice details
+	item_name: Item name
+	item_count: Count
+	unit_price: Unit price
+	vat: VAT
+	unit_price_with_vat: "Unit price (with VAT)"
+	vat_amount_per_item: "VAT (amount)"
+	item_sum_with_vat: Sum with VAT
+	deposit: Deposit
+	note:
+		title: Note
+		invoice_paid: "Invoice is payed. Please do not pay again!"
+	price_no_vat: VAT base
+	vat_amount: VAT amount
+	item_sum: Sum
+	sum: Total sum
+	sum_deposit: Paid deposit
+	sum_remains_to_pay: Remains to pay
+	summary: Summary
+	bank_account: Bank account
+	bank: Bank
+	bank_iban: IBAN
+	bank_swift: SWIFT
+	stamp_and_signature: Stamp and signature
