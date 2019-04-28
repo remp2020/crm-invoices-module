@@ -68,7 +68,7 @@ SQL;
 
         $this->execute($sql);
 
-        // add columnt invoice_id to payments table
+        // add column invoice_id to payments table
         if(!$this->table('payments')->hasColumn('invoice_id')) {
             $this->table('payments')
                 ->addColumn('invoice_id', 'integer', array('null'=>true))
