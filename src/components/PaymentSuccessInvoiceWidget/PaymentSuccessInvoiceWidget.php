@@ -13,6 +13,8 @@ use Crm\SalesFunnelModule\Presenters\SalesFunnelPresenter;
  * PaymentSuccessInvoiceWidget is directly targeted to be used in \Crm\SalesFunnelModule\Presenters\SalesFunnelPresenter
  * and extends the success page with invoice form.
  * Any other usage ends up with Exception.
+ *
+ * @package Crm\InvoicesModule\Components
  */
 class PaymentSuccessInvoiceWidget extends BaseWidget
 {

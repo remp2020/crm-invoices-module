@@ -6,6 +6,14 @@ use Crm\ApplicationModule\Widget\BaseWidget;
 use Crm\ApplicationModule\Widget\WidgetManager;
 use Crm\InvoicesModule\Repository\InvoicesRepository;
 
+/**
+ * Download invoice button widget.
+ *
+ * This components renders simple button to download invoice.
+ * Used in user frontend payments listing and admin payments listing.
+ *
+ * @package Crm\InvoicesModule\Components
+ */
 class InvoiceButton extends BaseWidget
 {
     private $templateName = 'invoice_button.latte';
