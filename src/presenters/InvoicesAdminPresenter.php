@@ -38,7 +38,7 @@ class InvoicesAdminPresenter extends AdminPresenter
     public $invoiceSandbox;
 
     /** @var  Emitter @inject */
-    public $emitter;
+    public $hermesEmitter;
 
     public function actionDownloadInvoice($id)
     {
@@ -117,7 +117,7 @@ class InvoicesAdminPresenter extends AdminPresenter
         ]);
         $form->onSuccess[] = function (Form $form, $values) {
             if ($values->invoices) {
-                $this->emitter->emit(new HermesMessage('invoice_zip', [
+                $this->hermesEmitter->emit(new HermesMessage('invoice_zip', [
                     'invoices' => $values['invoices'],
                 ]));
 
@@ -126,7 +126,7 @@ class InvoicesAdminPresenter extends AdminPresenter
             }
 
             if ($values->from_time && $values->to_time) {
-                $this->emitter->emit(new HermesMessage('invoice_zip', [
+                $this->hermesEmitter->emit(new HermesMessage('invoice_zip', [
                     'from_time' => $values['from_time'],
                     'to_time' => $values['to_time'],
                 ]));

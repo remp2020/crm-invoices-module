@@ -21,7 +21,7 @@ class SalesFunnelPresenter extends FrontendPresenter
     public $userInvoiceFormFactory;
 
     /** @var Emitter @inject */
-    public $emitter;
+    public $hermesEmitter;
 
     /** @persistent */
     public $VS;
@@ -54,7 +54,7 @@ class SalesFunnelPresenter extends FrontendPresenter
         $this->userInvoiceFormFactory->onSave = function ($form, $user) use ($presenter, $payment) {
             $form['done']->setValue(1);
             $presenter->redrawControl('invoiceFormSnippet');
-            $this->emitter->emit(new ProformaInvoiceCreatedEvent($payment));
+            $this->hermesEmitter->emit(new ProformaInvoiceCreatedEvent($payment));
         };
         return $form;
     }
