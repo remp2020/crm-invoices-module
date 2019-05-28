@@ -7,7 +7,6 @@ use Crm\InvoicesModule\Forms\UserInvoiceFormFactory;
 use Crm\PaymentsModule\Repository\PaymentLogsRepository;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
 use Crm\InvoicesModule\Events\ProformaInvoiceCreatedEvent;
-use League\Event\Emitter;
 
 class SalesFunnelPresenter extends FrontendPresenter
 {
@@ -19,9 +18,6 @@ class SalesFunnelPresenter extends FrontendPresenter
 
     /** @var UserInvoiceFormFactory @inject */
     public $userInvoiceFormFactory;
-
-    /** @var Emitter @inject */
-    public $hermesEmitter;
 
     /** @persistent */
     public $VS;
@@ -54,7 +50,7 @@ class SalesFunnelPresenter extends FrontendPresenter
         $this->userInvoiceFormFactory->onSave = function ($form, $user) use ($presenter, $payment) {
             $form['done']->setValue(1);
             $presenter->redrawControl('invoiceFormSnippet');
-            $this->hermesEmitter->emit(new ProformaInvoiceCreatedEvent($payment));
+            $this->emitter->emit(new ProformaInvoiceCreatedEvent($payment));
         };
         return $form;
     }
