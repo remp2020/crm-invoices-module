@@ -31,7 +31,7 @@ class ConfigsSeeder implements ISeeder
     {
         $category = $this->configCategoriesRepository->loadByName('Faktúry');
         if (!$category) {
-            $category = $this->configCategoriesRepository->add('Faktúry', 'fa fa-file-text-o', 200);
+            $category = $this->configCategoriesRepository->add('Faktúry', 'fa fa-file-invoice', 200);
             $output->writeln('  <comment>* config category <info>Faktúry</info> created</comment>');
         } else {
             $output->writeln(' * config category <info>Faktúry</info> exists');
