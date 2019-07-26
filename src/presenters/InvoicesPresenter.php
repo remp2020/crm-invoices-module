@@ -79,7 +79,15 @@ class InvoicesPresenter extends FrontendPresenter
         $form = $this->changeInvoiceDetailsFormFactory->create($this->getUser());
 
         $this->changeInvoiceDetailsFormFactory->onSuccess = function ($form, $user) {
-            $this->flashMessage('Vaša adresa bola zmenená');
+            $message = $this->translator->translate(
+                'invoices.frontend.change_invoice_details.success',
+                null,
+                [
+                    'link' => $this->link(':Payments:Payments:my')
+                ]
+            );
+
+            $this->flashMessage($message);
             $this->redirect('invoiceDetails');
         };
         return $form;
