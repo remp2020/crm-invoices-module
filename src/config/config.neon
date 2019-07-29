@@ -39,3 +39,7 @@ services:
 	- Crm\InvoicesModule\Seeders\PaymentGatewaysSeeder
 
 	- Crm\InvoicesModule\User\InvoicesUserDataProvider
+
+	paymentInvoiceProvider:
+		setup:
+			- register(Crm\InvoicesModule\DataProvider\PaymentInvoiceProvider())
