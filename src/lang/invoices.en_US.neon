@@ -50,7 +50,8 @@ frontend:
 			label: VAT ID
 			placeholder: enter 0 if you don't have one
 			required: VAT ID is required
-		success: "Your address was successfuly changed. You can list your payments and generate invoices <a href='%link%' style='text-decoration: underline;'>here</a>."
+		success: Your address was successfuly changed.
+		warning: "You can generate invoice 14 days after paying. You can generate invoices <a href='%link%' style='text-decoration: underline;'>here</a>."
 	download_receipt: Download receipt
 	proforma_invoice:
 		title: Proforma invoice payment

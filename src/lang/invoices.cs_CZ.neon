@@ -50,7 +50,8 @@ frontend:
 			label: IČ DPH
 			placeholder: pokud nemáte zadejte 0
 			required: IČ DPH musí být vyplněno
-		success: "Vaše adresa byla úspěšně změněna. Pro seznam plateb vygenerování faktur <a href='%link%' style='text-decoration: underline;'>klikněte sem</a>."
+		success: Vaše adresa byla úspěšně změněna.
+		warning: "Fakturu si můžete vygenerovat pouze do 14 dní od zaplacení. Pro vygenerování faktur <a href='%link%' style='text-decoration: underline;'>klikněte sem</a>."
 	download_receipt: Stáhnout potvrzení
 	proforma_invoice:
 		title: Platba předfakturou

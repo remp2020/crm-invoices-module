@@ -80,14 +80,15 @@ class InvoicesPresenter extends FrontendPresenter
 
         $this->changeInvoiceDetailsFormFactory->onSuccess = function ($form, $user) {
             $message = $this->translator->translate(
-                'invoices.frontend.change_invoice_details.success',
+                'invoices.frontend.change_invoice_details.warning',
                 null,
                 [
                     'link' => $this->link(':Payments:Payments:my')
                 ]
             );
 
-            $this->flashMessage($message);
+            $this->flashMessage($this->translator->translate('invoices.frontend.change_invoice_details.success'));
+            $this->flashMessage($message, 'warning');
             $this->redirect('invoiceDetails');
         };
         return $form;
