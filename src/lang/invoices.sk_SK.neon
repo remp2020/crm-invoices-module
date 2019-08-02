@@ -50,6 +50,8 @@ frontend:
 			label: IČDPH
 			placeholder: ak nemáte zadajte 0
 			required: IČDPH musí byť vyplnené
+		success: Vaša adresa bola úspešne zmenená.
+		warning: "Faktúru si môžete vygenerovať len do 14 dní po zaplatení. Pre vygenerovanie faktúr <a href='%link%' style='text-decoration: underline;'>kliknite sem</a>."
 	download_receipt: Stiahnuť potvrdenie
 	proforma_invoice:
 		title: Platba predfaktúrou
