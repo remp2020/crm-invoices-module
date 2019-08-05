@@ -29,9 +29,10 @@ class ConfigsSeeder implements ISeeder
     
     public function seed(OutputInterface $output)
     {
-        $category = $this->configCategoriesRepository->loadByName('Faktúry');
+        $categoryName = 'invoices.config.category';
+        $category = $this->configCategoriesRepository->loadByName($categoryName);
         if (!$category) {
-            $category = $this->configCategoriesRepository->add('Faktúry', 'fa fa-file-invoice', 200);
+            $category = $this->configCategoriesRepository->add($categoryName, 'fa fa-file-invoice', 200);
             $output->writeln('  <comment>* config category <info>Faktúry</info> created</comment>');
         } else {
             $output->writeln(' * config category <info>Faktúry</info> exists');
@@ -42,8 +43,8 @@ class ConfigsSeeder implements ISeeder
         if (!$config) {
             $this->configBuilder->createNew()
                 ->setName($name)
-                ->setDisplayName('Firma')
-                ->setDescription('Meno fakturačnej firmy')
+                ->setDisplayName('invoices.config.supplier_name.name')
+                ->setDescription('invoices.config.supplier_name.description')
                 ->setType(ApplicationConfig::TYPE_STRING)
                 ->setAutoload(false)
                 ->setConfigCategory($category)
@@ -52,6 +53,13 @@ class ConfigsSeeder implements ISeeder
             $output->writeln("  <comment>* config item <info>$name</info> created</comment>");
         } else {
             $output->writeln("  * config item <info>$name</info> exists");
+
+            if ($config->category->name != $categoryName) {
+                $this->configsRepository->update($config, [
+                    'config_category_id' => $category->id
+                ]);
+                $output->writeln("  <comment>* config item <info>$name</info> updated</comment>");
+            }
         }
 
         $name = 'supplier_address';
@@ -59,8 +67,8 @@ class ConfigsSeeder implements ISeeder
         if (!$config) {
             $this->configBuilder->createNew()
                 ->setName($name)
-                ->setDisplayName('Adresa')
-                ->setDescription('Adresa fakturačnej firmy')
+                ->setDisplayName('invoices.config.supplier_address.name')
+                ->setDescription('invoices.config.supplier_address.description')
                 ->setType(ApplicationConfig::TYPE_TEXT)
                 ->setAutoload(false)
                 ->setConfigCategory($category)
@@ -69,6 +77,13 @@ class ConfigsSeeder implements ISeeder
             $output->writeln("  <comment>* config item <info>$name</info> created</comment>");
         } else {
             $output->writeln("  * config item <info>$name</info> exists");
+
+            if ($config->category->name != $categoryName) {
+                $this->configsRepository->update($config, [
+                    'config_category_id' => $category->id
+                ]);
+                $output->writeln("  <comment>* config item <info>$name</info> updated</comment>");
+            }
         }
 
         $name = 'supplier_city';
@@ -76,8 +91,8 @@ class ConfigsSeeder implements ISeeder
         if (!$config) {
             $this->configBuilder->createNew()
                 ->setName($name)
-                ->setDisplayName('Mesto')
-                ->setDescription('Mesto fakturačnej firmy')
+                ->setDisplayName('invoices.config.supplier_city.name')
+                ->setDescription('invoices.config.supplier_city.description')
                 ->setType(ApplicationConfig::TYPE_TEXT)
                 ->setAutoload(false)
                 ->setConfigCategory($category)
@@ -86,6 +101,13 @@ class ConfigsSeeder implements ISeeder
             $output->writeln("  <comment>* config item <info>$name</info> created</comment>");
         } else {
             $output->writeln("  * config item <info>$name</info> exists");
+
+            if ($config->category->name != $categoryName) {
+                $this->configsRepository->update($config, [
+                    'config_category_id' => $category->id
+                ]);
+                $output->writeln("  <comment>* config item <info>$name</info> updated</comment>");
+            }
         }
 
         $name = 'supplier_zip';
@@ -93,8 +115,8 @@ class ConfigsSeeder implements ISeeder
         if (!$config) {
             $this->configBuilder->createNew()
                 ->setName($name)
-                ->setDisplayName('ZIP')
-                ->setDescription('ZIP fakturačnej firmy')
+                ->setDisplayName('invoices.config.supplier_zip.name')
+                ->setDescription('invoices.config.supplier_zip.description')
                 ->setType(ApplicationConfig::TYPE_TEXT)
                 ->setAutoload(false)
                 ->setConfigCategory($category)
@@ -103,6 +125,13 @@ class ConfigsSeeder implements ISeeder
             $output->writeln("  <comment>* config item <info>$name</info> created</comment>");
         } else {
             $output->writeln("  * config item <info>$name</info> exists");
+
+            if ($config->category->name != $categoryName) {
+                $this->configsRepository->update($config, [
+                    'config_category_id' => $category->id
+                ]);
+                $output->writeln("  <comment>* config item <info>$name</info> updated</comment>");
+            }
         }
 
         $name = 'supplier_id';
@@ -110,8 +139,8 @@ class ConfigsSeeder implements ISeeder
         if (!$config) {
             $this->configBuilder->createNew()
                 ->setName($name)
-                ->setDisplayName('IČO')
-                ->setDescription('Identifikačné číslo fakturačnej firmy')
+                ->setDisplayName('invoices.config.supplier_id.name')
+                ->setDescription('invoices.config.supplier_id.description')
                 ->setType(ApplicationConfig::TYPE_STRING)
                 ->setAutoload(false)
                 ->setConfigCategory($category)
@@ -120,6 +149,13 @@ class ConfigsSeeder implements ISeeder
             $output->writeln("  <comment>* config item <info>$name</info> created</comment>");
         } else {
             $output->writeln("  * config item <info>$name</info> exists");
+
+            if ($config->category->name != $categoryName) {
+                $this->configsRepository->update($config, [
+                    'config_category_id' => $category->id
+                ]);
+                $output->writeln("  <comment>* config item <info>$name</info> updated</comment>");
+            }
         }
 
         $name = 'supplier_tax_id';
@@ -127,8 +163,8 @@ class ConfigsSeeder implements ISeeder
         if (!$config) {
             $this->configBuilder->createNew()
                 ->setName($name)
-                ->setDisplayName('DIČ')
-                ->setDescription('Daňové identifikačné číslo')
+                ->setDisplayName('invoices.config.supplier_tax_id.name')
+                ->setDescription('invoices.config.supplier_tax_id.description')
                 ->setType(ApplicationConfig::TYPE_STRING)
                 ->setAutoload(false)
                 ->setConfigCategory($category)
@@ -137,6 +173,13 @@ class ConfigsSeeder implements ISeeder
             $output->writeln("  <comment>* config item <info>$name</info> created</comment>");
         } else {
             $output->writeln("  * config item <info>$name</info> exists");
+
+            if ($config->category->name != $categoryName) {
+                $this->configsRepository->update($config, [
+                    'config_category_id' => $category->id
+                ]);
+                $output->writeln("  <comment>* config item <info>$name</info> updated</comment>");
+            }
         }
 
         $name = 'supplier_vat_id';
@@ -144,8 +187,8 @@ class ConfigsSeeder implements ISeeder
         if (!$config) {
             $this->configBuilder->createNew()
                 ->setName($name)
-                ->setDisplayName('IČDPH')
-                ->setDescription('Číslo DPH')
+                ->setDisplayName('invoices.config.supplier_vat_id.name')
+                ->setDescription('invoices.config.supplier_vat_id.description')
                 ->setType(ApplicationConfig::TYPE_STRING)
                 ->setAutoload(false)
                 ->setConfigCategory($category)
@@ -154,6 +197,13 @@ class ConfigsSeeder implements ISeeder
             $output->writeln("  <comment>* config item <info>$name</info> created</comment>");
         } else {
             $output->writeln("  * config item <info>$name</info> exists");
+
+            if ($config->category->name != $categoryName) {
+                $this->configsRepository->update($config, [
+                    'config_category_id' => $category->id
+                ]);
+                $output->writeln("  <comment>* config item <info>$name</info> updated</comment>");
+            }
         }
 
         $name = 'supplier_bank_account_number';
@@ -161,8 +211,8 @@ class ConfigsSeeder implements ISeeder
         if (!$config) {
             $this->configBuilder->createNew()
                 ->setName($name)
-                ->setDisplayName('Bank number')
-                ->setDescription('Bank number in old format')
+                ->setDisplayName('invoices.config.supplier_bank_account_number.name')
+                ->setDescription('invoices.config.supplier_bank_account_number.description')
                 ->setType(ApplicationConfig::TYPE_STRING)
                 ->setAutoload(false)
                 ->setConfigCategory($category)
@@ -171,6 +221,13 @@ class ConfigsSeeder implements ISeeder
             $output->writeln("  <comment>* config item <info>$name</info> created</comment>");
         } else {
             $output->writeln("  * config item <info>$name</info> exists");
+
+            if ($config->category->name != $categoryName) {
+                $this->configsRepository->update($config, [
+                    'config_category_id' => $category->id
+                ]);
+                $output->writeln("  <comment>* config item <info>$name</info> updated</comment>");
+            }
         }
 
         $name = 'supplier_bank_name';
@@ -178,8 +235,8 @@ class ConfigsSeeder implements ISeeder
         if (!$config) {
             $this->configBuilder->createNew()
                 ->setName($name)
-                ->setDisplayName('Bank name')
-                ->setDescription('Whole bank name, will be displayed on invoice')
+                ->setDisplayName('invoices.config.supplier_bank_name.name')
+                ->setDescription('invoices.config.supplier_bank_name.description')
                 ->setType(ApplicationConfig::TYPE_STRING)
                 ->setAutoload(true)
                 ->setConfigCategory($category)
@@ -188,6 +245,13 @@ class ConfigsSeeder implements ISeeder
             $output->writeln("  <comment>* config item <info>$name</info> created</comment>");
         } else {
             $output->writeln("  * config item <info>$name</info> exists");
+
+            if ($config->category->name != $categoryName) {
+                $this->configsRepository->update($config, [
+                    'config_category_id' => $category->id
+                ]);
+                $output->writeln("  <comment>* config item <info>$name</info> updated</comment>");
+            }
         }
 
         $name = 'supplier_iban';
@@ -195,8 +259,8 @@ class ConfigsSeeder implements ISeeder
         if (!$config) {
             $this->configBuilder->createNew()
                 ->setName($name)
-                ->setDisplayName('IBAN')
-                ->setDescription('Bank number in IBAN format')
+                ->setDisplayName('invoices.config.supplier_iban.name')
+                ->setDescription('invoices.config.supplier_iban.description')
                 ->setType(ApplicationConfig::TYPE_STRING)
                 ->setAutoload(false)
                 ->setConfigCategory($category)
@@ -205,6 +269,13 @@ class ConfigsSeeder implements ISeeder
             $output->writeln("  <comment>* config item <info>$name</info> created</comment>");
         } else {
             $output->writeln("  * config item <info>$name</info> exists");
+
+            if ($config->category->name != $categoryName) {
+                $this->configsRepository->update($config, [
+                    'config_category_id' => $category->id
+                ]);
+                $output->writeln("  <comment>* config item <info>$name</info> updated</comment>");
+            }
         }
 
         $name = 'supplier_swift';
@@ -212,8 +283,8 @@ class ConfigsSeeder implements ISeeder
         if (!$config) {
             $this->configBuilder->createNew()
                 ->setName($name)
-                ->setDisplayName('SWIFT')
-                ->setDescription('Bank number SWIFT')
+                ->setDisplayName('invoices.config.supplier_swift.name')
+                ->setDescription('invoices.config.supplier_swift.description')
                 ->setType(ApplicationConfig::TYPE_STRING)
                 ->setAutoload(false)
                 ->setConfigCategory($category)
@@ -222,6 +293,13 @@ class ConfigsSeeder implements ISeeder
             $output->writeln("  <comment>* config item <info>$name</info> created</comment>");
         } else {
             $output->writeln("  * config item <info>$name</info> exists");
+
+            if ($config->category->name != $categoryName) {
+                $this->configsRepository->update($config, [
+                    'config_category_id' => $category->id
+                ]);
+                $output->writeln("  <comment>* config item <info>$name</info> updated</comment>");
+            }
         }
 
         $name = 'business_register_detail';
@@ -229,8 +307,8 @@ class ConfigsSeeder implements ISeeder
         if (!$config) {
             $this->configBuilder->createNew()
                 ->setName($name)
-                ->setDisplayName('Business register detail')
-                ->setDescription("Where was business registered (eg. 'Business register of the District Court Bratislava I., section: sro, id: 4242/DA')")
+                ->setDisplayName('invoices.config.business_register_detail.name')
+                ->setDescription('invoices.config.business_register_detail.description')
                 ->setType(ApplicationConfig::TYPE_STRING)
                 ->setAutoload(true)
                 ->setConfigCategory($category)
@@ -239,6 +317,13 @@ class ConfigsSeeder implements ISeeder
             $output->writeln("  <comment>* config item <info>$name</info> created</comment>");
         } else {
             $output->writeln("  * config item <info>$name</info> exists");
+
+            if ($config->category->name != $categoryName) {
+                $this->configsRepository->update($config, [
+                    'config_category_id' => $category->id
+                ]);
+                $output->writeln("  <comment>* config item <info>$name</info> updated</comment>");
+            }
         }
 
         $name = 'invoice_constant_symbol';
@@ -246,8 +331,8 @@ class ConfigsSeeder implements ISeeder
         if (!$config) {
             $this->configBuilder->createNew()
                 ->setName($name)
-                ->setDisplayName('Constant symbol')
-                ->setDescription("Constant symbol (code) used on invoice. If you don't know, leave default '0308'.")
+                ->setDisplayName('invoices.config.invoice_constant_symbol.name')
+                ->setDescription('invoices.config.invoice_constant_symbol.description')
                 ->setType(ApplicationConfig::TYPE_STRING)
                 ->setValue('0308')
                 ->setAutoload(true)
@@ -257,6 +342,13 @@ class ConfigsSeeder implements ISeeder
             $output->writeln("  <comment>* config item <info>$name</info> created</comment>");
         } else {
             $output->writeln("  * config item <info>$name</info> exists");
+
+            if ($config->category->name != $categoryName) {
+                $this->configsRepository->update($config, [
+                    'config_category_id' => $category->id
+                ]);
+                $output->writeln("  <comment>* config item <info>$name</info> updated</comment>");
+            }
         }
     }
 }
