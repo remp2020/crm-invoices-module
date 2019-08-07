@@ -5,7 +5,7 @@ use Crm\PaymentsModule\Gateways\GatewayAbstract;
 
 class ProformaInvoice extends GatewayAbstract
 {
-    public function isSuccessful()
+    public function isSuccessful(): bool
     {
         return true;
     }
