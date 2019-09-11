@@ -119,7 +119,7 @@ invoice_template:
 	company_id: IČ
 	company_tax_id: DIČ
 	company_vat_id: IČ DPH
-	buyer: Konečný příjemce
+	buyer: Odběratel
 	supplier: Dodavatel
 	invoice_details: Fakturační údaje
 	item_name: Název položky
