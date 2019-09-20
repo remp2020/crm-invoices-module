@@ -6,7 +6,11 @@
 
     <style>
         html, body {
-            font-size: 14px;
+            font-family: 'Source Sans Pro', sans-serif;
+            color: #222;
+            font-size: 12px;
+            margin: 20px;
+            -webkit-print-color-adjust: exact
         }
 
         .invoice_title {
@@ -167,25 +171,6 @@
 
     <hr class="clearfix">
 
-    <!-- buyer-->
-    <div class="cell-xs-6 float" style="font-size: 1.2em">
-        <table>
-            <caption>{_'invoices.invoice_template.buyer'}</caption>
-            <tr>
-                <td>
-                    {$invoice->buyer_name|breaklines}<br />
-                    {$invoice->buyer_address}<br />
-                    {$invoice->buyer_zip} {$invoice->buyer_city}
-                </td>
-                <td>
-                    {_'invoices.invoice_template.company_id'}: {if !empty($invoice->buyer_id)}{$invoice->buyer_id}{/if}<br />
-                    {_'invoices.invoice_template.company_tax_id'}: {if !empty($invoice->buyer_tax_id)}{$invoice->buyer_tax_id}{/if}<br />
-                    {_'invoices.invoice_template.company_vat_id'}: {if !empty($invoice->buyer_vat_id)}{$invoice->buyer_vat_id}{/if}
-                </td>
-            </tr>
-        </table>
-    </div>
-
     <!-- supplier -->
     <div class="cell-xs-6 float">
         <table>
@@ -209,6 +194,25 @@
             <tr>
                 <td colspan="2">
                     {$config->get('business_register_detail')|noescape}
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- buyer-->
+    <div class="cell-xs-6 float" style="font-size: 1.2em">
+        <table>
+            <caption>{_'invoices.invoice_template.buyer'}</caption>
+            <tr>
+                <td>
+                    {$invoice->buyer_name|breaklines}<br />
+                    {$invoice->buyer_address}<br />
+                    {$invoice->buyer_zip} {$invoice->buyer_city}
+                </td>
+                <td>
+                    {_'invoices.invoice_template.company_id'}: {if !empty($invoice->buyer_id)}{$invoice->buyer_id}{/if}<br />
+                    {_'invoices.invoice_template.company_tax_id'}: {if !empty($invoice->buyer_tax_id)}{$invoice->buyer_tax_id}{/if}<br />
+                    {_'invoices.invoice_template.company_vat_id'}: {if !empty($invoice->buyer_vat_id)}{$invoice->buyer_vat_id}{/if}
                 </td>
             </tr>
         </table>
