@@ -14,7 +14,7 @@ services:
 
 	- Crm\InvoicesModule\Commands\SendInvoiceCommand
 
-	- Crm\InvoicesModule\Components\DownloadReceiptButtonFactory
+	- Crm\InvoicesModule\Components\DownloadReceiptButton
 	- Crm\InvoicesModule\Components\InvoiceLabel
 	- Crm\InvoicesModule\Components\InvoiceAdminButtonFactory
 	- Crm\InvoicesModule\Components\InvoiceFrontendButtonFactory

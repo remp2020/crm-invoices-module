@@ -3,6 +3,7 @@
 namespace Crm\InvoicesModule\Components;
 
 use Crm\ApplicationModule\Widget\WidgetFactoryInterface;
+use Crm\ApplicationModule\Widget\WidgetInterface;
 use Crm\ApplicationModule\Widget\WidgetManager;
 use Crm\InvoicesModule\Repository\InvoicesRepository;
 
@@ -21,7 +22,7 @@ class InvoiceFrontendButtonFactory implements WidgetFactoryInterface
         $this->invoicesRepository = $invoicesRepository;
     }
 
-    public function create()
+    public function create(): WidgetInterface
     {
         $invoiceButton = new InvoiceButton($this->invoicesRepository, $this->widgetManager);
         return $invoiceButton;
