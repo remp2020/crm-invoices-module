@@ -7,7 +7,7 @@ frontend:
 		not_available_anymore: Faktura již nedostupná
 		generate: Vygeneruj
 		system_error: Systémová chyba! Prosím kontaktujte technickou podporu!
-		download: Stáhni
+		download: Stáhni fakturu
 		invoice_details: Fakturační údaje
 
 	invoice_details:

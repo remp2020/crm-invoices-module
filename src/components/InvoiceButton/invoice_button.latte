@@ -18,7 +18,7 @@
 			{/if}
 		{/if}
 	{else}
-	   <span class="label label-default"><i class="fa fa-ban"></i> {_invoices.frontend.invoice_button.no_invoice}</span>
+	   <span class="btn btn-sm btn-default disabled"><i class="fa fa-ban"></i> {_invoices.frontend.invoice_button.no_invoice}</span>
 	{/if}
 {else}
 	{if $payment->invoice}
@@ -32,10 +32,10 @@
 			{elseif (clone $payment->paid_at)->modify('+15 days') > new DateTime('now')}
 				<a target="_blank" class="btn btn-sm btn-primary" href="{plink :Invoices:Invoices:DownloadInvoice $payment->id}"><i class="fa fa-magic"></i> {_invoices.frontend.invoice_button.generate}</a>
 			{else}
-				<span class="label label-info">{_invoices.frontend.invoice_button.not_available_anymore}</span>
+				<span class="btn btn-sm btn-default disabled">{_invoices.frontend.invoice_button.not_available_anymore}</span>
 			{/if}
 		{else}
-			<span class="label label-info">{_invoices.frontend.invoice_button.no_invoice}</span>
+			<span class="btn btn-sm btn-default disabled">{_invoices.frontend.invoice_button.no_invoice}</span>
 		{/if}
 	{/if}
 {/if}

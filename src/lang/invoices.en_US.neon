@@ -7,7 +7,7 @@ frontend:
 		not_available_anymore: Invoice not available anymore
 		generate: Generate
 		system_error: System failure! Please contact tech support!
-		download: Download
+		download: Download invoice
 		invoice_details: Invoice details
 
 	invoice_details:
