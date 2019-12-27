@@ -54,17 +54,16 @@ class SendInvoiceCommand extends Command
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
-     * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         if (!$input->getOption('variable-symbol')) {
             $output->writeln("<error>Required argument variable-symbol is missing</error>");
-            return;
+            return 1;
         }
         if (!$input->getOption('template-code')) {
             $output->writeln("<error>Required argument mail-template-code is missing</error>");
-            return;
+            return 1;
         }
 
         $templateCode = $input->getOption('template-code');
@@ -72,11 +71,11 @@ class SendInvoiceCommand extends Command
         $payment = $this->paymentsRepository->findByVs($input->getOption('variable-symbol'));
         if (!$payment) {
             $output->writeln("<error>Payment with given variable symbol was not found: " . $input->getOption('variable-symbol') . "</error>");
-            return;
+            return 1;
         }
         if (!$payment->invoice) {
             $output->writeln("<error>Payment has no invoice generated</error>");
-            return;
+            return 1;
         }
 
         $attachment = $this->invoiceGenerator->renderInvoiceMailAttachment($payment);
@@ -93,5 +92,7 @@ class SendInvoiceCommand extends Command
         ));
 
         $output->writeln("Sent invoice <info>{$payment->invoice->invoice_number->number}</info> as an attachment of <info>{$templateCode}</info> to <info>{$payment->user->email}</info>.");
+
+        return 0;
     }
 }
