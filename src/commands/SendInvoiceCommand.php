@@ -85,6 +85,7 @@ class SendInvoiceCommand extends Command
         }
 
         $this->emitter->emit(new NotificationEvent(
+            $this->emitter,
             $payment->user,
             $templateCode,
             [],
