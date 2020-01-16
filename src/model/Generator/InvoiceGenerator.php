@@ -171,7 +171,7 @@ class InvoiceGenerator
 
             if (file_exists($invoicePdfFile)) {
                 $attachment = [
-                    'filename' => $payment->variable_symbol . '.pdf',
+                    'file' => $payment->variable_symbol . '.pdf',
                     'content' => file_get_contents($invoicePdfFile),
                     'mime_type' => 'application/pdf',
                 ];
