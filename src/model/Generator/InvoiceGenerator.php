@@ -7,7 +7,6 @@ use Crm\ApplicationModule\Helpers\PriceHelper;
 use Crm\InvoicesModule\Repository\InvoiceNumbersRepository;
 use Crm\InvoicesModule\Repository\InvoicesRepository;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
-use Exception;
 use Kdyby\Translation\Translator;
 use Latte\Engine;
 use Nette\Database\Table\ActiveRow;
@@ -92,7 +91,7 @@ class InvoiceGenerator
     public function generate($user, $payment)
     {
         if (!$this->invoicesRepository->isPaymentInvoiceable($payment)) {
-            throw new Exception("Trying to generate invoice for payment [{$payment->id}] which has `invoiceable` flag set to false.");
+            throw new InvoiceGenerationException("Trying to generate invoice for payment [{$payment->id}] which has `invoiceable` flag set to false.");
         }
 
         if ($payment->invoice_id == null) {
@@ -126,6 +125,13 @@ class InvoiceGenerator
         return null;
     }
 
+
+    /**
+     * @param ActiveRow $payment
+     *
+     * @return PdfResponse
+     * @throws InvoiceGenerationException
+     */
     private function renderInvoice(ActiveRow $payment)
     {
         $invoice = $this->invoicesRepository->find($payment->invoice_id);
@@ -142,7 +148,7 @@ class InvoiceGenerator
         );
 
         if (!$template) {
-            throw new Exception("Error in rendering invoice template for payment #{$payment->id}", 100);
+            throw new InvoiceGenerationException("Error in rendering invoice template for payment #{$payment->id}", 100);
         }
 
         $pdf = new PdfResponse($template);
@@ -154,6 +160,13 @@ class InvoiceGenerator
         return $pdf;
     }
 
+
+    /**
+     * @param ActiveRow $payment
+     *
+     * @return array|bool
+     * @throws InvoiceGenerationException
+     */
     public function renderInvoiceMailAttachment(ActiveRow $payment)
     {
         $attachment = false;
