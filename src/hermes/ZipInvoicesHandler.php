@@ -69,7 +69,10 @@ class ZipInvoicesHandler implements HandlerInterface
                 return $this->findPaymentFromInvoiceNumber(trim($number));
             }, explode(',', $payload['invoices']));
 
-            if (count($payments) == 0) {
+            // Filter out false values
+            $payments = array_filter($payments);
+
+            if (count($payments) === 0) {
                 $this->logger->info('No payments found');
                 return false;
             }
