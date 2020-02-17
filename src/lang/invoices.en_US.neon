@@ -77,7 +77,7 @@ admin:
 		to_time: To
 		invoices: Invoices
 		generate: Generate
-		scheduled: "Batch generation was scheduled, please wait.."
+		scheduled: "Batch generation was scheduled, please wait."
 component:
 	payment_success_invoice_widget:
 		require_invoice: I need an invoice
