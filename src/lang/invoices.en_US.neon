@@ -59,11 +59,25 @@ frontend:
 		thank_you: 'Thank you for the order, the invoice will be sent to your email within 3 working days.'
 
 admin:
+	menu:
+		export: Invoice export
 	user_form:
 		invoices: Invoices
 		invoice: Enable invoicing
 		disable_autoinvoice: Disable automatic generation of invoices
-
+	default:
+		export: Invoice export
+		filelist: Generated files
+		download: Download
+		delete: Delete
+		time: Time
+		filename: File name
+	export_form:
+		from_time: From
+		to_time: To
+		invoices: Invoices
+		generate: Generate
+		scheduled: "Batch generation was scheduled, please wait.."
 component:
 	payment_success_invoice_widget:
 		require_invoice: I need an invoice

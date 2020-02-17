@@ -18,6 +18,19 @@ use Tomaj\Hermes\Dispatcher;
 
 class InvoicesModule extends CrmModule
 {
+    public function registerAdminMenuItems(MenuContainerInterface $menuContainer)
+    {
+        $mainMenu = new MenuItem($this->translator->translate('payments.menu.admin_payments'), '#payments', 'fa fa-file=invoice', 240);
+
+        $menuItem = new MenuItem(
+            $this->translator->translate('invoices.admin.menu.export'),
+            ':Invoices:InvoicesAdmin:default',
+            'fa fa-file-invoice',
+            1200
+        );
+        $menuContainer->attachMenuItemToForeignModule('#payments', $mainMenu, $menuItem);
+    }
+
     public function registerFrontendMenuItems(MenuContainerInterface $menuContainer)
     {
         $menuItem = new MenuItem($this->translator->translate('invoices.menu.invoice_details'), ':Invoices:Invoices:invoiceDetails', '', 550, true);

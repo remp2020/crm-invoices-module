@@ -59,10 +59,25 @@ frontend:
 		thank_you: 'Děkujeme za vaši objednávku, předfakturu Vám zašleme do 3 pracovních dnů e-mailem.'
 
 admin:
+	menu:
+		export: Export faktur
 	user_form:
 		invoices: Faktury
 		invoice: Povolit fakturaci
 		disable_autoinvoice: Zakázat automatické vytváření faktur
+	default:
+		export: Export faktur
+		filelist: Vygenerované soubory
+		download: Stáhnout
+		delete: Smazat
+		time: Čas
+		filename: Jméno souboru
+	export_form:
+		from_time: Začátek
+		to_time: Konec
+		invoices: Faktury
+		generate: Vygeneruj
+		scheduled: "Generování faktur bylo naplánováno, chvíli počkejte."
 
 component:
 	payment_success_invoice_widget:

@@ -1,11 +1,9 @@
-{block #title}Faktúry exporty{/block}
-
 {block #content}
 
 <div class="row">
   <div class="col-md-12">
-    <h2>
-      Faktúry
+    <h2 n:block="title">
+      {_invoices.admin.default.export}
     </h2>
   </div>
   <div class="col-md-12">
@@ -17,14 +15,27 @@
 
 <div class="row">
   <div class="col-md-12">
-    <h4>Vysledne subory</h4>
+    <h4>{_invoices.admin.default.filelist}</h4>
 
-    {foreach $sandboxFiles as $file}
-      {date('d.m.Y H:i:s', $file->getCTime())}
-      <a href="/inv/{$file->getBaseName()}">{$file->getBaseName()}</a>
-      ({$file->getSize()|bytes})
-      <a n:href="delete! $file->getBaseName()"><small>zmazať</small></a>
-      <br>
-    {/foreach}
+    <table class="table table-striped table-hover table-bordered">
+      <thead>
+      <tr>
+        <th>{_invoices.admin.default.time}</th>
+        <th>{_invoices.admin.default.filename}</th>
+        <th>{_system.actions}</th>
+      </tr>
+      </thead>
+      <tbody>
+        <tr n:foreach="$sandboxFiles as $file">
+          {var $createdAt = \Nette\Utils\DateTime::from($file->getCTime())}
+          <td class="text-muted">{$createdAt|userDate}</td>
+          <td>{$file->getBaseName()} <span class="label label-default">{$file->getSize()|bytes}</span></td>
+          <td>
+            <a href="/inv/{$file->getBaseName()}" class="btn btn-sm btn-info" title="{_invoices.admin.default.download}"><i class="fa fa-download"></i></a>
+            <a n:href="delete! $file->getBaseName()" class="btn btn-sm btn-danger" title="{_invoices.admin.default.delete}"><i class="fa fa-trash"></i></a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>

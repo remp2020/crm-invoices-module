@@ -26,6 +26,9 @@ class InvoiceSandbox
         foreach (Finder::findFiles('*')->in($this->folder) as $key => $file) {
             $result[] = $file;
         }
+        usort($result, function($file1, $file2) {
+            return $file1->getCTime() < $file2->getCTime();
+        });
         return $result;
     }
 

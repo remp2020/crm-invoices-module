@@ -2,8 +2,8 @@
 
 namespace Crm\InvoicesModule\Presenters;
 
-use Crm\ApplicationModule\Hermes\HermesMessage;
 use Crm\AdminModule\Presenters\AdminPresenter;
+use Crm\ApplicationModule\Hermes\HermesMessage;
 use Crm\InvoicesModule\InvoiceGenerator;
 use Crm\InvoicesModule\Repository\InvoiceNumbersRepository;
 use Crm\InvoicesModule\Repository\InvoicesRepository;
@@ -107,10 +107,12 @@ class InvoicesAdminPresenter extends AdminPresenter
     {
         $form = new Form();
         $form->setRenderer(new BootstrapInlineRenderer());
-        $form->addText('from_time', 'Zaciatok');
-        $form->addText('to_time', 'Koniec');
-        $form->addText('invoices', 'Faktury');
-        $form->addSubmit('submit', 'Vygeneruj');
+        $form->setTranslator($this->translator);
+
+        $form->addText('from_time', 'invoices.admin.export_form.from_time');
+        $form->addText('to_time', 'invoices.admin.export_form.to_time');
+        $form->addText('invoices', 'invoices.admin.export_form.invoices');
+        $form->addSubmit('submit', 'invoices.admin.export_form.generate');
         $form->setDefaults([
             'from_time' => date('d.m.Y', strtotime('-1 month')),
             'to_time' => date('d.m.Y'),
@@ -121,7 +123,7 @@ class InvoicesAdminPresenter extends AdminPresenter
                     'invoices' => $values['invoices'],
                 ]));
 
-                $this->flashMessage('Zip file generation was scheduled');
+                $this->flashMessage($this->translator->translate('invoices.admin.export_form.scheduled'));
                 return;
             }
 
@@ -131,7 +133,7 @@ class InvoicesAdminPresenter extends AdminPresenter
                     'to_time' => $values['to_time'],
                 ]));
 
-                $this->flashMessage('Zip file generation was scheduled');
+                $this->flashMessage($this->translator->translate('invoices.admin.export_form.scheduled'));
                 return;
             }
 
