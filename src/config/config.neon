@@ -12,6 +12,10 @@ services:
 		setup:
 			- setTempDir('%tempDir%/../mpdf')
 
+	invoicesRepository: Crm\InvoicesModule\Repository\InvoicesRepository
+	invoiceItemsRepository: Crm\InvoicesModule\Repository\InvoiceItemsRepository
+	invoiceNumbersRepository: Crm\InvoicesModule\Repository\InvoiceNumbersRepository
+
 	- Crm\InvoicesModule\Commands\SendInvoiceCommand
 
 	- Crm\InvoicesModule\Components\DownloadReceiptButton
@@ -27,10 +31,6 @@ services:
 	- Crm\InvoicesModule\Forms\UserInvoiceFormFactory
 	- Crm\InvoicesModule\Gateways\ProformaInvoice
 	- Crm\InvoicesModule\Hermes\ZipInvoicesHandler
-
-	- Crm\InvoicesModule\Repository\InvoicesRepository()
-	- Crm\InvoicesModule\Repository\InvoiceItemsRepository
-	- Crm\InvoicesModule\Repository\InvoiceNumbersRepository
 
 	- Crm\InvoicesModule\Sandbox\InvoiceZipGenerator
 	invoiceSandbox: Crm\InvoicesModule\Sandbox\InvoiceSandbox('/tmp')
