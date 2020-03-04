@@ -18,7 +18,7 @@ class InvoiceNumbersRepository extends Repository
         $this->auditLogRepository = $auditLogRepository;
     }
 
-    public function getUniqueInvoiceNumber(\DateTime $deliveredAt)
+    final public function getUniqueInvoiceNumber(\DateTime $deliveredAt)
     {
         /** @var ActiveRow $number */
         $number = $this->insert(['delivered_at' => $deliveredAt]);

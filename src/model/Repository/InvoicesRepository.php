@@ -47,7 +47,7 @@ class InvoicesRepository extends Repository
         $this->paymentItemsRepository = $paymentItemsRepository;
     }
 
-    public function getDeliveryDate(ActiveRow $payment)
+    final public function getDeliveryDate(ActiveRow $payment)
     {
         if ($payment->subscription) {
             return $payment->subscription->start_time > $payment->paid_at ? $payment->paid_at : $payment->subscription->start_time;
@@ -56,7 +56,7 @@ class InvoicesRepository extends Repository
         }
     }
 
-    public function add(ActiveRow $user, ActiveRow $payment, $invoiceNumber)
+    final public function add(ActiveRow $user, ActiveRow $payment, $invoiceNumber)
     {
         $invoiceCreatedDate = new DateTime();
         $deliveryDate = $this->getDeliveryDate($payment);
@@ -133,7 +133,7 @@ class InvoicesRepository extends Repository
         return $invoice;
     }
 
-    public function findBetween(DateTIme $fromTime, DateTime $toTime, $field = 'delivery_date')
+    final public function findBetween(DateTIme $fromTime, DateTime $toTime, $field = 'delivery_date')
     {
         return $this->getTable()->where([$field .' >= ?' => $fromTime, $field . ' <= ?' => $toTime]);
     }
@@ -143,7 +143,7 @@ class InvoicesRepository extends Repository
      *
      * Payments are not-invoiceable only if `payment_meta` flag `invoicable` is set to false.
      */
-    public function isPaymentInvoiceable(ActiveRow $payment): bool
+    final public function isPaymentInvoiceable(ActiveRow $payment): bool
     {
         // fetch returns false if entry doesn't exist (default state) or flag invoiceable is set to true
         $notInvoiceable = $payment->related('payment_meta')
