@@ -132,7 +132,7 @@ The snippet tells to invoice generator to use template provided at given path in
 
 Frontend/Admin download payment receipt button.
 
-![alt text](docs/_static/download_receipt_button.png "Download receipt button")
+![alt text](docs/download_receipt_button.png "Download receipt button")
 
 [Source code](https://github.com/remp2020/crm-invoices-module/blob/master/src/components/DownloadReceiptButton/DownloadReceiptButton.php)
 
@@ -142,7 +142,7 @@ Frontend/Admin download payment receipt button.
 
 Frontend/Admin download payment invoice button.
 
-![alt text](docs/_static/download_invoice_button.png "Download invoice button")
+![alt text](docs/download_invoice_button.png "Download invoice button")
 
 [Source code](https://github.com/remp2020/crm-invoices-module/blob/master/src/components/InvoiceButton/InvoiceButton.php)
 
@@ -152,7 +152,7 @@ Frontend/Admin download payment invoice button.
 
 User details payments listing invoice label.
 
-![alt text](docs/_static/invoice_label.png "Download receipt button")
+![alt text](docs/invoice_label.png "Download receipt button")
 
 [Source code](https://github.com/remp2020/crm-invoices-module/blob/a9b3730588507276109f1f61e80e60021e27fff2/src/components/InvoiceLabel/InvoiceLabel.php#L1)
 
@@ -163,7 +163,7 @@ User details payments listing invoice label.
 
 Widget for downloading invoice from payments success page.
 
-![alt text](docs/_static/payment_success_invoice.png "Download receipt button")
+![alt text](docs/payment_success_invoice.png "Download receipt button")
 
 [Source code](https://github.com/remp2020/crm-invoices-module/blob/a9b3730588507276109f1f61e80e60021e27fff2/src/components/PaymentSuccessInvoiceWidget/PaymentSuccessInvoiceWidget.php#L1)
 
