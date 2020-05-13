@@ -201,3 +201,5 @@ config:
 	invoice_constant_symbol:
 		name: 'Constant symbol'
 		description: "Constant symbol (code) used on invoice. If you don't know, leave default '0308'."
+	attach_invoice_to_payment_notification:
+		name: 'Generate and send an invoice as an attachment to a notification after payment'

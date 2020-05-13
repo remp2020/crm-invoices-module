@@ -202,3 +202,5 @@ config:
 	invoice_constant_symbol:
 		name: 'Konstantní symbol'
 		description: "Konstantní symbol (kód) použitý v faktuře. Pokud nevíte co vyplnit, nechte defaultně '0308'."
+	attach_invoice_to_payment_notification:
+		name: 'Vygenerovat a odeslat fakturu jako přílohu k notifikaci po platbě'

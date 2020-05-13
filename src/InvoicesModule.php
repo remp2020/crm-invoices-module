@@ -100,6 +100,10 @@ class InvoicesModule extends CrmModule
             \Crm\UsersModule\Events\AddressRemovedEvent::class,
             $this->getInstance(\Crm\InvoicesModule\Events\AddressRemovedHandler::class)
         );
+        $emitter->addListener(
+            \Crm\UsersModule\Events\PreNotificationEvent::class,
+            $this->getInstance(\Crm\InvoicesModule\Events\PreNotificationEventHandler::class)
+        );
     }
 
     public function registerCommands(CommandsContainerInterface $commandsContainer)
