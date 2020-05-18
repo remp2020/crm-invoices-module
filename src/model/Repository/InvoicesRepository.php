@@ -47,24 +47,13 @@ class InvoicesRepository extends Repository
         $this->paymentItemsRepository = $paymentItemsRepository;
     }
 
-    final public function getDeliveryDate(ActiveRow $payment)
+    final public function add(ActiveRow $user, ActiveRow $payment, ActiveRow $invoiceNumber)
     {
-        if ($payment->subscription) {
-            return $payment->subscription->start_time > $payment->paid_at ? $payment->paid_at : $payment->subscription->start_time;
-        } else {
-            return $payment->paid_at;
-        }
-    }
-
-    final public function add(ActiveRow $user, ActiveRow $payment, $invoiceNumber)
-    {
-        $invoiceCreatedDate = new DateTime();
-        $deliveryDate = $this->getDeliveryDate($payment);
-
         $address = $this->addressesRepository->address($user, 'invoice');
         if (!$address) {
             throw new \Exception("Unable to find [invoice] address for user ID [$user->id].");
         }
+
         if (trim($address->company_name) == '' || $address->company_name === null) {
             $buyerName = $address->first_name . ' ' . $address->last_name;
         } else {
@@ -89,8 +78,8 @@ class InvoicesRepository extends Repository
             'supplier_vat_id' => $this->applicationConfig->get('supplier_vat_id'),
             'variable_symbol' => $payment->variable_symbol,
             'payment_date' => $payment->paid_at,
-            'delivery_date' => $deliveryDate,
-            'created_date' => $invoiceCreatedDate,
+            'delivery_date' => $invoiceNumber->delivered_at,
+            'created_date' => new DateTime(),
             'invoice_number_id' => $invoiceNumber
         ];
 

@@ -12,6 +12,8 @@ services:
 		setup:
 			- setTempDir('%tempDir%/../mpdf')
 
+	invoiceNumber: Crm\InvoicesModule\Repository\InvoiceNumber
+
 	invoicesRepository: Crm\InvoicesModule\Repository\InvoicesRepository
 	invoiceItemsRepository: Crm\InvoicesModule\Repository\InvoiceItemsRepository
 	invoiceNumbersRepository: Crm\InvoicesModule\Repository\InvoiceNumbersRepository

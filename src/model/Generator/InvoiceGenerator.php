@@ -4,6 +4,7 @@ namespace Crm\InvoicesModule;
 
 use Crm\ApplicationModule\Config\ApplicationConfig;
 use Crm\ApplicationModule\Helpers\PriceHelper;
+use Crm\InvoicesModule\Model\InvoiceNumberInterface;
 use Crm\InvoicesModule\Repository\InvoiceNumbersRepository;
 use Crm\InvoicesModule\Repository\InvoicesRepository;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
@@ -36,13 +37,16 @@ class InvoiceGenerator
 
     private $translator;
 
+    private $invoiceNumber;
+
     public function __construct(
         InvoicesRepository $invoicesRepository,
         InvoiceNumbersRepository $invoiceNumbersRepository,
         PaymentsRepository $paymentsRepository,
         ApplicationConfig $applicationConfig,
         PriceHelper $priceHelper,
-        Translator $translator
+        Translator $translator,
+        InvoiceNumberInterface $invoiceNumber
     ) {
         $this->invoicesRepository = $invoicesRepository;
         $this->invoiceNumbersRepository = $invoiceNumbersRepository;
@@ -50,6 +54,7 @@ class InvoiceGenerator
         $this->applicationConfig = $applicationConfig;
         $this->priceHelper = $priceHelper;
         $this->translator = $translator;
+        $this->invoiceNumber = $invoiceNumber;
     }
 
     public function setTempDir(string $tempDir)
@@ -95,9 +100,8 @@ class InvoiceGenerator
         }
 
         if ($payment->invoice_id == null) {
-            $deliveryDate = $this->invoicesRepository->getDeliveryDate($payment);
-            $invoiceNumber = $this->invoiceNumbersRepository->getUniqueInvoiceNumber($deliveryDate);
-            $invoice = $this->invoicesRepository->add($user, $payment, $invoiceNumber->id);
+            $invoiceNumber = $this->invoiceNumber->getNextInvoiceNumber($payment);
+            $invoice = $this->invoicesRepository->add($user, $payment, $invoiceNumber);
 
             $this->paymentsRepository->update($payment, ['invoice_id' => $invoice->id]);
             return $this->renderInvoicePDF($user, $payment);
