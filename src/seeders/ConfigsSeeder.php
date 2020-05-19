@@ -187,5 +187,16 @@ class ConfigsSeeder implements ISeeder
             true,
             1200
         );
+
+        $this->addConfig(
+            $output,
+            $category,
+            'generate_invoice_after_payment',
+            ApplicationConfig::TYPE_BOOLEAN,
+            'invoices.config.generate_invoice_after_payment.name',
+            null,
+            true,
+            1300
+        );
     }
 }

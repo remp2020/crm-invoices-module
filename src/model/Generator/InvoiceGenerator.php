@@ -19,6 +19,8 @@ use Tracy\Debugger;
 
 class InvoiceGenerator
 {
+    const CAN_GENERATE_DAYS_LIMIT = 15;
+
     /** @var string */
     private $templateFile;
 
@@ -96,7 +98,7 @@ class InvoiceGenerator
     public function generate($user, $payment)
     {
         if (!$this->invoicesRepository->isPaymentInvoiceable($payment)) {
-            throw new InvoiceGenerationException("Trying to generate invoice for payment [{$payment->id}] which has `invoiceable` flag set to false.");
+            throw new InvoiceGenerationException("Trying to generate invoice for payment [{$payment->id}] which is not invoiceable.");
         }
 
         if ($payment->invoice_id == null) {

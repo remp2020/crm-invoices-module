@@ -29,7 +29,7 @@ class InvoicesPresenter extends FrontendPresenter
             $pdf = $this->invoiceGenerator->renderInvoicePDF($user, $payment);
         } else {
             if ($payment->user->invoice == true && !$payment->user->disable_auto_invoice) {
-                if ($payment->paid_at->diff(new DateTime('now'))->days <= 15) {
+                if ($payment->paid_at->diff(new DateTime('now'))->days <= InvoiceGenerator::CAN_GENERATE_DAYS_LIMIT) {
                     $pdf = $this->invoiceGenerator->generate($user, $payment);
                 }
             }

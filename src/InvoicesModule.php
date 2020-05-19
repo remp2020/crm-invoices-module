@@ -77,6 +77,10 @@ class InvoicesModule extends CrmModule
             'invoice_zip',
             $this->getInstance(\Crm\InvoicesModule\Hermes\ZipInvoicesHandler::class)
         );
+        $dispatcher->registerHandler(
+            'generate_invoice',
+            $this->getInstance(\Crm\InvoicesModule\Hermes\GenerateInvoiceHandler::class)
+        );
     }
 
     public function registerSeeders(SeederManager $seederManager)
@@ -103,6 +107,14 @@ class InvoicesModule extends CrmModule
         $emitter->addListener(
             \Crm\UsersModule\Events\PreNotificationEvent::class,
             $this->getInstance(\Crm\InvoicesModule\Events\PreNotificationEventHandler::class)
+        );
+        $emitter->addListener(
+            \Crm\UsersModule\Events\NewAddressEvent::class,
+            $this->getInstance(\Crm\InvoicesModule\Events\NewAddressHandler::class)
+        );
+        $emitter->addListener(
+            \Crm\PaymentsModule\Events\PaymentChangeStatusEvent::class,
+            $this->getInstance(\Crm\InvoicesModule\Events\PaymentStatusChangeHandler::class)
         );
     }
 

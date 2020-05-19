@@ -30,10 +30,13 @@ services:
 	- Crm\InvoicesModule\Events\AddressChangedHandler
 	- Crm\InvoicesModule\Events\AddressRemovedHandler
 	- Crm\InvoicesModule\Events\PreNotificationEventHandler
+	- Crm\InvoicesModule\Events\NewAddressHandler
+	- Crm\InvoicesModule\Events\PaymentStatusChangeHandler
 	- Crm\InvoicesModule\Forms\ChangeInvoiceDetailsFormFactory
 	- Crm\InvoicesModule\Forms\UserInvoiceFormFactory
 	- Crm\InvoicesModule\Gateways\ProformaInvoice
 	- Crm\InvoicesModule\Hermes\ZipInvoicesHandler
+	- Crm\InvoicesModule\Hermes\GenerateInvoiceHandler
 
 	- Crm\InvoicesModule\Sandbox\InvoiceZipGenerator
 	invoiceSandbox: Crm\InvoicesModule\Sandbox\InvoiceSandbox('/tmp')

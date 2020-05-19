@@ -204,3 +204,5 @@ config:
 		description: "Konštantný symbol (kód) použitý vo faktúre. Ak neviete čo vyplniť, nechajte predvolené '0308'."
 	attach_invoice_to_payment_notification:
 		name: 'Vygenerovať a odoslať faktúru ako prílohu k notifikácií po platbe'
+	generate_invoice_after_payment:
+		name: 'Vygenerovať faktúru ihneď po platbe'

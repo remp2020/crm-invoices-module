@@ -6,7 +6,9 @@ use Crm\ApplicationModule\Config\ApplicationConfig;
 use Crm\ApplicationModule\Helpers\UserDateHelper;
 use Crm\ApplicationModule\Repository;
 use Crm\ApplicationModule\Repository\AuditLogRepository;
+use Crm\InvoicesModule\InvoiceGenerator;
 use Crm\PaymentsModule\Repository\PaymentItemsRepository;
+use Crm\PaymentsModule\Repository\PaymentsRepository;
 use Crm\SubscriptionsModule\PaymentItem\SubscriptionTypePaymentItem;
 use Crm\UsersModule\Repository\AddressesRepository;
 use IntlDateFormatter;
@@ -128,18 +130,34 @@ class InvoicesRepository extends Repository
     }
 
     /**
-     * Returns true if payment is invoiceable.
-     *
-     * Payments are not-invoiceable only if `payment_meta` flag `invoicable` is set to false.
+     * isPaymentInvoiceable returns true if invoice can be generated.
      */
     final public function isPaymentInvoiceable(ActiveRow $payment): bool
     {
+        // set user-invoice flags (managed by user and administrators respectively)
+        if (!$payment->user->invoice || $payment->user->disable_auto_invoice) {
+            return false;
+        }
+
+        // check payment status
+        if ($payment->status !== PaymentsRepository::STATUS_PAID) {
+            return false;
+        }
+
         // fetch returns false if entry doesn't exist (default state) or flag invoiceable is set to true
         $notInvoiceable = $payment->related('payment_meta')
             ->where('key', 'invoiceable')
             ->where('value', 0)
             ->fetch();
+        if ($notInvoiceable) {
+            return false;
+        }
 
-        return !$notInvoiceable;
+        // check days limit since payment confirmation date
+        if ($payment->paid_at->diff(new DateTime())->days > InvoiceGenerator::CAN_GENERATE_DAYS_LIMIT) {
+            return false;
+        }
+
+        return true;
     }
 }

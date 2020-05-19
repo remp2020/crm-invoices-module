@@ -4,6 +4,7 @@ namespace Crm\InvoicesModule\Components;
 
 use Crm\ApplicationModule\Widget\BaseWidget;
 use Crm\ApplicationModule\Widget\WidgetManager;
+use Crm\InvoicesModule\InvoiceGenerator;
 use Crm\InvoicesModule\Repository\InvoicesRepository;
 
 /**
@@ -49,6 +50,7 @@ class InvoiceButton extends BaseWidget
     {
         $this->template->payment = $payment;
         $this->template->paymentInvoicable = $this->invoicesRepository->isPaymentInvoiceable($payment);
+        $this->template->canGenerateDaysLimit = InvoiceGenerator::CAN_GENERATE_DAYS_LIMIT;
         $this->template->admin = $this->admin;
         $this->template->setFile(__DIR__ . '/' . $this->templateName);
         $this->template->render();
