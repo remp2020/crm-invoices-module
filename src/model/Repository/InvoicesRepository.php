@@ -15,6 +15,8 @@ use IntlDateFormatter;
 use Nette\Database\Context;
 use Nette\Database\Table\ActiveRow;
 use Nette\Utils\DateTime;
+use Tracy\Debugger;
+use Tracy\ILogger;
 
 class InvoicesRepository extends Repository
 {
@@ -141,6 +143,10 @@ class InvoicesRepository extends Repository
 
         // check payment status
         if ($payment->status !== PaymentsRepository::STATUS_PAID) {
+            return false;
+        }
+        if ($payment->paid_at === null) {
+            Debugger::log("There's a paid payment without paid_at date: " . $payment->id, ILogger::WARNING);
             return false;
         }
 
