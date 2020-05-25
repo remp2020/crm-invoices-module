@@ -23,8 +23,12 @@ class InvoiceNumber implements InvoiceNumberInterface
         $number = $this->invoiceNumbersRepository->insert(['delivered_at' => $deliveredAt]);
 
         $count = $this->invoiceNumbersRepository->getTable()
-            ->where('MONTH(delivered_at) = ?', $deliveredAt->format('m'))
-            ->where('YEAR(delivered_at) = ?', $deliveredAt->format('Y'))
+            // month condition
+            ->where('delivered_at >= ?', $deliveredAt->format('Y-m-01 00:00:00'))
+            ->where('delivered_at <= ?', $deliveredAt->format('Y-m-t 23:59:59'))
+            // year condition
+            ->where('delivered_at >= ?', $deliveredAt->format('Y-01-01 00:00:00'))
+            ->where('delivered_at <= ?', $deliveredAt->format('Y-12-31 23:59:59'))
             ->where('id < ?', $number->id)
             ->count('*');
 
