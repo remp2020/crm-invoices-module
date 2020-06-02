@@ -97,6 +97,9 @@ class InvoiceGenerator
 
     public function generate($user, $payment)
     {
+        // Get payment to be sure we have latest stored version
+        $payment = $this->paymentsRepository->find($payment->id);
+
         if (!$this->invoicesRepository->isPaymentInvoiceable($payment)) {
             throw new InvoiceGenerationException("Trying to generate invoice for payment [{$payment->id}] which is not invoiceable.");
         }

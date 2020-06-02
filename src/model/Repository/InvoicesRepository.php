@@ -164,6 +164,10 @@ class InvoicesRepository extends Repository
             return false;
         }
 
+        if ($payment->invoice_id !== null) {
+            return false;
+        }
+
         return true;
     }
 }
