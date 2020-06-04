@@ -160,7 +160,8 @@ class InvoicesRepository extends Repository
         }
 
         // check days limit since payment confirmation date
-        if ($payment->paid_at->diff(new DateTime())->days > InvoiceGenerator::CAN_GENERATE_DAYS_LIMIT) {
+        $maxInvoiceableDate = $payment->paid_at->modifyClone('+' . InvoiceGenerator::CAN_GENERATE_DAYS_LIMIT . 'days 23:59:59');
+        if ($maxInvoiceableDate <= new DateTime()) {
             return false;
         }
 
