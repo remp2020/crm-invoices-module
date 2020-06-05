@@ -112,10 +112,10 @@ class InvoicesModule extends CrmModule
             \Crm\UsersModule\Events\NewAddressEvent::class,
             $this->getInstance(\Crm\InvoicesModule\Events\NewAddressHandler::class)
         );
-//        $emitter->addListener(
-//            \Crm\PaymentsModule\Events\PaymentChangeStatusEvent::class,
-//            $this->getInstance(\Crm\InvoicesModule\Events\PaymentStatusChangeHandler::class)
-//        );
+        $emitter->addListener(
+            \Crm\PaymentsModule\Events\PaymentChangeStatusEvent::class,
+            $this->getInstance(\Crm\InvoicesModule\Events\PaymentStatusChangeHandler::class)
+        );
     }
 
     public function registerCommands(CommandsContainerInterface $commandsContainer)
