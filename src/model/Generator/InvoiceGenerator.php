@@ -4,12 +4,14 @@ namespace Crm\InvoicesModule;
 
 use Crm\ApplicationModule\Config\ApplicationConfig;
 use Crm\ApplicationModule\Helpers\PriceHelper;
+use Crm\ApplicationModule\RedisClientFactory;
+use Crm\ApplicationModule\RedisClientTrait;
 use Crm\InvoicesModule\Model\InvoiceNumberInterface;
-use Crm\InvoicesModule\Repository\InvoiceNumbersRepository;
 use Crm\InvoicesModule\Repository\InvoicesRepository;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
 use Kdyby\Translation\Translator;
 use Latte\Engine;
+use malkusch\lock\mutex\PredisMutex;
 use Nette\Database\Table\ActiveRow;
 use Nette\Http\Request;
 use Nette\Http\Response;
@@ -19,6 +21,8 @@ use Tracy\Debugger;
 
 class InvoiceGenerator
 {
+    use RedisClientTrait;
+
     const CAN_GENERATE_DAYS_LIMIT = 15;
 
     /** @var string */
@@ -33,8 +37,6 @@ class InvoiceGenerator
 
     private $applicationConfig;
 
-    private $invoiceNumbersRepository;
-
     private $priceHelper;
 
     private $translator;
@@ -43,20 +45,20 @@ class InvoiceGenerator
 
     public function __construct(
         InvoicesRepository $invoicesRepository,
-        InvoiceNumbersRepository $invoiceNumbersRepository,
         PaymentsRepository $paymentsRepository,
         ApplicationConfig $applicationConfig,
         PriceHelper $priceHelper,
         Translator $translator,
-        InvoiceNumberInterface $invoiceNumber
+        InvoiceNumberInterface $invoiceNumber,
+        RedisClientFactory $redisClientFactory
     ) {
         $this->invoicesRepository = $invoicesRepository;
-        $this->invoiceNumbersRepository = $invoiceNumbersRepository;
         $this->paymentsRepository = $paymentsRepository;
         $this->applicationConfig = $applicationConfig;
         $this->priceHelper = $priceHelper;
         $this->translator = $translator;
         $this->invoiceNumber = $invoiceNumber;
+        $this->redisClientFactory = $redisClientFactory;
     }
 
     public function setTempDir(string $tempDir)
@@ -97,21 +99,26 @@ class InvoiceGenerator
 
     public function generate($user, $payment)
     {
-        // Get payment to be sure we have latest stored version
-        $payment = $this->paymentsRepository->find($payment->id);
-
         if (!$this->invoicesRepository->isPaymentInvoiceable($payment)) {
             throw new InvoiceGenerationException("Trying to generate invoice for payment [{$payment->id}] which is not invoiceable.");
         }
 
-        if ($payment->invoice_id == null) {
-            $invoiceNumber = $this->invoiceNumber->getNextInvoiceNumber($payment);
-            $invoice = $this->invoicesRepository->add($user, $payment, $invoiceNumber);
+        $mutex = new PredisMutex([$this->redis()], 'invoice_generator_' . $payment->id);
 
-            $this->paymentsRepository->update($payment, ['invoice_id' => $invoice->id]);
-            return $this->renderInvoicePDF($user, $payment);
-        }
-        return null;
+        $mutex->synchronized(function () use ($user, $payment) {
+            $payment = $this->paymentsRepository->find($payment->id);
+
+            if ($payment->invoice_id === null) {
+                $invoiceNumber = $this->invoiceNumber->getNextInvoiceNumber($payment);
+                $invoice = $this->invoicesRepository->add($user, $payment, $invoiceNumber);
+
+                $this->paymentsRepository->update($payment, ['invoice_id' => $invoice->id]);
+            }
+        });
+
+        $payment = $this->paymentsRepository->find($payment->id);
+
+        return $this->renderInvoicePDF($user, $payment);
     }
 
     public function renderInvoicePDF($user, $payment)
