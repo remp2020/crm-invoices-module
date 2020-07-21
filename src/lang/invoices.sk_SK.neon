@@ -64,7 +64,7 @@ admin:
 	user_form:
 		invoices: Faktúry
 		invoice: Povoliť fakturovanie
-		disable_autoinvoice: Vypni automatické vystavování faktur
+		disable_autoinvoice: Vypni automatické vystavovanie faktúr
 	default:
 		export: Export faktúr
 		filelist: Vygenerované súbory
