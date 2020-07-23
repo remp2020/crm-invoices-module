@@ -4,8 +4,8 @@ namespace Crm\InvoicesModule\Components;
 
 use Crm\ApplicationModule\Widget\BaseWidget;
 use Crm\ApplicationModule\Widget\WidgetManager;
-use Crm\InvoicesModule\Repository\InvoicesRepository;
 use Crm\InvoicesModule\Forms\UserInvoiceFormFactory;
+use Crm\InvoicesModule\Repository\InvoicesRepository;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
 use Crm\SalesFunnelModule\Presenters\SalesFunnelPresenter;
 
@@ -43,7 +43,7 @@ class PaymentSuccessInvoiceWidget extends BaseWidget
         if ($payment->status != PaymentsRepository::STATUS_PAID) {
             return;
         }
-        if (!$this->invoicesRepository->isPaymentInvoiceable($payment)) {
+        if (!$this->invoicesRepository->isPaymentInvoiceable($payment, true)) {
             return;
         }
 

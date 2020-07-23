@@ -134,10 +134,15 @@ class InvoicesRepository extends Repository
     /**
      * isPaymentInvoiceable returns true if invoice can be generated.
      */
-    final public function isPaymentInvoiceable(ActiveRow $payment): bool
+    final public function isPaymentInvoiceable(ActiveRow $payment, bool $ignoreUserInvoice = false): bool
     {
-        // set user-invoice flags (managed by user and administrators respectively)
-        if (!$payment->user->invoice || $payment->user->disable_auto_invoice) {
+        // user setting
+        if (!$ignoreUserInvoice && !$payment->user->invoice) {
+            return false;
+        }
+
+        // admin setting
+        if ($payment->user->disable_auto_invoice) {
             return false;
         }
 
