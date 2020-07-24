@@ -49,6 +49,11 @@ class InvoicesModule extends CrmModule
             $this->getInstance(\Crm\InvoicesModule\Components\InvoiceFrontendButtonFactory::class),
             400
         );
+        $widgetManager->registerWidgetFactory(
+            'frontend.payments.refund.receipts',
+            $this->getInstance(\Crm\InvoicesModule\Components\InvoiceFrontendButtonFactory::class),
+            400
+        );
         $widgetManager->registerWidget(
             'frontend.payments.listing.receipts',
             $this->getInstance(\Crm\InvoicesModule\Components\DownloadReceiptButton::class),
