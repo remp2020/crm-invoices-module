@@ -4,16 +4,10 @@
   "type": "library",
   "homepage": "https://remp2020.com",
   "license": "MIT",
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/miroc/PdfResponse"
-    }
-  ],
   "require": {
     "php": "^7.2",
     "mpdf/mpdf": "^8.0",
-    "jkuchar/pdfresponse": "dev-fix_base64_images"
+    "jkuchar/pdfresponse": "^0.6"
   },
   "minimum-stability": "dev",
   "autoload": {
