@@ -5,6 +5,7 @@ namespace Crm\InvoicesModule\Tests;
 use Crm\ApplicationModule\Tests\DatabaseTestCase;
 use Crm\InvoicesModule\Repository\InvoiceNumber;
 use Crm\InvoicesModule\Repository\InvoiceNumbersRepository;
+use Crm\PaymentsModule\Gateways\BankTransfer;
 use Crm\PaymentsModule\PaymentItem\DonationPaymentItem;
 use Crm\PaymentsModule\PaymentItem\PaymentItemContainer;
 use Crm\PaymentsModule\Repository\PaymentGatewaysRepository;
@@ -148,7 +149,7 @@ class InvoiceNumbersTest extends DatabaseTestCase
     protected function getPaymentGateway()
     {
         if (!$this->paymentGateway) {
-            $this->paymentGateway = $this->paymentGatewaysRepository->findByCode('bank_transfer');
+            $this->paymentGateway = $this->paymentGatewaysRepository->findByCode(BankTransfer::GATEWAY_CODE);
         }
         return $this->paymentGateway;
     }
