@@ -42,7 +42,7 @@ class ReceiptGenerator
     public function setTempDir(string $tempDir)
     {
         if (!is_dir($tempDir)) {
-            Debugger::log("Provided temp dir {$tempDir} is not directory. System temp directory will be used.", Debugger::ERROR);
+            Debugger::log("Providid temp dir {$tempDir} is not directory. System temp directory will be used.", Debugger::ERROR);
             return;
         }
         $this->tempDir = $tempDir;
