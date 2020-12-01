@@ -6,11 +6,11 @@ services:
 	invoiceGenerator:
 		class: Crm\InvoicesModule\InvoiceGenerator
 		setup:
-			- setTempDir('%tempDir%/../mpdf')
+			- setTempDir('%tempRoot%/mpdf')
 	receiptGenerator:
 		class: Crm\InvoicesModule\ReceiptGenerator
 		setup:
-			- setTempDir('%tempDir%/../mpdf')
+			- setTempDir('%tempRoot%/mpdf')
 
 	invoiceNumber: Crm\InvoicesModule\Repository\InvoiceNumber
 
