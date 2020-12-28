@@ -3,6 +3,8 @@
 namespace Crm\InvoicesModule\Forms;
 
 use Crm\ApplicationModule\Config\ApplicationConfig;
+use Crm\ApplicationModule\DataProvider\DataProviderManager;
+use Crm\UsersModule\DataProvider\AddressFormDataProviderInterface;
 use Crm\UsersModule\Repository\AddressChangeRequestsRepository;
 use Crm\UsersModule\Repository\AddressesRepository;
 use Crm\UsersModule\Repository\CountriesRepository;
@@ -28,13 +30,16 @@ class UserInvoiceFormFactory
 
     private $translator;
 
+    private $dataProviderManager;
+
     public function __construct(
         Translator $translator,
         UsersRepository $usersRepository,
         ApplicationConfig $applicationConfig,
         CountriesRepository $countriesRepository,
         AddressesRepository $addressesRepository,
-        AddressChangeRequestsRepository $addressChangeRequestsRepository
+        AddressChangeRequestsRepository $addressChangeRequestsRepository,
+        DataProviderManager $dataProviderManager
     ) {
         $this->translator = $translator;
         $this->usersRepository = $usersRepository;
@@ -42,6 +47,7 @@ class UserInvoiceFormFactory
         $this->countriesRepository = $countriesRepository;
         $this->addressesRepository = $addressesRepository;
         $this->addressChangeRequestsRepository = $addressChangeRequestsRepository;
+        $this->dataProviderManager = $dataProviderManager;
     }
 
     public function create(ActiveRow $payment): Form
@@ -62,31 +68,27 @@ class UserInvoiceFormFactory
             ->setMaxLength(150)
             ->setAttribute('placeholder', 'invoices.form.invoice.placeholder.company_name')
             ->setRequired('invoices.form.invoice.required.company_name');
-        $form->addText('invoice_address', 'invoices.form.invoice.label.address')
+        $form->addText('address', 'invoices.form.invoice.label.address')
             ->setAttribute('placeholder', 'invoices.form.invoice.placeholder.address')
             ->setRequired('invoices.form.invoice.required.address');
-        $form->addText('invoice_number', 'invoices.form.invoice.label.number')
+        $form->addText('number', 'invoices.form.invoice.label.number')
             ->setAttribute('placeholder', 'invoices.form.invoice.placeholder.number')
             ->setRequired('invoices.form.invoice.required.number');
-        $form->addText('invoice_city', 'invoices.form.invoice.label.city')
+        $form->addText('city', 'invoices.form.invoice.label.city')
             ->setAttribute('placeholder', 'invoices.form.invoice.placeholder.city')
             ->setRequired('invoices.form.invoice.required.city');
-        $form->addText('invoice_zip', 'invoices.form.invoice.label.zip')
+        $form->addText('zip', 'invoices.form.invoice.label.zip')
             ->setAttribute('placeholder', 'invoices.form.invoice.placeholder.zip')
             ->setRequired('invoices.form.invoice.required.zip');
-        $form->addText('invoice_company_id', 'invoices.form.invoice.label.ico')
-            ->setAttribute('placeholder', 'invoices.form.invoice.placeholder.ico')
-            ->setRequired('invoices.form.invoice.required.ico');
-        $form->addText('invoice_company_tax_id', 'invoices.form.invoice.label.dic')
-            ->setAttribute('placeholder', 'invoices.form.invoice.placeholder.dic')
-            ->setRequired('invoices.form.invoice.required.dic');
-        $form->addText('invoice_company_vat_id', 'invoices.form.invoice.label.icdph')
-            ->setAttribute('placeholder', 'invoices.form.invoice.placeholder.icdph')
-            ->setRequired('invoices.form.invoice.required.icdph');
-
+        $form->addText('company_id', 'invoices.form.invoice.label.ico')
+            ->setAttribute('placeholder', 'invoices.form.invoice.placeholder.ico');
+        $form->addText('company_tax_id', 'invoices.form.invoice.label.dic')
+            ->setAttribute('placeholder', 'invoices.form.invoice.placeholder.dic');
+        $form->addText('company_vat_id', 'invoices.form.invoice.label.icdph')
+            ->setAttribute('placeholder', 'invoices.form.invoice.placeholder.icdph');
 
         $contactEmail = $this->applicationConfig->get('contact_email');
-        $form->addSelect('invoice_country_id', 'invoices.form.invoice.label.invoice_country_id', $this->countriesRepository->getDefaultCountryPair())
+        $form->addSelect('country_id', 'invoices.form.invoice.label.invoice_country_id', $this->countriesRepository->getDefaultCountryPair())
             ->setOption('id', 'invoice-country')
             ->setOption(
                 'description',
@@ -96,6 +98,12 @@ class UserInvoiceFormFactory
         $form->addHidden('VS', $payment->variable_symbol);
 
         $form->addHidden('done', $invoiceAddress ? 1 : 0);
+
+        /** @var AddressFormDataProviderInterface $providers */
+        $providers = $this->dataProviderManager->getProviders('invoices.dataprovider.invoice_address_form', AddressFormDataProviderInterface::class);
+        foreach ($providers as $sorting => $provider) {
+            $form = $provider->provide(['form' => $form, 'addressType' => 'invoice']);
+        }
 
         $form->addSubmit('send', 'invoices.form.invoice.label.save')
             ->getControlPrototype()
@@ -109,14 +117,14 @@ class UserInvoiceFormFactory
         if ($invoiceAddress) {
             $defaults = array_merge($defaults, [
                 'company_name' => $invoiceAddress->company_name,
-                'invoice_company_id' => $invoiceAddress->company_id,
-                'invoice_company_tax_id' => $invoiceAddress->company_tax_id,
-                'invoice_company_vat_id' => $invoiceAddress->company_vat_id,
-                'invoice_address' => $invoiceAddress->address,
-                'invoice_number' => $invoiceAddress->number,
-                'invoice_zip' => $invoiceAddress->zip,
-                'invoice_city' => $invoiceAddress->city,
-                'invoice_country_id' => $invoiceAddress->country_id ? $invoiceAddress->country_id : $this->countriesRepository->defaultCountry()->id,
+                'company_id' => $invoiceAddress->company_id,
+                'company_tax_id' => $invoiceAddress->company_tax_id,
+                'company_vat_id' => $invoiceAddress->company_vat_id,
+                'address' => $invoiceAddress->address,
+                'number' => $invoiceAddress->number,
+                'zip' => $invoiceAddress->zip,
+                'city' => $invoiceAddress->city,
+                'country_id' => $invoiceAddress->country_id ? $invoiceAddress->country_id : $this->countriesRepository->defaultCountry()->id,
             ]);
         }
 
@@ -137,14 +145,14 @@ class UserInvoiceFormFactory
             null,
             null,
             $values->company_name,
-            $values->invoice_address,
-            $values->invoice_number,
-            $values->invoice_city,
-            $values->invoice_zip,
-            $values->invoice_country_id,
-            $values->invoice_company_id,
-            $values->invoice_company_tax_id,
-            $values->invoice_company_vat_id,
+            $values->address,
+            $values->number,
+            $values->city,
+            $values->zip,
+            $values->country_id,
+            $values->company_id,
+            $values->company_tax_id,
+            $values->company_vat_id,
             null,
             'invoice'
         );

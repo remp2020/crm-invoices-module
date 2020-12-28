@@ -40,15 +40,15 @@ frontend:
 			required: PSČ musí být vyplněna
 		company_id:
 			label: IČO
-			placeholder: pokud nemáte zadejte 0
+			placeholder: například 23590235
 			required: IČO musí být vyplněno
 		company_tax_id:
 			label: DIČ
-			placeholder: pokud nemáte zadejte 0
+			placeholder: například 2359023591
 			required: DIČ musí být vyplněno
 		company_vat_id:
 			label: IČ DPH
-			placeholder: pokud nemáte zadejte 0
+			placeholder: například CZ2359023591
 			required: IČ DPH musí být vyplněno
 		success: Vaše adresa byla úspěšně změněna.
 		warning: "Fakturu si můžete vygenerovat pouze do 14 dní od zaplacení. Pro vygenerování faktur <a href='%link%' style='text-decoration: underline;'>klikněte sem</a>."
@@ -109,9 +109,9 @@ form:
 			number: napište číslo domu
 			city: napište město
 			zip: napište PSČ
-			ico: "pokud nemáte, zadejte 0"
-			dic: "pokud nemáte, zadejte 0"
-			icdph: "pokud nemáte, zadejte 0"
+			ico: například 23590235
+			dic: například 2359023536
+			icdph: například CZ2359023536
 		required:
 			company_name: Název firmy musí být vyplněn
 			address: Adresa firmy musí být vyplněna

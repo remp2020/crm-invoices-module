@@ -10,7 +10,7 @@
         <span class="additionalform-header-info">{_invoices.component.payment_success_invoice_widget.require_invoice_info}</span>
     </div>
 
-    <div id="user-invoice-form" n:class="$presenter->isAjax() ? 'collapse in' : 'collapse'">
+    <div id="user-invoice-form" n:class="($control['userInvoiceForm']->hasErrors() or $presenter->isAjax()) ? 'collapse in' : 'collapse'">
         {control userInvoiceForm}
     </div>
 

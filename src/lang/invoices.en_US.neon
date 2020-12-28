@@ -40,15 +40,15 @@ frontend:
 			required: ZIP is required
 		company_id:
 			label: Company ID
-			placeholder: enter 0 if you don't have one
+			placeholder: e.g. 23590235
 			required: Company ID is required
 		company_tax_id:
 			label: Tax ID
-			placeholder: enter 0 if you don't have one
+			placeholder: e.g. 1248745412
 			required: Tax ID is required
 		company_vat_id:
 			label: VAT ID
-			placeholder: enter 0 if you don't have one
+			placeholder: e.g. SK1248745412
 			required: VAT ID is required
 		success: Your address was successfuly changed.
 		warning: "You can generate an invoice only within 14 days of payment. You can generate invoices <a href='%link%' style='text-decoration: underline;'>here</a>."
@@ -108,9 +108,9 @@ form:
 			number: house number
 			city: fill your city
 			zip: fill your zip
-			ico: "if you don't have one enter 0"
-			dic: "if you don't have one enter 0"
-			icdph: "if you don't have one enter 0"
+			ico: e.g. 23590235
+			dic: e.g. 2359023574
+			icdph: e.g. SK2359023574
 		required:
 			company_name: Company name is required
 			address: Company address is required
