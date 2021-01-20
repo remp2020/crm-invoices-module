@@ -29,7 +29,6 @@ services:
 	- Crm\InvoicesModule\DataProvider\UserFormDataProvider
 	- Crm\InvoicesModule\Events\AddressChangedHandler
 	- Crm\InvoicesModule\Events\AddressRemovedHandler
-	- Crm\InvoicesModule\Events\PreNotificationEventHandler
 	- Crm\InvoicesModule\Events\NewAddressHandler
 	- Crm\InvoicesModule\Events\PaymentStatusChangeHandler
 	- Crm\InvoicesModule\Forms\ChangeInvoiceDetailsFormFactory
@@ -40,6 +39,11 @@ services:
 
 	- Crm\InvoicesModule\Sandbox\InvoiceZipGenerator
 	invoiceSandbox: Crm\InvoicesModule\Sandbox\InvoiceSandbox('/tmp')
+
+	invoicesPreNotificationEventHandler:
+		class: Crm\InvoicesModule\Events\PreNotificationEventHandler
+		setup:
+			- enableForNotificationHermesTypes('new-subscription', 'payment-status-change', 'recurrent-payment-renewed', 'recurrent-payment-state-changed')
 
 	- Crm\InvoicesModule\Seeders\ConfigsSeeder
 	- Crm\InvoicesModule\Seeders\AddressTypesSeeder

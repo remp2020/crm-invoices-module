@@ -138,6 +138,18 @@ invoiceGenerator:
 
 The snippet tells to invoice generator to use template provided at given path instead of default template.
 
+## Attaching invoices to email notifications
+
+PDF invoice is attached by default to each email notification containing reference to a payment (as a parameter in `NotificationEvent`). In addition, this notification has to be emitted as a result of processing of a specific trigger (Hermes message) by the application. Typically, this happens when a Hermes message triggers a scenario (see [ScenariosModule] for details) that emits a `NotificationEvent` (this is done by _Email node_).
+
+To limit which Hermes messages shall be accepted when attaching an invoice (see `PreNotificationEventHandler` for implementation details), add the following configuration to your `config.local.neon` file, listing allowed Hermes message types:
+
+```neon
+invoicesPreNotificationEventHandler:
+    setup:
+        - enableForNotificationHermesTypes('new-subscription', 'payment-status-change', 'some-other-hermes-message')
+```  
+
 ## Components
 
 **DownloadReceiptButton**
@@ -180,3 +192,5 @@ Widget for downloading invoice from payments success page.
 [Source code](https://github.com/remp2020/crm-invoices-module/blob/a9b3730588507276109f1f61e80e60021e27fff2/src/components/PaymentSuccessInvoiceWidget/PaymentSuccessInvoiceWidget.php#L1)
 
 [How to use](https://github.com/remp2020/crm-invoices-module/blob/a9b3730588507276109f1f61e80e60021e27fff2/src/InvoicesModule.php#L51)
+
+[ScenariosModule]: https://github.com/remp2020/crm-scenarios-module/

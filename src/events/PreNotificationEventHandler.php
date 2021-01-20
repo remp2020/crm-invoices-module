@@ -6,6 +6,7 @@ use Crm\ApplicationModule\Config\ApplicationConfig;
 use Crm\InvoicesModule\InvoiceGenerationException;
 use Crm\InvoicesModule\InvoiceGenerator;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
+use Crm\UsersModule\Events\NotificationContext;
 use Crm\UsersModule\Events\PreNotificationEvent;
 use League\Event\AbstractListener;
 use League\Event\EventInterface;
@@ -20,6 +21,8 @@ class PreNotificationEventHandler extends AbstractListener
 
     private $applicationConfig;
 
+    private $enabledNotificationHermesTypes = [];
+
     public function __construct(
         InvoiceGenerator $invoiceGenerator,
         PaymentsRepository $paymentsRepository,
@@ -30,6 +33,16 @@ class PreNotificationEventHandler extends AbstractListener
         $this->applicationConfig = $applicationConfig;
     }
 
+    /**
+     * Invoice will be attached to any NotificationEvent having NotificationContext with given hermes types
+     *
+     * @param string ...$notificationHermesTypes
+     */
+    public function enableForNotificationHermesTypes(string ...$notificationHermesTypes): void
+    {
+        $this->enabledNotificationHermesTypes = $notificationHermesTypes;
+    }
+
     public function handle(EventInterface $event)
     {
         if (!($event instanceof PreNotificationEvent)) {
@@ -38,7 +51,20 @@ class PreNotificationEventHandler extends AbstractListener
 
         $flag = filter_var($this->applicationConfig->get('attach_invoice_to_payment_notification'), FILTER_VALIDATE_BOOLEAN);
         if (!$flag) {
-            return false;
+            return;
+        }
+
+        // Invoice will be attached only in case that correct hermes type is found in NotificationContext
+        $notificationContext = $event->getNotificationContext();
+        if (!$notificationContext) {
+            return;
+        }
+        $hermesMessageType = $notificationContext->getContextValue(NotificationContext::HERMES_MESSAGE_TYPE);
+        if (!$hermesMessageType) {
+            return;
+        }
+        if (!in_array($hermesMessageType, $this->enabledNotificationHermesTypes, false)) {
+            return;
         }
 
         $notificationEvent = $event->getNotificationEvent();
