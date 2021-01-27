@@ -73,7 +73,7 @@ class ZipInvoicesHandler implements HandlerInterface
             $payments = array_filter($payments);
 
             if (count($payments) === 0) {
-                $this->logger->info('No payments found');
+                $this->logger->info("No invoices with invoice numbers [{$payload['invoices']}] found.");
                 return false;
             }
 
@@ -91,6 +91,11 @@ class ZipInvoicesHandler implements HandlerInterface
                 'invoice.delivery_date >=' => $from,
                 'invoice.delivery_date <=' => $to,
             ])->order('created_at DESC')->fetchAll();
+
+            if (count($payments) === 0) {
+                $this->logger->info("No invoices with delivery dates between [{$from}] and [{$to}] found.");
+                return false;
+            }
 
             $zipFile = $this->invoiceZipGenerator->generate($payments);
 

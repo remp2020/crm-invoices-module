@@ -178,37 +178,60 @@ class InvoiceGenerator
 
 
     /**
+     * Generates invoice PDF file as attachment.
+     *
+     * If invoice isn't generated for payment and user allowed invoicing, invoice will be generated and linked to payment.
+     *
      * @param ActiveRow $payment
      *
-     * @return array|bool
+     * @return array|bool Returns false if user disabled invoicing.
      * @throws InvoiceGenerationException
      */
     public function renderInvoiceMailAttachment(ActiveRow $payment)
     {
-        $attachment = false;
-        if ($payment->user->invoice && !$payment->user->disable_auto_invoice) {
-            $invoicePdfFile = sys_get_temp_dir() . '/' . $payment->variable_symbol . '.pdf';
-            if (!$payment->invoice_id) {
-                $this->generate($payment->user, $payment);
-                $payment = $this->paymentsRepository->find($payment->id); // refresh the instance to get invoice ID
-            }
-            $this->renderInvoicePDFToFile(
-                $invoicePdfFile,
-                $payment->user,
-                $payment
-            );
-
-            if (file_exists($invoicePdfFile)) {
-                $attachment = [
-                    'file' => $payment->variable_symbol . '.pdf',
-                    'content' => file_get_contents($invoicePdfFile),
-                    'mime_type' => 'application/pdf',
-                ];
-                unlink($invoicePdfFile);
-            } else {
-                Debugger::log("Cannot generate invoice for recurrent payment {$payment->variable_symbol}", Debugger::ERROR);
-            }
+        if (!$payment->user->invoice || $payment->user->disable_auto_invoice) {
+            // user (or admin) disabled invoicing for this account; nothing to generate
+            return false;
         }
+
+        if (!$payment->invoice_id) {
+            $this->generate($payment->user, $payment);
+            $payment = $this->paymentsRepository->find($payment->id); // refresh the instance to get invoice ID
+        }
+
+        $attachment = [
+            'file' => $payment->variable_symbol . '.pdf',
+            'content' => $this->generateInvoiceAsString($payment),
+            'mime_type' => 'application/pdf',
+        ];
+
         return $attachment;
+    }
+
+    /**
+     * Generates invoice PDF file and returns contents as string. Invoice must be already generated and linked to payment.
+     */
+    public function generateInvoiceAsString(ActiveRow $payment): string
+    {
+        if ($payment->invoice_id === null) {
+            throw new InvoiceGenerationException("No linked invoice for payment VS {$payment->variable_symbol}. Cannot generate PDF attachment.");
+        }
+
+        $invoicePdfFile = sys_get_temp_dir() . '/' . $payment->variable_symbol . '.pdf';
+
+        $this->renderInvoicePDFToFile(
+            $invoicePdfFile,
+            $payment->user,
+            $payment
+        );
+
+        if (!file_exists($invoicePdfFile)) {
+            throw new InvoiceGenerationException("Cannot generate invoice PDF for payment VS {$payment->variable_symbol}.");
+        }
+
+        $invoicePdfAsString = file_get_contents($invoicePdfFile);
+        unlink($invoicePdfFile);
+
+        return $invoicePdfAsString;
     }
 }

@@ -24,12 +24,12 @@ class InvoiceZipGenerator
 
         $files = [];
         foreach ($payments as $payment) {
-            $attachment = $this->invoiceGenerator->renderInvoiceMailAttachment($payment);
+            $invoiceContent = $this->invoiceGenerator->generateInvoiceAsString($payment);
 
             $fileName = $payment->invoice->invoice_number->number . '.pdf';
             $path = $tmpdir . '/' . $fileName;
 
-            file_put_contents($path, $attachment['content']);
+            file_put_contents($path, $invoiceContent);
 
             $files[] = [
                 'path' => $path,
