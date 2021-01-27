@@ -19,29 +19,29 @@ class InvoiceZipGenerator
 
     public function generate($payments)
     {
-        $tmpdir = sys_get_temp_dir() . '/' . time() . rand();
-        mkdir($tmpdir);
-
         $files = [];
         foreach ($payments as $payment) {
             $invoiceContent = $this->invoiceGenerator->generateInvoiceAsString($payment);
 
             $fileName = $payment->invoice->invoice_number->number . '.pdf';
-            $path = $tmpdir . '/' . $fileName;
+            $tmpFile = tmpfile();
 
-            file_put_contents($path, $invoiceContent);
+            fwrite($tmpFile, $invoiceContent);
 
             $files[] = [
-                'path' => $path,
+                'path' => stream_get_meta_data($tmpFile)['uri'],
+                'resource' => $tmpFile,
                 'name' => $fileName,
             ];
         }
 
-        $zipFile = tempnam(sys_get_temp_dir(), 'invoice') . '.zip';
+        $zipFile = tempnam(sys_get_temp_dir(), 'invoicesZip_');
 
         $this->createZip($zipFile, $files);
 
-        // todo vymazat folder potom
+        foreach ($files as $file) {
+            fclose($file['resource']);
+        }
 
         return $zipFile;
     }
@@ -54,10 +54,6 @@ class InvoiceZipGenerator
             $zip->addFile($file['path'], 'invoices/' . $file['name']);
         }
         $zip->close();
-
-        foreach ($files as $file) {
-            unlink($file['path']);
-        }
 
         return $zipFile;
     }

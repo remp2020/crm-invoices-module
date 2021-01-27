@@ -217,20 +217,21 @@ class InvoiceGenerator
             throw new InvoiceGenerationException("No linked invoice for payment VS {$payment->variable_symbol}. Cannot generate PDF attachment.");
         }
 
-        $invoicePdfFile = sys_get_temp_dir() . '/' . $payment->variable_symbol . '.pdf';
+        $invoicePdfFile = tmpfile();
+        $invoicePdfFilePath = stream_get_meta_data($invoicePdfFile)['uri'];
 
         $this->renderInvoicePDFToFile(
-            $invoicePdfFile,
+            $invoicePdfFilePath,
             $payment->user,
             $payment
         );
 
-        if (!file_exists($invoicePdfFile)) {
+        if (!file_exists($invoicePdfFilePath)) {
             throw new InvoiceGenerationException("Cannot generate invoice PDF for payment VS {$payment->variable_symbol}.");
         }
 
-        $invoicePdfAsString = file_get_contents($invoicePdfFile);
-        unlink($invoicePdfFile);
+        $invoicePdfAsString = file_get_contents($invoicePdfFilePath);
+        fclose($invoicePdfFile);
 
         return $invoicePdfAsString;
     }
