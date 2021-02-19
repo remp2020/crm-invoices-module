@@ -19,41 +19,23 @@ class InvoiceZipGenerator
 
     public function generate($payments)
     {
-        $files = [];
+        $zip = new ZipArchive();
+        $zipFile = tempnam(sys_get_temp_dir(), 'invoicesZip_');
+
         foreach ($payments as $payment) {
             $invoiceContent = $this->invoiceGenerator->generateInvoiceAsString($payment);
 
             $fileName = $payment->invoice->invoice_number->number . '.pdf';
-            $tmpFile = tmpfile();
 
+            $tmpFile = tmpfile();
             fwrite($tmpFile, $invoiceContent);
 
-            $files[] = [
-                'path' => stream_get_meta_data($tmpFile)['uri'],
-                'resource' => $tmpFile,
-                'name' => $fileName,
-            ];
+            $zip->open($zipFile, ZipArchive::CREATE);
+            $zip->addFile(stream_get_meta_data($tmpFile)['uri'], 'invoices/' . $fileName);
+            $zip->close();
+
+            fclose($tmpFile);
         }
-
-        $zipFile = tempnam(sys_get_temp_dir(), 'invoicesZip_');
-
-        $this->createZip($zipFile, $files);
-
-        foreach ($files as $file) {
-            fclose($file['resource']);
-        }
-
-        return $zipFile;
-    }
-
-    private function createZip($zipFile, $files)
-    {
-        $zip = new ZipArchive();
-        $zip->open($zipFile, ZipArchive::CREATE | ZipArchive::OVERWRITE);
-        foreach ($files as $file) {
-            $zip->addFile($file['path'], 'invoices/' . $file['name']);
-        }
-        $zip->close();
 
         return $zipFile;
     }

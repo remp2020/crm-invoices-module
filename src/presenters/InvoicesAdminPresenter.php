@@ -109,13 +109,15 @@ class InvoicesAdminPresenter extends AdminPresenter
         $form->setRenderer(new BootstrapInlineRenderer());
         $form->setTranslator($this->translator);
 
-        $form->addText('from_time', 'invoices.admin.export_form.from_time');
-        $form->addText('to_time', 'invoices.admin.export_form.to_time');
+        $form->addText('from_time', 'invoices.admin.export_form.from_time')
+            ->setAttribute('class', 'flatpickr');
+        $form->addText('to_time', 'invoices.admin.export_form.to_time')
+            ->setAttribute('class', 'flatpickr');
         $form->addText('invoices', 'invoices.admin.export_form.invoices');
         $form->addSubmit('submit', 'invoices.admin.export_form.generate');
         $form->setDefaults([
-            'from_time' => date('d.m.Y', strtotime('-1 month')),
-            'to_time' => date('d.m.Y'),
+            'from_time' => DateTime::from('-1 month')->format(DATE_RFC3339),
+            'to_time' => DateTime::from('now')->format(DATE_RFC3339),
         ]);
         $form->onSuccess[] = function (Form $form, $values) {
             if ($values->invoices) {

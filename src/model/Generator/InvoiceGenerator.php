@@ -12,6 +12,7 @@ use Crm\PaymentsModule\Repository\PaymentsRepository;
 use Kdyby\Translation\Translator;
 use Latte\Engine;
 use malkusch\lock\mutex\PredisMutex;
+use Mpdf\Mpdf;
 use Nette\Database\Table\ActiveRow;
 use Nette\Http\Request;
 use Nette\Http\Response;
@@ -168,8 +169,23 @@ class InvoiceGenerator
         }
 
         $pdf = new PdfResponse($template);
-        $pdf->pageFormat = 'A4';
-        $pdf->pageMargins = '10,10,10,10,2,6';
+        $mpdf = new Mpdf([
+            'mode' => 'utf-8',
+            'format' => 'A4',
+            'default_font_size' => '',
+            'default_font' => '',
+            'margin_left' => 10,
+            'margin_right' => 10,
+            'margin_top' => 10,
+            'margin_bottom' => 10,
+            'margin_header' => 2,
+            'margin_footer' => 6,
+            'orientation' => PdfResponse::ORIENTATION_PORTRAIT,
+            'tempDir' => $this->getTempDir(),
+        ]);
+        $pdf->createMPDF = function () use ($mpdf) {
+            return $mpdf;
+        };
         $pdf->documentTitle = 'Invoice';
         $pdf->documentAuthor = $this->applicationConfig->get('supplier_name');
         $pdf->tempDir = $this->getTempDir();
