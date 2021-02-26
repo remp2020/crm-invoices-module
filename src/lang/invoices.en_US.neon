@@ -7,7 +7,9 @@ frontend:
 		not_available_anymore: Invoice not available anymore
 		generate: Generate
 		system_error: System failure! Please contact tech support!
+		invoice: invoice
 		download: Download invoice
+		edit: Edit invoice
 		invoice_details: Invoice details
 
 	invoice_details:
@@ -78,6 +80,14 @@ admin:
 		invoices: Invoices
 		generate: Generate
 		scheduled: "Batch generation was scheduled, please wait."
+	edit:
+		title: Edit invoice
+		edit_invoice: Edit buyer address
+		current_invoice_address: Use current invoice address
+		edit_items: Edit items
+		back_to_user: Back to user detail
+		success: Invoice was successfuly changed.
+
 component:
 	payment_success_invoice_widget:
 		require_invoice: I need an invoice
@@ -96,10 +106,10 @@ form:
 			number: Number
 			city: City
 			zip: ZIP
-			ico: Businness ID
-			dic: Tax ID
-			icdph: VAT number
-			invoice_country_id: Country
+			country_id: Country
+			company_id: Businness ID
+			company_tax_id: Tax ID
+			company_vat_id: VAT number
 			send: Save
 			save: Save
 		placeholder:
@@ -108,18 +118,19 @@ form:
 			number: house number
 			city: fill your city
 			zip: fill your zip
-			ico: e.g. 23590235
-			dic: e.g. 2359023574
-			icdph: e.g. SK2359023574
+			company_id: e.g. 23590235
+			company_tax_id: e.g. 2359023574
+			company_vat_id: e.g. SK2359023574
 		required:
 			company_name: Company name is required
 			address: Company address is required
 			number: House number is required
 			city: City is required
 			zip: ZIP is required
-			ico: Business ID is required
-			dic: Tax ID  is required
-			icdph: VAT number is required
+			country_id: Country is required
+			company_id: Business ID is required
+			company_tax_id: Tax ID  is required
+			company_vat_id: VAT number is required
 		options:
 			foreign_country: "For delivery to foreign countries please contact us through %contactEmail%"
 

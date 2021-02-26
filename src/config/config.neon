@@ -32,6 +32,8 @@ services:
 	- Crm\InvoicesModule\Events\NewAddressHandler
 	- Crm\InvoicesModule\Events\PaymentStatusChangeHandler
 	- Crm\InvoicesModule\Forms\ChangeInvoiceDetailsFormFactory
+	- Crm\InvoicesModule\Forms\ChangeInvoiceFormFactory
+	- Crm\InvoicesModule\Forms\ChangeInvoiceItemsFormFactory
 	- Crm\InvoicesModule\Forms\UserInvoiceFormFactory
 	- Crm\InvoicesModule\Gateways\ProformaInvoice
 	- Crm\InvoicesModule\Hermes\ZipInvoicesHandler

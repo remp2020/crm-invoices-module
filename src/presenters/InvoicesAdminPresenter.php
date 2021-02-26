@@ -4,12 +4,15 @@ namespace Crm\InvoicesModule\Presenters;
 
 use Crm\AdminModule\Presenters\AdminPresenter;
 use Crm\ApplicationModule\Hermes\HermesMessage;
+use Crm\InvoicesModule\Forms\ChangeInvoiceFormFactory;
+use Crm\InvoicesModule\Forms\ChangeInvoiceItemsFormFactory;
 use Crm\InvoicesModule\InvoiceGenerator;
 use Crm\InvoicesModule\Repository\InvoiceNumbersRepository;
 use Crm\InvoicesModule\Repository\InvoicesRepository;
 use Crm\InvoicesModule\Sandbox\InvoiceSandbox;
 use Crm\InvoicesModule\Sandbox\InvoiceZipGenerator;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
+use Crm\UsersModule\Repository\AddressesRepository;
 use Nette\Application\BadRequestException;
 use Nette\Application\Responses\TextResponse;
 use Nette\Application\UI\Form;
@@ -39,6 +42,15 @@ class InvoicesAdminPresenter extends AdminPresenter
 
     /** @var  Emitter @inject */
     public $hermesEmitter;
+
+    /** @var  ChangeInvoiceFormFactory @inject */
+    public $changeInvoiceFormFactory;
+
+    /** @var  ChangeInvoiceItemsFormFactory @inject */
+    public $changeInvoiceItemsFormFactory;
+
+    /** @var  AddressesRepository @inject */
+    public $addressesRepository;
 
     public function actionDownloadInvoice($id)
     {
@@ -153,5 +165,104 @@ class InvoicesAdminPresenter extends AdminPresenter
             $this->flashMessage('Cannot delete file', 'error');
         }
         $this->redirect('default');
+    }
+
+    public function renderEdit($id)
+    {
+        $invoice = $this->invoiceRepository->find($id);
+        if (!$invoice) {
+            throw new BadRequestException('Invalid invoice ID provided: ' . $this->getParameter('id'));
+        }
+
+        $payment = $invoice->related('payments')->fetch();
+        if (!$payment) {
+            throw new BadRequestException("Invoice {$this->getParameter('id')} is not related to any payment");
+        }
+
+        $pdf = $this->invoiceGenerator->renderInvoicePDF($payment->user, $payment);
+
+        $this->template->pdf = $pdf;
+        $this->template->paymentId = $payment->id;
+        $this->template->user = $payment->user;
+        $this->template->invoice = $invoice;
+    }
+
+    public function createComponentChangeInvoiceForm()
+    {
+        $id = $this->getParameter('id');
+        $form = $this->changeInvoiceFormFactory->create($id);
+
+        $invoice = $this->invoiceRepository->find($id);
+        if ($invoice) {
+            $defaults = [
+                'buyer_name' => $invoice->buyer_name,
+                'buyer_address' => $invoice->buyer_address,
+                'buyer_city' => $invoice->buyer_city,
+                'buyer_zip' => $invoice->buyer_zip,
+                'country_id' => $invoice->buyer_country_id,
+                'company_id' => $invoice->buyer_id,
+                'company_tax_id' => $invoice->buyer_tax_id,
+                'company_vat_id' => $invoice->buyer_vat_id
+            ];
+            $form->setDefaults($defaults);
+        }
+
+        $this->changeInvoiceFormFactory->onSuccess = function () {
+            $this->flashMessage($this->translator->translate('invoices.admin.edit.success'));
+        };
+
+        $form->onError[] = function ($form) {
+            $this->flashMessage(implode('', $form->getErrors()), 'error');
+        };
+        return $form;
+    }
+
+    public function createComponentCurrentInvoiceDetailsForm()
+    {
+        $id = $this->getParameter('id');
+        $form = $this->changeInvoiceFormFactory->create($id);
+
+        $invoice = $this->invoiceRepository->find($id);
+        if ($invoice) {
+            $payment = $invoice->related('payments')->fetch();
+            if ($payment) {
+                $address = $this->addressesRepository->address($payment->user, 'invoice');
+                if ($address) {
+                    $defaults = [
+                        'buyer_name' => $address->company_name,
+                        'buyer_address' => $address->address . ' ' . $address->number,
+                        'buyer_city' => $address->city,
+                        'buyer_zip' => $address->zip,
+                        'country_id' => $address->country_id,
+                        'company_id' => $address->company_id,
+                        'company_tax_id' => $address->company_tax_id,
+                        'company_vat_id' => $address->company_vat_id
+                    ];
+                    $form->setDefaults($defaults);
+                }
+            }
+        }
+
+        $this->changeInvoiceFormFactory->onSuccess = function () {
+            $this->flashMessage($this->translator->translate('invoices.admin.edit.success'));
+        };
+        $form->onError[] = function ($form) {
+            $this->flashMessage(implode('', $form->getErrors()), 'error');
+        };
+        return $form;
+    }
+
+    public function createComponentInvoiceItemsForm()
+    {
+        $id = $this->getParameter('id');
+        $form = $this->changeInvoiceItemsFormFactory->create($id);
+
+        $this->changeInvoiceItemsFormFactory->onSuccess = function () {
+            $this->flashMessage($this->translator->translate('invoices.admin.edit.success'));
+        };
+        $form->onError[] = function ($form) {
+            $this->flashMessage(implode('', $form->getErrors()), 'error');
+        };
+        return $form;
     }
 }

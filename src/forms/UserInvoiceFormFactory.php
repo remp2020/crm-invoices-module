@@ -80,15 +80,15 @@ class UserInvoiceFormFactory
         $form->addText('zip', 'invoices.form.invoice.label.zip')
             ->setAttribute('placeholder', 'invoices.form.invoice.placeholder.zip')
             ->setRequired('invoices.form.invoice.required.zip');
-        $form->addText('company_id', 'invoices.form.invoice.label.ico')
-            ->setAttribute('placeholder', 'invoices.form.invoice.placeholder.ico');
-        $form->addText('company_tax_id', 'invoices.form.invoice.label.dic')
-            ->setAttribute('placeholder', 'invoices.form.invoice.placeholder.dic');
-        $form->addText('company_vat_id', 'invoices.form.invoice.label.icdph')
-            ->setAttribute('placeholder', 'invoices.form.invoice.placeholder.icdph');
+        $form->addText('company_id', 'invoices.form.invoice.label.company_id')
+            ->setAttribute('placeholder', 'invoices.form.invoice.placeholder.company_id');
+        $form->addText('company_tax_id', 'invoices.form.invoice.label.company_tax_id')
+            ->setAttribute('placeholder', 'invoices.form.invoice.placeholder.company_tax_id');
+        $form->addText('company_vat_id', 'invoices.form.invoice.label.company_vat_id')
+            ->setAttribute('placeholder', 'invoices.form.invoice.placeholder.company_vat_id');
 
         $contactEmail = $this->applicationConfig->get('contact_email');
-        $form->addSelect('country_id', 'invoices.form.invoice.label.invoice_country_id', $this->countriesRepository->getDefaultCountryPair())
+        $form->addSelect('country_id', 'invoices.form.invoice.label.country_id', $this->countriesRepository->getDefaultCountryPair())
             ->setOption('id', 'invoice-country')
             ->setOption(
                 'description',

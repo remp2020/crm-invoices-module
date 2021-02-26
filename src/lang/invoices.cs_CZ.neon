@@ -7,7 +7,9 @@ frontend:
 		not_available_anymore: Faktura již nedostupná
 		generate: Vygeneruj
 		system_error: Systémová chyba! Prosím kontaktujte technickou podporu!
+		invoice: Faktura
 		download: Stáhni fakturu
+		edit: Uprav fakturu
 		invoice_details: Fakturační údaje
 
 	invoice_details:
@@ -78,6 +80,13 @@ admin:
 		invoices: Faktury
 		generate: Vygeneruj
 		scheduled: "Generování faktur bylo naplánováno, chvíli počkejte."
+	edit:
+		title: Úprava faktury
+		edit_invoice: Upravit adresu odběratele
+		current_invoice_address: Použít aktuální fakturační adresu
+		edit_items: Upravit položky
+		back_to_user: Zpět na uživatele
+		success: Faktura byla úspěšně změněna.
 
 component:
 	payment_success_invoice_widget:
@@ -97,10 +106,10 @@ form:
 			number: Číslo
 			city: Město
 			zip: PSČ
-			ico: IČO
-			dic: DIČ
-			icdph: IČDPH
-			invoice_country_id: Země
+			country_id: Země
+			company_id: IČO
+			company_tax_id: DIČ
+			company_vat_id: IČDPH
 			send: Uložit
 			save: Uložit údaje
 		placeholder:
@@ -109,18 +118,19 @@ form:
 			number: napište číslo domu
 			city: napište město
 			zip: napište PSČ
-			ico: například 23590235
-			dic: například 2359023536
-			icdph: například CZ2359023536
+			company_id: například 23590235
+			company_tax_id: například 2359023536
+			company_vat_id: například CZ2359023536
 		required:
 			company_name: Název firmy musí být vyplněn
 			address: Adresa firmy musí být vyplněna
 			number: Číslo domu musí být vyplněno
 			city: Město musí být vyplněno
 			zip: PSČ musí být vyplněno
-			ico: IČO musí být vyplněno
-			dic: DIČ musí být vyplněno
-			icdph: IČDPH musí být vyplněno
+			country_id: Země musí být vyplněna
+			company_id: IČO musí být vyplněno
+			company_tax_id: DIČ musí být vyplněno
+			company_vat_id: IČDPH musí být vyplněno
 		options:
 			foreign_country: "Pro informace o doručení do zahraničí nás prosím kontaktujte na %contactEmail%"
 

@@ -1,6 +1,17 @@
 {if $admin}
 	{if $payment->invoice}
-		<a href="{plink :Invoices:InvoicesAdmin:downloadInvoice $payment->id}" class="btn btn-success btn-sm" target="_bank"><i class="fa fa-download"></i> {_invoices.frontend.invoice_button.download}</a>
+		<div class="btn-group" style="margin-bottom: 2px">
+			<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+							aria-expanded="false">
+				<i class="fas fa-file-invoice"></i>
+				{_invoices.frontend.invoice_button.invoice} <span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu">
+				<li><a href="{plink :Invoices:InvoicesAdmin:downloadInvoice $payment->id}"><i class="fa fa-download"></i> {_invoices.frontend.invoice_button.download}</a></li>
+				<li><a href="{plink :Invoices:InvoicesAdmin:edit $payment->invoice->id}"><i class="fa fa-edit"></i> {_invoices.frontend.invoice_button.edit}</a></li>
+			</ul>
+		</div>
+
 	{elseif $payment->paid_at && $payment->paid_at->diff(new \DateTime())->days > $canGenerateDaysLimit}
 		<span class="btn btn-sm btn-default disabled">{_invoices.frontend.invoice_button.not_available_anymore}</span>
 	{elseif $paymentInvoicable}

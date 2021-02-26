@@ -7,7 +7,9 @@ frontend:
 		not_available_anymore: Faktúra už nedostupná
 		generate: Vygeneruj
 		system_error: Systémová chyba! Prosím kontaktujte technickú podporu!
+		invoice: Faktúra
 		download: Stiahni faktúru
+		edit: Uprav faktúru
 		invoice_details: Fakturačné údaje
 
 	invoice_details:
@@ -78,6 +80,13 @@ admin:
 		invoices: Faktúry
 		generate: Vygeneruj
 		scheduled: "Generovanie faktúr bolo naplánované, chvíľu počkajte."
+	edit:
+		title: Úprava faktúry
+		edit_invoice: Upraviť adresu odoberateľa
+		current_invoice_address: Použiť aktuálnu fakturačnú adresu
+		edit_items: Upraviť položky
+		back_to_user: Späť na používateľa
+		success: Faktúra bola úspešne zmenená.
 
 component:
 	payment_success_invoice_widget:
@@ -97,10 +106,10 @@ form:
 			number: Číslo
 			city: Mesto
 			zip: PSČ
-			ico: IČO
-			dic: DIČ
-			icdph: IČDPH
-			invoice_country_id: Krajina
+			country_id: Krajina
+			company_id: IČO
+			company_tax_id: DIČ
+			company_vat_id: IČDPH
 			send: Uložiť
 			save: Uložiť údaje
 		placeholder:
@@ -109,20 +118,24 @@ form:
 			number: napíšte číslo domu
 			city: napíšte mesto
 			zip: napíšte PSČ
-			ico: napríklad 25412547
-			dic: napríklad 2541254765
-			icdph: napríklad SK2541254765
+			company_id: napríklad 25412547
+			company_tax_id: napríklad 2541254765
+			company_vat_id: napríklad SK2541254765
 		required:
 			company_name: Názov firmy musí byť vyplnený
 			address: Adresa firmy musí byť vyplnená
 			number: Číslo domu musí byť vyplnené
 			city: Mesto musí byť vyplnené
 			zip: PSČ musí byť vyplnené
-			ico: IČO musí byť vyplnené
-			dic: DIČ musí byť vyplnené
-			icdph: IČDPH musí byť vyplnené
+			country_id: Krajina musí byť vyplnená
+			company_id: IČO musí byť vyplnené
+			company_tax_id: DIČ musí byť vyplnené
+			company_vat_id: IČDPH musí byť vyplnené
 		options:
 			foreign_country: "Pre informácie o doručení do zahraničia nás, prosím, kontaktujte na %contactEmail%"
+	change_invoice_items:
+		item: Položka %i%
+		placeholder: Názov položky
 
 invoice_template:
 	title: Faktúra

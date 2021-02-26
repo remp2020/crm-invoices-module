@@ -1,0 +1,98 @@
+{block #content}
+<style>
+    body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh; /* body takes whole viewport's height */
+    }
+
+    #admin_container {
+        flex: 1;
+        display: flex;
+        flex-flow: column nowrap;
+    }
+
+    #buttons > a {
+        margin: 5px;
+    }
+
+    .trumbowyg-box, .trumbowyg-editor {
+        margin: unset;
+        min-height: 100px;
+    }
+</style>
+
+<div class="row">
+    <div class="col-md-12">
+        <a href="{link :Users:UsersAdmin:Show $user->id}"><i class="fa fa-angle-left"></i> {_invoices.admin.edit.back_to_user}</a>
+        <div class="page-header">
+            <h1 n:block="title">
+                {_invoices.admin.edit.title}: {$invoice->invoice_number->number}
+            </h1>
+            <div id="buttons" style="flex: 0 0 100%; justify-content: left; display: inline-flex">
+                <a class="btn btn-default" href="#" data-toggle="modal" data-target="#invoice-modal">
+                    <i class="fa fa-edit"></i> {_invoices.admin.edit.edit_invoice}
+                </a>
+
+                <a class="btn btn-default" href="#" data-toggle="modal" data-target="#items-modal">
+                    <i class="fa fa-list"></i> {_invoices.admin.edit.edit_items}
+                </a>
+
+                <a class="btn btn-default" href="#" data-toggle="modal" data-target="#current-details-modal">
+                    <i class="fa fa-check"></i> {_invoices.admin.edit.current_invoice_address}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="flex: 1; display: flex; justify-content: left">
+  <embed style="flex: 0 0 210mm" src="{link InvoicesAdmin:downloadInvoice $paymentId}#toolbar=0&navpanes=0&scrollbar=0"
+         type="application/pdf">
+</div>
+
+
+<div class="modal fade" id="invoice-modal" tabindex="-1" role="dialog" aria-labelledby="invoiceModal">
+  <div id="invoice-modal-dialog" class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                  aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">{_invoices.admin.edit.edit_invoice}</h4>
+      </div>
+      <div class="modal-body">
+        {control changeInvoiceForm}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="items-modal" tabindex="-1" role="dialog" aria-labelledby="invoiceModal">
+  <div id="invoice-modal-dialog" class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                  aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">{_invoices.admin.edit.edit_items}</h4>
+      </div>
+      <div class="modal-body">
+        {control invoiceItemsForm}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="current-details-modal" tabindex="-1" role="dialog" aria-labelledby="invoiceModal">
+  <div id="invoice-modal-dialog" class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                  aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">{_invoices.admin.edit.current_invoice_address}</h4>
+      </div>
+      <div class="modal-body">
+        {control currentInvoiceDetailsForm}
+      </div>
+    </div>
+  </div>
+</div>
