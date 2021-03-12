@@ -46,8 +46,8 @@ class InvoicesRepository extends Repository
         $this->addressesRepository = $addressesRepository;
         $this->invoiceItemsRepository = $invoiceItemsRepository;
         $this->auditLogRepository = $auditLogRepository;
-        $userDateHelper->setFormat([IntlDateFormatter::MEDIUM, IntlDateFormatter::SHORT]);
-        $this->userDateHelper = $userDateHelper;
+        $this->userDateHelper = clone $userDateHelper;
+        $this->userDateHelper->setFormat([IntlDateFormatter::MEDIUM, IntlDateFormatter::SHORT]);
         $this->paymentItemsRepository = $paymentItemsRepository;
     }
 
