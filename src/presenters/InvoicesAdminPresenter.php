@@ -67,7 +67,7 @@ class InvoicesAdminPresenter extends AdminPresenter
             if ($payment->paid_at->diff($now)->days > InvoiceGenerator::CAN_GENERATE_DAYS_LIMIT) {
                 throw new BadRequestException('unable to generate new invoice more than ' . InvoiceGenerator::CAN_GENERATE_DAYS_LIMIT . ' days after the payment');
             }
-            if ($payment->user->invoice == true && !$payment->user->disable_auto_invoice) {
+            if ($payment->user->invoice == true && !$payment->user->disable_auto_invoice && $payment->payment_gateway->invoice == true) {
                 $pdf = $this->invoiceGenerator->generate($payment->user, $payment);
             }
         }

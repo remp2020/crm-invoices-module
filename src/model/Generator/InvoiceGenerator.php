@@ -205,8 +205,8 @@ class InvoiceGenerator
      */
     public function renderInvoiceMailAttachment(ActiveRow $payment)
     {
-        if (!$payment->user->invoice || $payment->user->disable_auto_invoice) {
-            // user (or admin) disabled invoicing for this account; nothing to generate
+        if (!$payment->user->invoice || $payment->user->disable_auto_invoice || !$payment->payment_gateway->invoice) {
+            // user (or admin) disabled invoicing for this account or payment gateway; nothing to generate
             return false;
         }
 

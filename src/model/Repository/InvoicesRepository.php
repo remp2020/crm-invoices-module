@@ -142,7 +142,7 @@ class InvoicesRepository extends Repository
         }
 
         // admin setting
-        if ($payment->user->disable_auto_invoice) {
+        if ($payment->user->disable_auto_invoice || !$payment->payment_gateway->invoice) {
             return false;
         }
 
