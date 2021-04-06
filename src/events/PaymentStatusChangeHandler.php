@@ -5,6 +5,7 @@ namespace Crm\InvoicesModule\Events;
 use Crm\ApplicationModule\Config\ApplicationConfig;
 use Crm\ApplicationModule\Hermes\HermesMessage;
 use Crm\PaymentsModule\Events\PaymentChangeStatusEvent;
+use Crm\PaymentsModule\Repository\PaymentsRepository;
 use League\Event\AbstractListener;
 use League\Event\EventInterface;
 use Tomaj\Hermes\Emitter;
@@ -30,6 +31,10 @@ class PaymentStatusChangeHandler extends AbstractListener
         }
 
         $payment = $event->getPayment();
+
+        if ($payment->status !== PaymentsRepository::STATUS_PAID) {
+            return;
+        }
 
         $flag = filter_var($this->applicationConfig->get('generate_invoice_after_payment'), FILTER_VALIDATE_BOOLEAN);
         if (!$flag) {
