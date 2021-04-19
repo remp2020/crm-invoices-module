@@ -98,10 +98,19 @@ class InvoiceGenerator
         return $this->templateFile;
     }
 
+    /**
+     * @param $user
+     * @param $payment
+     *
+     * @return PdfResponse|null
+     * @throws PaymentNotInvoiceableException
+     * @throws InvoiceGenerationException
+     * @throws \Crm\ApplicationModule\RedisClientTraitException
+     */
     public function generate($user, $payment)
     {
         if (!$this->invoicesRepository->isPaymentInvoiceable($payment)) {
-            throw new InvoiceGenerationException("Trying to generate invoice for payment [{$payment->id}] which is not invoiceable.");
+            throw new PaymentNotInvoiceableException($payment->id);
         }
 
         $mutex = new PredisMutex([$this->redis()], 'invoice_generator_' . $payment->id);
@@ -201,6 +210,7 @@ class InvoiceGenerator
      * @param ActiveRow $payment
      *
      * @return array|bool Returns false if user disabled invoicing.
+     * @throws PaymentNotInvoiceableException
      * @throws InvoiceGenerationException
      */
     public function renderInvoiceMailAttachment(ActiveRow $payment)

@@ -4,6 +4,7 @@ namespace Crm\InvoicesModule\Events;
 
 use Crm\ApplicationModule\Config\ApplicationConfig;
 use Crm\InvoicesModule\InvoiceGenerationException;
+use Crm\InvoicesModule\PaymentNotInvoiceableException;
 use Crm\InvoicesModule\InvoiceGenerator;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
 use Crm\UsersModule\Events\NotificationContext;
@@ -83,8 +84,10 @@ class PreNotificationEventHandler extends AbstractListener
                         'file' => $attachment['file'],
                     ];
                 }
+            } catch (PaymentNotInvoiceableException $e) {
+                // Do nothing, this particular exception may be raised for valid payments that are invoiceable
+                // e.g. that has status !== 'paid'
             } catch (InvoiceGenerationException $e) {
-                // Do not cancel notification because invoice couldn't be attached
                 Debugger::log('Unable to attach invoice, error: ' . $e->getMessage(), ILogger::ERROR);
             }
         }
