@@ -87,6 +87,9 @@ admin:
 		edit_items: Upravit položky
 		back_to_user: Zpět na uživatele
 		success: Faktura byla úspěšně změněna.
+	scenarios:
+		has_invoice:
+			label: Platba má vygenerovanou fakturu
 
 component:
 	payment_success_invoice_widget:

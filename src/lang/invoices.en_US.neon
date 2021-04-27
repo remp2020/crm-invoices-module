@@ -87,6 +87,9 @@ admin:
 		edit_items: Edit items
 		back_to_user: Back to user detail
 		success: Invoice was successfuly changed.
+	scenarios:
+		has_invoice:
+			label: Payment has generated invoice
 
 component:
 	payment_success_invoice_widget:

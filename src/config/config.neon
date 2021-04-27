@@ -39,6 +39,8 @@ services:
 	- Crm\InvoicesModule\Hermes\ZipInvoicesHandler
 	- Crm\InvoicesModule\Hermes\GenerateInvoiceHandler
 
+	- Crm\InvoicesModule\Scenarios\HasInvoiceCriteria
+
 	- Crm\InvoicesModule\Sandbox\InvoiceZipGenerator
 	invoiceSandbox: Crm\InvoicesModule\Sandbox\InvoiceSandbox('/tmp')
 

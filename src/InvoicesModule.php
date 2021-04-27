@@ -3,6 +3,7 @@
 namespace Crm\InvoicesModule;
 
 use Crm\ApplicationModule\Commands\CommandsContainerInterface;
+use Crm\ApplicationModule\Criteria\ScenariosCriteriaStorage;
 use Crm\ApplicationModule\CrmModule;
 use Crm\ApplicationModule\DataProvider\DataProviderManager;
 use Crm\ApplicationModule\Menu\MenuContainerInterface;
@@ -13,6 +14,7 @@ use Crm\ApplicationModule\Widget\WidgetManagerInterface;
 use Crm\InvoicesModule\Seeders\AddressTypesSeeder;
 use Crm\InvoicesModule\Seeders\ConfigsSeeder;
 use Crm\InvoicesModule\Seeders\PaymentGatewaysSeeder;
+use Crm\InvoicesModule\Scenarios\HasInvoiceCriteria;
 use League\Event\Emitter;
 use Tomaj\Hermes\Dispatcher;
 
@@ -121,6 +123,11 @@ class InvoicesModule extends CrmModule
             \Crm\PaymentsModule\Events\PaymentChangeStatusEvent::class,
             $this->getInstance(\Crm\InvoicesModule\Events\PaymentStatusChangeHandler::class)
         );
+    }
+
+    public function registerScenariosCriteria(ScenariosCriteriaStorage $scenariosCriteriaStorage)
+    {
+        $scenariosCriteriaStorage->register('payment', HasInvoiceCriteria::KEY, $this->getInstance(HasInvoiceCriteria::class));
     }
 
     public function registerCommands(CommandsContainerInterface $commandsContainer)
