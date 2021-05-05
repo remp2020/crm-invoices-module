@@ -52,6 +52,9 @@ class InvoicesAdminPresenter extends AdminPresenter
     /** @var  AddressesRepository @inject */
     public $addressesRepository;
 
+    /**
+     * @admin-access-level read
+     */
     public function actionDownloadInvoice($id)
     {
         $payment = $this->paymentsRepository->find($id);
@@ -80,6 +83,9 @@ class InvoicesAdminPresenter extends AdminPresenter
         $this->terminate();
     }
 
+    /**
+     * @admin-access-level read
+     */
     public function actionDownloadNumber($id)
     {
         $payment = $this->findPaymentFromInvoiceNumber($id);
@@ -110,6 +116,9 @@ class InvoicesAdminPresenter extends AdminPresenter
         return $payment;
     }
 
+    /**
+     * @admin-access-level read
+     */
     public function renderDefault()
     {
         $this->template->sandboxFiles = $this->invoiceSandbox->getFileList();
@@ -156,6 +165,9 @@ class InvoicesAdminPresenter extends AdminPresenter
         return $form;
     }
 
+    /**
+     * @admin-access-level write
+     */
     public function handleDelete($filePath)
     {
         $result = $this->invoiceSandbox->removeFile($filePath);
@@ -167,6 +179,9 @@ class InvoicesAdminPresenter extends AdminPresenter
         $this->redirect('default');
     }
 
+    /**
+     * @admin-access-level write
+     */
     public function renderEdit($id)
     {
         $invoice = $this->invoiceRepository->find($id);

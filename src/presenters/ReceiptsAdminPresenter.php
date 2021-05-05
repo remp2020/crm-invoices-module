@@ -15,6 +15,9 @@ class ReceiptsAdminPresenter extends AdminPresenter
     /** @var  PaymentsRepository @inject */
     public $paymentsRepository;
 
+    /**
+     * @admin-access-level read
+     */
     public function actionDownloadReceipt($paymentId)
     {
         $payment = $this->paymentsRepository->find($paymentId);
