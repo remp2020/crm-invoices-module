@@ -5,7 +5,7 @@ frontend:
 	invoice_button:
 		no_invoice: Bez faktury
 		not_available_anymore: Faktura již nedostupná
-		generate: Vygeneruj
+		generate: Vygeneruj fakturu
 		system_error: Systémová chyba! Prosím kontaktujte technickou podporu!
 		invoice: Faktura
 		download: Stáhni fakturu

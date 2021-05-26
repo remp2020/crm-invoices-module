@@ -13,7 +13,9 @@
 		</div>
 
 	{elseif $payment->paid_at && $payment->paid_at->diff(new \DateTime())->days > $canGenerateDaysLimit}
-		<span class="btn btn-sm btn-default disabled">{_invoices.frontend.invoice_button.not_available_anymore}</span>
+		<span class="btn btn-sm btn-default disabled">
+			<i class="fa fa-ban"></i> {_invoices.frontend.invoice_button.not_available_anymore}
+		</span>
 	{elseif $paymentInvoicable}
 		{var $invoiceAddress = $payment->user->related('addresses')->where('deleted_at IS NULL')->where(['type' => 'invoice'])->limit(1)->fetch()}
 		{if $invoiceAddress && $invoiceAddress->company_id !== null && $invoiceAddress->company_tax_id !== null}
@@ -28,7 +30,9 @@
 	{if $payment->invoice}
 	   	<a target="_blank" class="btn btn-sm btn-primary" href="{plink :Invoices:Invoices:DownloadInvoice $payment->id}"><i class="fa fa-download"></i> {_invoices.frontend.invoice_button.download}</a>
 	{elseif $payment->paid_at && $payment->paid_at->diff(new \DateTime())->days > $canGenerateDaysLimit}
-		<span class="btn btn-sm btn-default disabled">{_invoices.frontend.invoice_button.not_available_anymore}</span>
+		<span class="btn btn-sm btn-default disabled">
+			<i class="fa fa-ban"></i> {_invoices.frontend.invoice_button.not_available_anymore}
+		</span>
 	{elseif $paymentInvoicable}
 		<a target="_blank" class="btn btn-sm btn-primary" href="{plink :Invoices:Invoices:DownloadInvoice $payment->id}"><i class="fa fa-magic"></i> {_invoices.frontend.invoice_button.generate}</a>
 	{else}
