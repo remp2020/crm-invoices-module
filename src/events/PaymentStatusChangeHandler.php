@@ -43,6 +43,6 @@ class PaymentStatusChangeHandler extends AbstractListener
 
         $this->hermesEmitter->emit(new HermesMessage('generate_invoice', [
             'payment_id' => $payment->id
-        ]));
+        ]), HermesMessage::PRIORITY_LOW);
     }
 }

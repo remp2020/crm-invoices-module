@@ -135,7 +135,7 @@ class InvoicesAdminPresenter extends AdminPresenter
             if ($values->invoices) {
                 $this->hermesEmitter->emit(new HermesMessage('invoice_zip', [
                     'invoices' => $values['invoices'],
-                ]));
+                ]), HermesMessage::PRIORITY_LOW);
 
                 $this->flashMessage($this->translator->translate('invoices.admin.export_form.scheduled'));
                 return;
@@ -145,7 +145,7 @@ class InvoicesAdminPresenter extends AdminPresenter
                 $this->hermesEmitter->emit(new HermesMessage('invoice_zip', [
                     'from_time' => $values['from_time'],
                     'to_time' => $values['to_time'],
-                ]));
+                ]), HermesMessage::PRIORITY_LOW);
 
                 $this->flashMessage($this->translator->translate('invoices.admin.export_form.scheduled'));
                 return;

@@ -52,7 +52,7 @@ class NewAddressHandler extends AbstractListener
             if ($this->invoicesRepository->isPaymentInvoiceable($payment)) {
                 $this->hermesEmitter->emit(new HermesMessage('generate_invoice', [
                     'payment_id' => $payment->id
-                ]));
+                ]), HermesMessage::PRIORITY_LOW);
             }
         }
     }
