@@ -70,27 +70,5 @@ class InvoicesPresenter extends FrontendPresenter
     public function renderInvoiceDetails()
     {
         $this->onlyLoggedIn();
-        $userRow = $this->usersRepository->find($this->getUser()->id);
-        $this->template->userRow = $userRow;
-    }
-
-    public function createComponentChangeInvoiceDetailsForm()
-    {
-        $form = $this->changeInvoiceDetailsFormFactory->create($this->getUser());
-
-        $this->changeInvoiceDetailsFormFactory->onSuccess = function ($form, $user) {
-            $message = $this->translator->translate(
-                'invoices.frontend.change_invoice_details.warning',
-                null,
-                [
-                    'link' => $this->link(':Payments:Payments:my')
-                ]
-            );
-
-            $this->flashMessage($this->translator->translate('invoices.frontend.change_invoice_details.success'));
-            $this->flashMessage($message, 'warning');
-            $this->redirect('invoiceDetails');
-        };
-        return $form;
     }
 }

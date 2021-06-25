@@ -11,10 +11,10 @@ use Crm\ApplicationModule\Menu\MenuItem;
 use Crm\ApplicationModule\SeederManager;
 use Crm\ApplicationModule\User\UserDataRegistrator;
 use Crm\ApplicationModule\Widget\WidgetManagerInterface;
+use Crm\InvoicesModule\Scenarios\HasInvoiceCriteria;
 use Crm\InvoicesModule\Seeders\AddressTypesSeeder;
 use Crm\InvoicesModule\Seeders\ConfigsSeeder;
 use Crm\InvoicesModule\Seeders\PaymentGatewaysSeeder;
-use Crm\InvoicesModule\Scenarios\HasInvoiceCriteria;
 use League\Event\Emitter;
 use Tomaj\Hermes\Dispatcher;
 
@@ -56,15 +56,15 @@ class InvoicesModule extends CrmModule
             $this->getInstance(\Crm\InvoicesModule\Components\InvoiceFrontendButtonFactory::class),
             400
         );
-        $widgetManager->registerWidget(
+        $widgetManager->registerWidgetFactory(
             'frontend.payments.listing.receipts',
-            $this->getInstance(\Crm\InvoicesModule\Components\DownloadReceiptButton::class),
+            $this->getInstance(\Crm\InvoicesModule\Components\DownloadReceiptButtonFactory::class),
             500
         );
 
-        $widgetManager->registerWidget(
+        $widgetManager->registerWidgetFactory(
             'admin.payments.listing.action',
-            $this->getInstance(\Crm\InvoicesModule\Components\DownloadReceiptButton::class),
+            $this->getInstance(\Crm\InvoicesModule\Components\DownloadReceiptButtonFactory::class),
             500
         );
 
@@ -72,9 +72,15 @@ class InvoicesModule extends CrmModule
             'frontend.payment.success.forms',
             $this->getInstance(\Crm\InvoicesModule\Components\PaymentSuccessInvoiceWidget::class)
         );
+
         $widgetManager->registerWidget(
             'admin.user.list.emailcolumn',
             $this->getInstance(\Crm\InvoicesModule\Components\InvoiceLabel::class)
+        );
+
+        $widgetManager->registerWidget(
+            'invoices.frontend.invoice_details',
+            $this->getInstance(\Crm\InvoicesModule\Components\InvoiceDetailsWidget::class)
         );
     }
 
