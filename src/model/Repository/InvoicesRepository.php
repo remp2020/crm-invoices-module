@@ -6,7 +6,6 @@ use Crm\ApplicationModule\Config\ApplicationConfig;
 use Crm\ApplicationModule\Helpers\UserDateHelper;
 use Crm\ApplicationModule\Repository;
 use Crm\ApplicationModule\Repository\AuditLogRepository;
-use Crm\InvoicesModule\InvoiceGenerator;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
 use Crm\SubscriptionsModule\PaymentItem\SubscriptionTypePaymentItem;
 use Crm\UsersModule\Repository\AddressesRepository;
@@ -19,6 +18,8 @@ use Tracy\ILogger;
 
 class InvoicesRepository extends Repository
 {
+    public const PAYMENT_INVOICEABLE_PERIOD_DAYS = 15;
+
     private $applicationConfig;
 
     private $addressesRepository;
@@ -159,12 +160,21 @@ class InvoicesRepository extends Repository
             return false;
         }
 
-        // check days limit since payment confirmation date
-        $maxInvoiceableDate = $payment->paid_at->modifyClone('+' . InvoiceGenerator::CAN_GENERATE_DAYS_LIMIT . 'days 23:59:59');
-        if ($maxInvoiceableDate <= new DateTime()) {
+        if (!self::paymentInInvoiceablePeriod($payment, new DateTime())) {
             return false;
         }
 
         return true;
+    }
+
+    /**
+     * Returns true if payment is still within invoiceable (billing) period and invoice can be generated.
+     *
+     * Warning: This is not full validation if payment is invoiceable. Use `isPaymentInvoiceable()`.
+     */
+    final public static function paymentInInvoiceablePeriod(ActiveRow $payment, DateTime $now): bool
+    {
+        $maxInvoiceableDate = $payment->paid_at->modifyClone('+' . self::PAYMENT_INVOICEABLE_PERIOD_DAYS . 'days 23:59:59');
+        return $maxInvoiceableDate >= $now;
     }
 }

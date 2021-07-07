@@ -24,8 +24,6 @@ class InvoiceGenerator
 {
     use RedisClientTrait;
 
-    const CAN_GENERATE_DAYS_LIMIT = 15;
-
     /** @var string */
     private $templateFile;
 
