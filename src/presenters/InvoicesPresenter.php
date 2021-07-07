@@ -5,14 +5,17 @@ namespace Crm\InvoicesModule\Presenters;
 use Crm\ApplicationModule\Presenters\FrontendPresenter;
 use Crm\InvoicesModule\Forms\ChangeInvoiceDetailsFormFactory;
 use Crm\InvoicesModule\InvoiceGenerator;
+use Crm\InvoicesModule\Repository\InvoicesRepository;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
-use DateTime;
 use Nette\Application\BadRequestException;
 
 class InvoicesPresenter extends FrontendPresenter
 {
     /** @var InvoiceGenerator @inject */
     public $invoiceGenerator;
+
+    /** @var InvoicesRepository @inject */
+    public $invoicesRepository;
 
     /** @var PaymentsRepository @inject */
     public $paymentsRepository;
@@ -27,12 +30,8 @@ class InvoicesPresenter extends FrontendPresenter
         $pdf = null;
         if ($payment->invoice) {
             $pdf = $this->invoiceGenerator->renderInvoicePDF($user, $payment);
-        } else {
-            if ($payment->user->invoice == true && !$payment->user->disable_auto_invoice) {
-                if ($payment->paid_at->diff(new DateTime('now'))->days <= InvoiceGenerator::CAN_GENERATE_DAYS_LIMIT) {
-                    $pdf = $this->invoiceGenerator->generate($user, $payment);
-                }
-            }
+        } elseif ($this->invoicesRepository->isPaymentInvoiceable($payment)) {
+            $pdf = $this->invoiceGenerator->generate($user, $payment);
         }
 
         if (!$pdf) {

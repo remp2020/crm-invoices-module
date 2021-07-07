@@ -65,14 +65,8 @@ class InvoicesAdminPresenter extends AdminPresenter
         $pdf = null;
         if ($payment->invoice) {
             $pdf = $this->invoiceGenerator->renderInvoicePDF($payment->user, $payment);
-        } else {
-            $now = new DateTime();
-            if ($payment->paid_at->diff($now)->days > InvoiceGenerator::CAN_GENERATE_DAYS_LIMIT) {
-                throw new BadRequestException('unable to generate new invoice more than ' . InvoiceGenerator::CAN_GENERATE_DAYS_LIMIT . ' days after the payment');
-            }
-            if ($payment->user->invoice == true && !$payment->user->disable_auto_invoice) {
-                $pdf = $this->invoiceGenerator->generate($payment->user, $payment);
-            }
+        } elseif ($this->invoiceRepository->isPaymentInvoiceable($payment)) {
+            $pdf = $this->invoiceGenerator->generate($payment->user, $payment);
         }
 
         if (!$pdf) {
