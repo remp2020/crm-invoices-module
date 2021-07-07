@@ -7,7 +7,6 @@ use Crm\ApplicationModule\Helpers\UserDateHelper;
 use Crm\ApplicationModule\Repository;
 use Crm\ApplicationModule\Repository\AuditLogRepository;
 use Crm\InvoicesModule\InvoiceGenerator;
-use Crm\PaymentsModule\Repository\PaymentItemsRepository;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
 use Crm\SubscriptionsModule\PaymentItem\SubscriptionTypePaymentItem;
 use Crm\UsersModule\Repository\AddressesRepository;
@@ -26,8 +25,6 @@ class InvoicesRepository extends Repository
 
     private $invoiceItemsRepository;
 
-    private $paymentItemsRepository;
-
     private $userDateHelper;
 
     protected $tableName = 'invoices';
@@ -38,7 +35,6 @@ class InvoicesRepository extends Repository
         AddressesRepository $addressesRepository,
         InvoiceItemsRepository $invoiceItemsRepository,
         AuditLogRepository $auditLogRepository,
-        PaymentItemsRepository $paymentItemsRepository,
         UserDateHelper $userDateHelper
     ) {
         parent::__construct($database);
@@ -48,7 +44,6 @@ class InvoicesRepository extends Repository
         $this->auditLogRepository = $auditLogRepository;
         $this->userDateHelper = clone $userDateHelper;
         $this->userDateHelper->setFormat([IntlDateFormatter::MEDIUM, IntlDateFormatter::SHORT]);
-        $this->paymentItemsRepository = $paymentItemsRepository;
     }
 
     final public function add(ActiveRow $user, ActiveRow $payment, ActiveRow $invoiceNumber)
