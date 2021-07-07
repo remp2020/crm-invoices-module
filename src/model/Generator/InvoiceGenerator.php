@@ -213,11 +213,6 @@ class InvoiceGenerator
      */
     public function renderInvoiceMailAttachment(ActiveRow $payment)
     {
-        if (!$payment->user->invoice || $payment->user->disable_auto_invoice) {
-            // user (or admin) disabled invoicing for this account; nothing to generate
-            return false;
-        }
-
         if (!$payment->invoice_id) {
             $this->generate($payment->user, $payment);
             $payment = $this->paymentsRepository->find($payment->id); // refresh the instance to get invoice ID

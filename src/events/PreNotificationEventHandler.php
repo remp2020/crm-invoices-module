@@ -85,8 +85,7 @@ class PreNotificationEventHandler extends AbstractListener
                     ];
                 }
             } catch (PaymentNotInvoiceableException $e) {
-                // Do nothing, this particular exception may be raised for valid payments that are invoiceable
-                // e.g. that has status !== 'paid'
+                // Do nothing, no invoice attachment; exception may be raised for valid payments that are not invoiceable
             } catch (InvoiceGenerationException $e) {
                 Debugger::log('Unable to attach invoice, error: ' . $e->getMessage(), ILogger::ERROR);
             }

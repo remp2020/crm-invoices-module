@@ -59,11 +59,11 @@ class SendInvoiceCommand extends Command
     {
         if (!$input->getOption('variable-symbol')) {
             $output->writeln("<error>Required argument variable-symbol is missing</error>");
-            return 1;
+            return Command::FAILURE;
         }
         if (!$input->getOption('template-code')) {
             $output->writeln("<error>Required argument mail-template-code is missing</error>");
-            return 1;
+            return Command::FAILURE;
         }
 
         $templateCode = $input->getOption('template-code');
@@ -71,16 +71,18 @@ class SendInvoiceCommand extends Command
         $payment = $this->paymentsRepository->findByVs($input->getOption('variable-symbol'));
         if (!$payment) {
             $output->writeln("<error>Payment with given variable symbol was not found: " . $input->getOption('variable-symbol') . "</error>");
-            return 1;
+            return Command::FAILURE;
         }
         if (!$payment->invoice) {
             $output->writeln("<error>Payment has no invoice generated</error>");
-            return 1;
+            return Command::FAILURE;
         }
 
+        // not catching exceptions; show them to runner with trace & message (this command is always run manually)
         $attachment = $this->invoiceGenerator->renderInvoiceMailAttachment($payment);
         if (!$attachment) {
-            $output->writeln('<error>Attachment with invoice was not generated properly for payment: {$payment->variable_symbol}</error>');
+            $output->writeln("<error>Attachment with invoice was not generated for payment: {$payment->variable_symbol}</error>");
+            return Command::FAILURE;
         }
 
         $this->emitter->emit(new NotificationEvent(
@@ -94,6 +96,6 @@ class SendInvoiceCommand extends Command
 
         $output->writeln("Sent invoice <info>{$payment->invoice->invoice_number->number}</info> as an attachment of <info>{$templateCode}</info> to <info>{$payment->user->email}</info>.");
 
-        return 0;
+        return Command::SUCCESS;
     }
 }
