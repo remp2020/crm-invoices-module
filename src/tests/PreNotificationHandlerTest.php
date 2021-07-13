@@ -11,8 +11,8 @@ use Crm\PaymentsModule\Repository\PaymentGatewaysRepository;
 use Crm\PaymentsModule\Repository\PaymentMetaRepository;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
 use Crm\SubscriptionsModule\Builder\SubscriptionTypeBuilder;
-use Crm\SubscriptionsModule\Generator\SubscriptionsGenerator;
 use Crm\UsersModule\Auth\UserManager;
+use Crm\UsersModule\Events\NotificationContext;
 use Crm\UsersModule\Events\NotificationEvent;
 use Crm\UsersModule\Events\PreNotificationEvent;
 use Crm\UsersModule\Repository\AddressesRepository;
@@ -30,9 +30,6 @@ class PreNotificationHandlerTest extends BaseTestCase
 
     /** @var SubscriptionTypeBuilder */
     private $subscriptionTypeBuilder;
-
-    /** @var SubscriptionsGenerator */
-    private $subscriptionGenerator;
 
     /** @var PaymentsRepository */
     private $paymentsRepository;
@@ -57,7 +54,6 @@ class PreNotificationHandlerTest extends BaseTestCase
         $this->userManager = $this->inject(UserManager::class);
         $this->usersRepository = $this->getRepository(UsersRepository::class);
         $this->subscriptionTypeBuilder = $this->inject(SubscriptionTypeBuilder::class);
-        $this->subscriptionGenerator = $this->inject(SubscriptionsGenerator::class);
         $this->paymentsRepository = $this->getRepository(PaymentsRepository::class);
         $this->paymentMetaRepository = $this->getRepository(PaymentMetaRepository::class);
         $this->addressesRepository = $this->getRepository(AddressesRepository::class);
@@ -108,7 +104,7 @@ class PreNotificationHandlerTest extends BaseTestCase
         $subscriptionType = $this->getSubscriptionType();
 
         $user = $this->userWithRegDate('test@example.com');
-        $payment = $this->addPayment($user, $subscriptionType, '2021-01-01 01:00:00');
+        $payment = $this->addPayment($user, $subscriptionType, 'now');
         $this->addressesRepository->add($user, 'invoice', 'a', 'a', 'a', 'a', 'a', 'a', 1, 'a');
         $this->paymentMetaRepository->add($payment, 'invoiceable', 1);
 
@@ -118,8 +114,26 @@ class PreNotificationHandlerTest extends BaseTestCase
             'payment' => $payment->toArray(),
             'subscription' => $subscription->toArray(),
         ];
+
+        /** @var PreNotificationEventHandler $preNotificationHandler */
+        $preNotificationHandler = $this->inject(PreNotificationEventHandler::class);
+        $preNotificationHandler->enableForNotificationHermesTypes('foo');
+
         /** @var NotificationEvent $event */
-        $event = $this->emitter->emit(new NotificationEvent($this->emitter, $user, 'template_example', $templateParams));
+        $event = $this->emitter->emit(
+            new NotificationEvent(
+                $this->emitter,
+                $user,
+                'template_example',
+                $templateParams,
+                null,
+                [],
+                null,
+                new NotificationContext([
+                    NotificationContext::HERMES_MESSAGE_TYPE => 'foo',
+                ])
+            )
+        );
 
         $this->assertNotEmpty($event->getAttachments());
 
