@@ -49,7 +49,7 @@ services:
 	invoicesPreNotificationEventHandler:
 		class: Crm\InvoicesModule\Events\PreNotificationEventHandler
 		setup:
-			- enableForNotificationHermesTypes('new-subscription', 'payment-status-change', 'recurrent-payment-renewed', 'recurrent-payment-state-changed')
+			- enableForNotificationHermesTypes('new-subscription', 'payment-status-change', 'recurrent-payment-renewed', 'recurrent-payment-state-changed', 'order-status-change')
 
 	- Crm\InvoicesModule\Seeders\ConfigsSeeder
 	- Crm\InvoicesModule\Seeders\AddressTypesSeeder
