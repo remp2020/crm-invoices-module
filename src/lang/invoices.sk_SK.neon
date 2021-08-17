@@ -15,7 +15,8 @@ frontend:
 	invoice_details:
 		title: Fakturačné údaje
 		invoices_link_prefix: Svoje vystavené faktúry nájdete v časti
-		invoices_link: moje platby
+		invoices_link: Platby
+		invoices_link_suffix: Na tomto mieste prosím uložte vašu fakturačnú adresu a údaje.
 
 	change_invoice_details:
 		submit: Uložiť

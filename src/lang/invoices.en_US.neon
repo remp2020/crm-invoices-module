@@ -15,7 +15,8 @@ frontend:
 	invoice_details:
 		title: Invoice details
 		invoices_link_prefix: You can find your invoices in
-		invoices_link: my payments
+		invoices_link: Payments
+		invoices_link_suffix: Please enter your invoice address.
 
 	change_invoice_details:
 		submit: Save
