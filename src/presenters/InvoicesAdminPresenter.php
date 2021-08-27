@@ -125,9 +125,9 @@ class InvoicesAdminPresenter extends AdminPresenter
         $form->setTranslator($this->translator);
 
         $form->addText('from_time', 'invoices.admin.export_form.from_time')
-            ->setAttribute('class', 'flatpickr');
+            ->setHtmlAttribute('class', 'flatpickr');
         $form->addText('to_time', 'invoices.admin.export_form.to_time')
-            ->setAttribute('class', 'flatpickr');
+            ->setHtmlAttribute('class', 'flatpickr');
         $form->addText('invoices', 'invoices.admin.export_form.invoices');
         $form->addSubmit('submit', 'invoices.admin.export_form.generate');
         $form->setDefaults([

@@ -52,10 +52,10 @@ class ChangeInvoiceItemsFormFactory
             $itemName = "item_" . $item->id;
 
             $items->addTextArea($itemName, $this->translator->translate('invoices.form.change_invoice_items.item', ['i' => $i++]))
-                ->setAttribute('placeholder', $this->translator->translate('invoices.form.change_invoice_items.placeholder'))
-                ->setAttribute('class', 'simple-editor')
-                ->setAttribute('rows', 2)
-                ->setAttribute(
+                ->setHtmlAttribute('placeholder', $this->translator->translate('invoices.form.change_invoice_items.placeholder'))
+                ->setHtmlAttribute('class', 'simple-editor')
+                ->setHtmlAttribute('rows', 2)
+                ->setHtmlAttribute(
                     'data-html-editor',
                     ['btns' => [
                         ['viewHTML'],

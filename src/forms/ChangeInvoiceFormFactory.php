@@ -47,27 +47,27 @@ class ChangeInvoiceFormFactory
         $form->addHidden('invoice_id', $id);
 
         $form->addText('buyer_name', $this->translator->translate('invoices.form.invoice.label.company_name'))
-            ->setAttribute('placeholder', $this->translator->translate('invoices.form.invoice.placeholder.company_name'));
+            ->setHtmlAttribute('placeholder', $this->translator->translate('invoices.form.invoice.placeholder.company_name'));
 
         $form->addText('buyer_address', $this->translator->translate('invoices.form.invoice.label.address'))
-            ->setAttribute('placeholder', $this->translator->translate('invoices.form.invoice.placeholder.address'));
+            ->setHtmlAttribute('placeholder', $this->translator->translate('invoices.form.invoice.placeholder.address'));
 
         $form->addText('buyer_city', $this->translator->translate('invoices.form.invoice.label.city'))
-            ->setAttribute('placeholder', $this->translator->translate('invoices.form.invoice.placeholder.city'));
+            ->setHtmlAttribute('placeholder', $this->translator->translate('invoices.form.invoice.placeholder.city'));
 
         $form->addText('buyer_zip', $this->translator->translate('invoices.form.invoice.label.zip'))
-            ->setAttribute('placeholder', $this->translator->translate('invoices.form.invoice.placeholder.zip'));
+            ->setHtmlAttribute('placeholder', $this->translator->translate('invoices.form.invoice.placeholder.zip'));
 
         $form->addSelect('country_id', $this->translator->translate('invoices.form.invoice.label.country_id'), $this->countriesRepository->getAllPairs());
 
         $form->addText('company_id', $this->translator->translate('invoices.form.invoice.label.company_id'))
-            ->setAttribute('placeholder', $this->translator->translate('invoices.form.invoice.placeholder.company_id'));
+            ->setHtmlAttribute('placeholder', $this->translator->translate('invoices.form.invoice.placeholder.company_id'));
 
         $form->addText('company_tax_id', $this->translator->translate('invoices.form.invoice.label.company_tax_id'))
-            ->setAttribute('placeholder', $this->translator->translate('invoices.form.invoice.placeholder.company_tax_id'));
+            ->setHtmlAttribute('placeholder', $this->translator->translate('invoices.form.invoice.placeholder.company_tax_id'));
 
         $form->addText('company_vat_id', $this->translator->translate('invoices.form.invoice.label.company_vat_id'))
-            ->setAttribute('placeholder', $this->translator->translate('invoices.form.invoice.placeholder.company_vat_id'));
+            ->setHtmlAttribute('placeholder', $this->translator->translate('invoices.form.invoice.placeholder.company_vat_id'));
 
         /** @var AddressFormDataProviderInterface $providers */
         $providers = $this->dataProviderManager->getProviders('invoices.dataprovider.invoice_form', AddressFormDataProviderInterface::class);

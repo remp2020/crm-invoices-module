@@ -66,26 +66,26 @@ class UserInvoiceFormFactory
 
         $form->addTextArea('company_name', 'invoices.form.invoice.label.company_name', null, 1)
             ->setMaxLength(150)
-            ->setAttribute('placeholder', 'invoices.form.invoice.placeholder.company_name')
+            ->setHtmlAttribute('placeholder', 'invoices.form.invoice.placeholder.company_name')
             ->setRequired('invoices.form.invoice.required.company_name');
         $form->addText('address', 'invoices.form.invoice.label.address')
-            ->setAttribute('placeholder', 'invoices.form.invoice.placeholder.address')
+            ->setHtmlAttribute('placeholder', 'invoices.form.invoice.placeholder.address')
             ->setRequired('invoices.form.invoice.required.address');
         $form->addText('number', 'invoices.form.invoice.label.number')
-            ->setAttribute('placeholder', 'invoices.form.invoice.placeholder.number')
+            ->setHtmlAttribute('placeholder', 'invoices.form.invoice.placeholder.number')
             ->setRequired('invoices.form.invoice.required.number');
         $form->addText('city', 'invoices.form.invoice.label.city')
-            ->setAttribute('placeholder', 'invoices.form.invoice.placeholder.city')
+            ->setHtmlAttribute('placeholder', 'invoices.form.invoice.placeholder.city')
             ->setRequired('invoices.form.invoice.required.city');
         $form->addText('zip', 'invoices.form.invoice.label.zip')
-            ->setAttribute('placeholder', 'invoices.form.invoice.placeholder.zip')
+            ->setHtmlAttribute('placeholder', 'invoices.form.invoice.placeholder.zip')
             ->setRequired('invoices.form.invoice.required.zip');
         $form->addText('company_id', 'invoices.form.invoice.label.company_id')
-            ->setAttribute('placeholder', 'invoices.form.invoice.placeholder.company_id');
+            ->setHtmlAttribute('placeholder', 'invoices.form.invoice.placeholder.company_id');
         $form->addText('company_tax_id', 'invoices.form.invoice.label.company_tax_id')
-            ->setAttribute('placeholder', 'invoices.form.invoice.placeholder.company_tax_id');
+            ->setHtmlAttribute('placeholder', 'invoices.form.invoice.placeholder.company_tax_id');
         $form->addText('company_vat_id', 'invoices.form.invoice.label.company_vat_id')
-            ->setAttribute('placeholder', 'invoices.form.invoice.placeholder.company_vat_id');
+            ->setHtmlAttribute('placeholder', 'invoices.form.invoice.placeholder.company_vat_id');
 
         $contactEmail = $this->applicationConfig->get('contact_email');
         $form->addSelect('country_id', 'invoices.form.invoice.label.country_id', $this->countriesRepository->getDefaultCountryPair())
