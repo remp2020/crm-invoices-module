@@ -4,11 +4,11 @@ services:
 			- addModule(Crm\InvoicesModule\InvoicesModule())
 
 	invoiceGenerator:
-		class: Crm\InvoicesModule\InvoiceGenerator
+		factory: Crm\InvoicesModule\InvoiceGenerator
 		setup:
 			- setTempDir('%tempRoot%/mpdf')
 	receiptGenerator:
-		class: Crm\InvoicesModule\ReceiptGenerator
+		factory: Crm\InvoicesModule\ReceiptGenerator
 		setup:
 			- setTempDir('%tempRoot%/mpdf')
 
@@ -47,7 +47,7 @@ services:
 	invoiceSandbox: Crm\InvoicesModule\Sandbox\InvoiceSandbox('/tmp')
 
 	invoicesPreNotificationEventHandler:
-		class: Crm\InvoicesModule\Events\PreNotificationEventHandler
+		factory: Crm\InvoicesModule\Events\PreNotificationEventHandler
 		setup:
 			- enableForNotificationHermesTypes('new-subscription', 'payment-status-change', 'recurrent-payment-renewed', 'recurrent-payment-state-changed', 'order-status-change')
 
