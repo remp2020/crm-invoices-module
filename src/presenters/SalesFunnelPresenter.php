@@ -39,7 +39,7 @@ class SalesFunnelPresenter extends FrontendPresenter
                 $this->request->getUrl(),
                 $payment->id
             );
-            $this->redirect('SalesFunnel:Error');
+            $this->redirect(':SalesFunnel:SalesFunnel:Error');
         }
 
         $form = $this->userInvoiceFormFactory->create($payment);
@@ -66,7 +66,7 @@ class SalesFunnelPresenter extends FrontendPresenter
             "Cannot load payment with VS '{$this->VS}'",
             $this->request->getUrl()
         );
-        $this->redirect('SalesFunnel:SalesFunnel:Error');
+        $this->redirect(':SalesFunnel:SalesFunnel:Error');
         return false;
     }
 }
