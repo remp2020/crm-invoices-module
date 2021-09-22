@@ -59,14 +59,16 @@ class SalesFunnelPresenter extends FrontendPresenter
     {
         if (isset($this->VS)) {
             $payment = $this->paymentsRepository->findByVs($this->VS);
-            return $payment;
+            if ($payment) {
+                return $payment;
+            }
         }
+
         $this->paymentLogsRepository->add(
             'ERROR',
             "Cannot load payment with VS '{$this->VS}'",
             $this->request->getUrl()
         );
         $this->redirect(':SalesFunnel:SalesFunnel:Error');
-        return false;
     }
 }
