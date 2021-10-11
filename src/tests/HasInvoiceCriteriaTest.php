@@ -12,8 +12,8 @@ use Crm\PaymentsModule\Repository\PaymentsRepository;
 use Crm\PaymentsModule\Tests\PaymentsTestCase;
 use Crm\SubscriptionsModule\Builder\SubscriptionTypeBuilder;
 use Crm\UsersModule\Auth\UserManager;
-use Crm\UsersModule\Repository\AddressesRepository;
 use Crm\UsersModule\Repository\AddressTypesRepository;
+use Crm\UsersModule\Repository\AddressesRepository;
 use Crm\UsersModule\Repository\CountriesRepository;
 use Nette\Utils\DateTime;
 

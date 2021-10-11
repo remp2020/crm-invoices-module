@@ -11,7 +11,6 @@ use Crm\InvoicesModule\Repository\InvoicesRepository;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
 use Kdyby\Translation\Translator;
 use Latte\Engine;
-use malkusch\lock\mutex\PredisMutex;
 use Mpdf\Mpdf;
 use Nette\Database\Table\ActiveRow;
 use Nette\Http\Request;
@@ -19,6 +18,7 @@ use Nette\Http\Response;
 use Nette\Http\UrlScript;
 use PdfResponse\PdfResponse;
 use Tracy\Debugger;
+use malkusch\lock\mutex\PredisMutex;
 
 class InvoiceGenerator
 {

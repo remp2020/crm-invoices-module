@@ -2,10 +2,10 @@
 
 namespace Crm\InvoicesModule\Presenters;
 
-use Crm\InvoicesModule\ReceiptGenerator;
-use Nette\Application\BadRequestException;
 use Crm\AdminModule\Presenters\AdminPresenter;
+use Crm\InvoicesModule\ReceiptGenerator;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
+use Nette\Application\BadRequestException;
 
 class ReceiptsAdminPresenter extends AdminPresenter
 {

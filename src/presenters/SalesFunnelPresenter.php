@@ -3,10 +3,10 @@
 namespace Crm\InvoicesModule\Presenters;
 
 use Crm\ApplicationModule\Presenters\FrontendPresenter;
+use Crm\InvoicesModule\Events\ProformaInvoiceCreatedEvent;
 use Crm\InvoicesModule\Forms\UserInvoiceFormFactory;
 use Crm\PaymentsModule\Repository\PaymentLogsRepository;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
-use Crm\InvoicesModule\Events\ProformaInvoiceCreatedEvent;
 
 class SalesFunnelPresenter extends FrontendPresenter
 {
