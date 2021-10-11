@@ -122,7 +122,7 @@ class InvoicesRepository extends Repository
         return $invoice;
     }
 
-    final public function findBetween(DateTIme $fromTime, DateTime $toTime, $field = 'delivery_date')
+    final public function findBetween(DateTime $fromTime, DateTime $toTime, $field = 'delivery_date')
     {
         return $this->getTable()->where([$field .' >= ?' => $fromTime, $field . ' <= ?' => $toTime]);
     }
