@@ -10,7 +10,7 @@ use Crm\PaymentsModule\Repository\PaymentsRepository;
 use Crm\SubscriptionsModule\PaymentItem\SubscriptionTypePaymentItem;
 use Crm\UsersModule\Repository\AddressesRepository;
 use IntlDateFormatter;
-use Nette\Database\Context;
+use Nette\Database\Explorer;
 use Nette\Database\Table\ActiveRow;
 use Nette\Utils\DateTime;
 use Tracy\Debugger;
@@ -31,7 +31,7 @@ class InvoicesRepository extends Repository
     protected $tableName = 'invoices';
 
     public function __construct(
-        Context $database,
+        Explorer $database,
         ApplicationConfig $applicationConfig,
         AddressesRepository $addressesRepository,
         InvoiceItemsRepository $invoiceItemsRepository,
