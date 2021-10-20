@@ -4,7 +4,6 @@ namespace Crm\InvoicesModule\Repository;
 
 use Crm\InvoicesModule\Model\InvoiceNumberInterface;
 use Nette\Database\Table\ActiveRow;
-use Nette\Database\Table\IRow;
 
 class InvoiceNumber implements InvoiceNumberInterface
 {
@@ -15,7 +14,7 @@ class InvoiceNumber implements InvoiceNumberInterface
         $this->invoiceNumbersRepository = $invoiceNumbersRepository;
     }
 
-    final public function getNextInvoiceNumber(IRow $payment): IRow
+    final public function getNextInvoiceNumber(ActiveRow $payment): ActiveRow
     {
         $deliveredAt = $this->getDeliveryDate($payment);
 
@@ -38,7 +37,7 @@ class InvoiceNumber implements InvoiceNumberInterface
         return $number;
     }
 
-    final public function getDeliveryDate(IRow $payment)
+    final public function getDeliveryDate(ActiveRow $payment)
     {
         if ($payment->subscription) {
             return $payment->subscription->start_time > $payment->paid_at ? $payment->paid_at : $payment->subscription->start_time;

@@ -12,7 +12,6 @@ use Crm\UsersModule\Repository\UsersRepository;
 use Kdyby\Translation\Translator;
 use Nette\Application\UI\Form;
 use Nette\Database\Table\ActiveRow;
-use Nette\Database\Table\IRow;
 use Tomaj\Form\Renderer\BootstrapRenderer;
 
 class UserInvoiceFormFactory
@@ -25,7 +24,7 @@ class UserInvoiceFormFactory
 
     public $onSave;
 
-    /** @var IRow */
+    /** @var ActiveRow */
     private $payment;
 
     private $translator;

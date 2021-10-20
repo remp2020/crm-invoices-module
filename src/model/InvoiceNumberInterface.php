@@ -2,9 +2,9 @@
 
 namespace Crm\InvoicesModule\Model;
 
-use Nette\Database\Table\IRow;
+use Nette\Database\Table\ActiveRow;
 
 interface InvoiceNumberInterface
 {
-    public function getNextInvoiceNumber(IRow $payment): IRow;
+    public function getNextInvoiceNumber(ActiveRow $payment): ActiveRow;
 }
