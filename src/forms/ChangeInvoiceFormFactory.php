@@ -7,7 +7,7 @@ use Crm\InvoicesModule\Repository\InvoicesRepository;
 use Crm\UsersModule\DataProvider\AddressFormDataProviderInterface;
 use Crm\UsersModule\Repository\CountriesRepository;
 use Nette\Application\UI\Form;
-use Nette\Localization\ITranslator;
+use Nette\Localization\Translator;
 use Tomaj\Form\Renderer\BootstrapRenderer;
 
 class ChangeInvoiceFormFactory
@@ -23,7 +23,7 @@ class ChangeInvoiceFormFactory
     private $countriesRepository;
 
     public function __construct(
-        ITranslator $translator,
+        Translator $translator,
         InvoicesRepository $invoicesRepository,
         DataProviderManager $dataProviderManager,
         CountriesRepository $countriesRepository

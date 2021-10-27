@@ -5,7 +5,7 @@ namespace Crm\InvoicesModule\Forms;
 use Crm\InvoicesModule\Repository\InvoiceItemsRepository;
 use Crm\InvoicesModule\Repository\InvoicesRepository;
 use Nette\Application\UI\Form;
-use Nette\Localization\ITranslator;
+use Nette\Localization\Translator;
 use Tomaj\Form\Renderer\BootstrapRenderer;
 
 class ChangeInvoiceItemsFormFactory
@@ -20,7 +20,7 @@ class ChangeInvoiceItemsFormFactory
     private $invoiceItemsRepository;
 
     public function __construct(
-        ITranslator $translator,
+        Translator $translator,
         InvoicesRepository $invoicesRepository,
         InvoiceItemsRepository $invoiceItemsRepository
     ) {

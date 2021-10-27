@@ -5,7 +5,7 @@ namespace Crm\InvoicesModule\Components;
 use Crm\ApplicationModule\Widget\BaseWidget;
 use Crm\ApplicationModule\Widget\WidgetManager;
 use Crm\InvoicesModule\Forms\ChangeInvoiceDetailsFormFactory;
-use Nette\Localization\ITranslator;
+use Nette\Localization\Translator;
 
 class InvoiceDetailsWidget extends BaseWidget
 {
@@ -17,7 +17,7 @@ class InvoiceDetailsWidget extends BaseWidget
 
     public function __construct(
         WidgetManager $widgetManager,
-        ITranslator $translator,
+        Translator $translator,
         ChangeInvoiceDetailsFormFactory $changeInvoiceDetailsFormFactory
     ) {
         parent::__construct($widgetManager);
