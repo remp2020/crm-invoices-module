@@ -16,6 +16,7 @@ use Crm\UsersModule\Events\NotificationContext;
 use Crm\UsersModule\Events\NotificationEvent;
 use Crm\UsersModule\Events\PreNotificationEvent;
 use Crm\UsersModule\Repository\AddressesRepository;
+use Crm\UsersModule\Repository\CountriesRepository;
 use Crm\UsersModule\Repository\UsersRepository;
 use League\Event\Emitter;
 use Nette\Utils\DateTime;
@@ -45,6 +46,9 @@ class PreNotificationHandlerTest extends BaseTestCase
     /** @var AddressesRepository */
     private $addressesRepository;
 
+    /** @var CountriesRepository */
+    private $countriesRepository;
+
     private $subscriptionType;
 
     protected function setUp(): void
@@ -58,6 +62,7 @@ class PreNotificationHandlerTest extends BaseTestCase
         $this->paymentMetaRepository = $this->getRepository(PaymentMetaRepository::class);
         $this->addressesRepository = $this->getRepository(AddressesRepository::class);
         $this->configsRepository = $this->getRepository(ConfigsRepository::class);
+        $this->countriesRepository = $this->getRepository(CountriesRepository::class);
 
         $pgr = $this->getRepository(PaymentGatewaysRepository::class);
         $this->paymentGateway = $pgr->add('test', 'test', 10, true, true);
@@ -79,7 +84,8 @@ class PreNotificationHandlerTest extends BaseTestCase
 
         $user = $this->userWithRegDate('test@example.com');
         $payment = $this->addPayment($user, $subscriptionType, '2021-01-01 01:00:00');
-        $this->addressesRepository->add($user, 'invoice', 'a', 'a', 'a', 'a', 'a', 'a', 1, 'a');
+        $country = $this->countriesRepository->findByIsoCode('SK');
+        $this->addressesRepository->add($user, 'invoice', 'a', 'a', 'a', 'a', 'a', 'a', $country->id, 'a');
         $this->paymentMetaRepository->add($payment, 'invoiceable', 1);
 
         $subscription = $payment->subscription;
@@ -105,7 +111,8 @@ class PreNotificationHandlerTest extends BaseTestCase
 
         $user = $this->userWithRegDate('test@example.com');
         $payment = $this->addPayment($user, $subscriptionType, 'now');
-        $this->addressesRepository->add($user, 'invoice', 'a', 'a', 'a', 'a', 'a', 'a', 1, 'a');
+        $country = $this->countriesRepository->findByIsoCode('SK');
+        $this->addressesRepository->add($user, 'invoice', 'a', 'a', 'a', 'a', 'a', 'a', $country->id, 'a');
         $this->paymentMetaRepository->add($payment, 'invoiceable', 1);
 
         $subscription = $payment->subscription;
