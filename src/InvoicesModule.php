@@ -69,7 +69,7 @@ class InvoicesModule extends CrmModule
         );
 
         $widgetManager->registerWidget(
-            'frontend.payment.success.forms',
+            'payment.address',
             $this->getInstance(\Crm\InvoicesModule\Components\PaymentSuccessInvoiceWidget::class)
         );
 

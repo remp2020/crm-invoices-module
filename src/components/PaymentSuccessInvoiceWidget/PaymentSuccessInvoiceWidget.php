@@ -6,8 +6,11 @@ use Crm\ApplicationModule\Widget\BaseWidget;
 use Crm\ApplicationModule\Widget\WidgetManager;
 use Crm\InvoicesModule\Forms\UserInvoiceFormFactory;
 use Crm\InvoicesModule\Repository\InvoicesRepository;
+use Crm\PaymentsModule\Gateways\BankTransfer;
+use Crm\PaymentsModule\Presenters\BankTransferPresenter;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
 use Crm\SalesFunnelModule\Presenters\SalesFunnelPresenter;
+use Nette\Database\Table\ActiveRow;
 
 /**
  * PaymentSuccessInvoiceWidget is directly targeted to be used in \Crm\SalesFunnelModule\Presenters\SalesFunnelPresenter
@@ -22,7 +25,6 @@ class PaymentSuccessInvoiceWidget extends BaseWidget
 
     private $invoicesRepository;
 
-    private $payment;
 
     public function __construct(
         WidgetManager $widgetManager,
@@ -39,11 +41,12 @@ class PaymentSuccessInvoiceWidget extends BaseWidget
 
     public function render()
     {
-        $payment = $this->presenter()->getPayment();
-        if ($payment->status != PaymentsRepository::STATUS_PAID) {
+        $payment = $this->getPayment();
+
+        if ($payment->status !== PaymentsRepository::STATUS_PAID && $payment->payment_gateway->code !== BankTransfer::GATEWAY_CODE) {
             return;
         }
-        if (!$this->invoicesRepository->isPaymentInvoiceable($payment, true)) {
+        if (!$this->invoicesRepository->isPaymentInvoiceable($payment, true) && $payment->payment_gateway->code !== BankTransfer::GATEWAY_CODE) {
             return;
         }
 
@@ -54,9 +57,7 @@ class PaymentSuccessInvoiceWidget extends BaseWidget
 
     public function createComponentUserInvoiceForm(UserInvoiceFormFactory $factory)
     {
-        $payment = $this->presenter()->getPayment();
-
-        $form = $factory->create($payment);
+        $form = $factory->create($this->getPayment());
         $factory->onSave = function ($form, $user) {
             $form['done']->setValue(1);
             $this->redrawControl('invoiceFormSnippet');
@@ -65,12 +66,13 @@ class PaymentSuccessInvoiceWidget extends BaseWidget
         return $form;
     }
 
-    public function presenter(): SalesFunnelPresenter
+    private function getPayment(): ActiveRow
     {
         $presenter = $this->getPresenter();
-        if (!$presenter instanceof SalesFunnelPresenter) {
-            throw new \Exception('PaymentSuccessInvoiceWidget used within not allowed presenter: ' . get_class($presenter));
+        if ($presenter instanceof SalesFunnelPresenter || $presenter instanceof BankTransferPresenter) {
+            return $presenter->getPayment();
         }
-        return $presenter;
+
+        throw new \Exception('PaymentSuccessInvoiceWidget used within not allowed presenter: ' . get_class($presenter));
     }
 }
