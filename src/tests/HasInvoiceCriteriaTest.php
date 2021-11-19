@@ -21,21 +21,21 @@ class HasInvoiceCriteriaTest extends PaymentsTestCase
 {
     public function requiredRepositories(): array
     {
-        $repositories = parent::requiredRepositories();
-        $repositories[] = InvoicesRepository::class;
-        $repositories[] = InvoiceNumbersRepository::class;
-        $repositories[] = AddressesRepository::class;
-        $repositories[] = CountriesRepository::class;
-        $repositories[] = AddressTypesRepository::class;
-        return $repositories;
+        return array_merge(parent::requiredRepositories(), [
+            InvoicesRepository::class,
+            InvoiceNumbersRepository::class,
+            AddressesRepository::class,
+            CountriesRepository::class,
+            AddressTypesRepository::class,
+        ]);
     }
 
     public function requiredSeeders(): array
     {
-        $seeders = parent::requiredSeeders();
-        $seeders[] = CountriesSeeder::class;
-        $seeders[] = AddressTypesSeeder::class;
-        return $seeders;
+        return array_merge(parent::requiredSeeders(), [
+            CountriesSeeder::class,
+            AddressTypesSeeder::class,
+        ]);
     }
 
     public function dataProviderForTestHasInvoiceCriteria(): array
