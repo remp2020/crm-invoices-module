@@ -73,6 +73,14 @@ class PreNotificationHandlerTest extends BaseTestCase
         $this->emitter->addListener(PreNotificationEvent::class, $this->inject(PreNotificationEventHandler::class));
     }
 
+    protected function tearDown(): void
+    {
+        $this->emitter->removeListener(PaymentChangeStatusEvent::class, $this->inject(PaymentStatusChangeHandler::class));
+        $this->emitter->removeListener(PreNotificationEvent::class, $this->inject(PreNotificationEventHandler::class));
+
+        parent::tearDown();
+    }
+
     /**
      * This test generates PDF file as an attachment
      * @group slow
