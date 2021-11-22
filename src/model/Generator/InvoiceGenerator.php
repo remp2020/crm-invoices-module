@@ -116,7 +116,7 @@ class InvoiceGenerator
         $mutex->synchronized(function () use ($user, $payment) {
             $payment = $this->paymentsRepository->find($payment->id);
 
-            if ($payment->invoice_id === null) {
+            if ($payment && $payment->invoice_id === null) {
                 $invoiceNumber = $this->invoiceNumber->getNextInvoiceNumber($payment);
                 $invoice = $this->invoicesRepository->add($user, $payment, $invoiceNumber);
 

@@ -77,6 +77,10 @@ class PreNotificationEventHandler extends AbstractListener
         if (isset($params['payment'])) {
             $payment = $this->paymentsRepository->find($params['payment']['id']);
             try {
+                if (!$payment) {
+                    throw new InvoiceGenerationException('Unable to find payment with ID [' . $params['payment']['id'] . '].');
+                }
+
                 $attachment = $this->invoiceGenerator->renderInvoiceMailAttachment($payment);
                 if ($attachment) {
                     $attachments[] =[
