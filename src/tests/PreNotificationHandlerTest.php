@@ -83,7 +83,7 @@ class PreNotificationHandlerTest extends BaseTestCase
 
     /**
      * This test generates PDF file as an attachment
-     * @group slow
+     * @group unreliable
      */
     public function testAddingContextAndAttachmentsNotAllowed()
     {
@@ -110,7 +110,7 @@ class PreNotificationHandlerTest extends BaseTestCase
 
     /**
      * This test generates PDF file as an attachment
-     * @group slow
+     * @group unreliable
      */
     public function testAddingContextAndAttachmentsAllowed()
     {
