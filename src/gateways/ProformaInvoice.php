@@ -5,6 +5,8 @@ use Crm\PaymentsModule\Gateways\GatewayAbstract;
 
 class ProformaInvoice extends GatewayAbstract
 {
+    public const GATEWAY_CODE = 'proforma_invoice';
+
     public function isSuccessful(): bool
     {
         return true;

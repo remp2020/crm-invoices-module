@@ -3,6 +3,7 @@
 namespace Crm\InvoicesModule\Seeders;
 
 use Crm\ApplicationModule\Seeders\ISeeder;
+use Crm\InvoicesModule\Gateways\ProformaInvoice;
 use Crm\PaymentsModule\Repository\PaymentGatewaysRepository;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -17,10 +18,10 @@ class PaymentGatewaysSeeder implements ISeeder
 
     public function seed(OutputInterface $output)
     {
-        if (!$this->paymentGatewaysRepository->exists('proforma_invoice')) {
+        if (!$this->paymentGatewaysRepository->exists(ProformaInvoice::GATEWAY_CODE)) {
             $this->paymentGatewaysRepository->add(
                 'Proforma invoice',
-                'proforma_invoice',
+                ProformaInvoice::GATEWAY_CODE,
                 200,
                 true
             );
