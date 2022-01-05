@@ -54,6 +54,7 @@ class PreNotificationHandlerTest extends BaseTestCase
     protected function setUp(): void
     {
         parent::setUp();
+
         $this->emitter = $this->inject(Emitter::class);
         $this->userManager = $this->inject(UserManager::class);
         $this->usersRepository = $this->getRepository(UsersRepository::class);
