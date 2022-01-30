@@ -23,37 +23,32 @@ use Nette\Utils\DateTime;
 
 class PreNotificationHandlerTest extends BaseTestCase
 {
-    /** @var UserManager */
-    private $userManager;
+    private Emitter $emitter;
 
-    /** @var UsersRepository */
-    private $usersRepository;
+    private UserManager $userManager;
 
-    /** @var SubscriptionTypeBuilder */
-    private $subscriptionTypeBuilder;
+    private UsersRepository $usersRepository;
 
-    /** @var PaymentsRepository */
-    private $paymentsRepository;
+    private SubscriptionTypeBuilder $subscriptionTypeBuilder;
 
-    /** @var PaymentMetaRepository */
-    private $paymentMetaRepository;
+    private PaymentsRepository $paymentsRepository;
 
-    /** @var ConfigsRepository */
-    private $configsRepository;
+    private PaymentMetaRepository $paymentMetaRepository;
+
+    private ConfigsRepository $configsRepository;
+
+    private AddressesRepository $addressesRepository;
+
+    private CountriesRepository $countriesRepository;
 
     private $paymentGateway;
-
-    /** @var AddressesRepository */
-    private $addressesRepository;
-
-    /** @var CountriesRepository */
-    private $countriesRepository;
 
     private $subscriptionType;
 
     protected function setUp(): void
     {
         parent::setUp();
+
         $this->emitter = $this->inject(Emitter::class);
         $this->userManager = $this->inject(UserManager::class);
         $this->usersRepository = $this->getRepository(UsersRepository::class);

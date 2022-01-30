@@ -139,7 +139,7 @@ class InvoiceNumbersTest extends DatabaseTestCase
     protected function getUser()
     {
         if (!$this->user) {
-            $this->user = $this->usersRepository->add('test@example.com', 'secret', '', '');
+            $this->user = $this->usersRepository->add('test@example.com', 'secret');
         }
         return $this->user;
     }
