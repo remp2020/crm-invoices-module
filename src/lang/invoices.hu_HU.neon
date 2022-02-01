@@ -3,7 +3,7 @@ frontend:
 		title: Számlázási adatok
 		invoices_link_prefix: Svoje vystavené faktúry nájdete v časti
 		invoices_link: Platby
-		invoices_link_suffix: Ezen a helye, kérjük, mentse el számlázási címét és adatait..
+		invoices_link_suffix: "Ezen a helye, kérjük, mentse el számlázási címét és adatait.."
 
 	change_invoice_details:
 		submit: "Adatok mentése"
