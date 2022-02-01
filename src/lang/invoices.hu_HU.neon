@@ -1,9 +1,9 @@
 frontend:
 	invoice_details:
-		title: Fakturačné údaje
+		title: Számlázási adatok
 		invoices_link_prefix: Svoje vystavené faktúry nájdete v časti
 		invoices_link: Platby
-		invoices_link_suffix: Na tomto mieste prosím uložte vašu fakturačnú adresu a údaje.
+		invoices_link_suffix: Ezen a helye, kérjük, mentse el számlázási címét és adatait..
 
 	change_invoice_details:
 		submit: "Adatok mentése"
@@ -40,8 +40,8 @@ frontend:
 			label: "IČDPH/áfás adószám"
 			placeholder: "például SK2541254765"
 			required: "Meg kell adni az IČDPH-t/áfás adószámot"
-		success: "Vaša adresa bola úspešne zmenená."
-		warning: "Faktúru si môžete vygenerovať len do 14 dní po zaplatení. Pre vygenerovanie faktúr <a href='%link%' style='text-decoration: underline;'>kliknite sem</a>."
+		success: "Sikeres címváltoztatás."
+		warning: "A számlát csak a kifizetés utáni 14. napig hozhatja létre. A számla létrehozásához <a href='%link%' style='text-decoration: underline;'>kattintson ide</a>."
 
 component:
 	payment_success_invoice_widget:
