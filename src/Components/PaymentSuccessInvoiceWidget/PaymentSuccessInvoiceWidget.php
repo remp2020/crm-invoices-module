@@ -7,9 +7,8 @@ use Crm\ApplicationModule\Widget\WidgetManager;
 use Crm\InvoicesModule\Forms\UserInvoiceFormFactory;
 use Crm\InvoicesModule\Repository\InvoicesRepository;
 use Crm\PaymentsModule\Gateways\BankTransfer;
-use Crm\PaymentsModule\Presenters\BankTransferPresenter;
+use Crm\PaymentsModule\PaymentAwareInterface;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
-use Crm\SalesFunnelModule\Presenters\SalesFunnelPresenter;
 use Nette\Database\Table\ActiveRow;
 
 /**
@@ -66,10 +65,10 @@ class PaymentSuccessInvoiceWidget extends BaseWidget
         return $form;
     }
 
-    private function getPayment(): ActiveRow
+    public function getPayment(): ActiveRow
     {
         $presenter = $this->getPresenter();
-        if ($presenter instanceof SalesFunnelPresenter || $presenter instanceof BankTransferPresenter) {
+        if ($presenter instanceof PaymentAwareInterface) {
             return $presenter->getPayment();
         }
 
