@@ -9,6 +9,7 @@ use Crm\ApplicationModule\RedisClientTrait;
 use Crm\InvoicesModule\Model\InvoiceNumberInterface;
 use Crm\InvoicesModule\Repository\InvoicesRepository;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
+use Crm\UsersModule\Repository\AddressesRepository;
 use Kdyby\Translation\Translator;
 use Latte\Engine;
 use Mpdf\Mpdf;
@@ -42,6 +43,8 @@ class InvoiceGenerator
 
     private $invoiceNumber;
 
+    private $addressesRepository;
+
     public function __construct(
         InvoicesRepository $invoicesRepository,
         PaymentsRepository $paymentsRepository,
@@ -49,7 +52,8 @@ class InvoiceGenerator
         PriceHelper $priceHelper,
         Translator $translator,
         InvoiceNumberInterface $invoiceNumber,
-        RedisClientFactory $redisClientFactory
+        RedisClientFactory $redisClientFactory,
+        AddressesRepository $addressesRepository
     ) {
         $this->invoicesRepository = $invoicesRepository;
         $this->paymentsRepository = $paymentsRepository;
@@ -58,6 +62,7 @@ class InvoiceGenerator
         $this->translator = $translator;
         $this->invoiceNumber = $invoiceNumber;
         $this->redisClientFactory = $redisClientFactory;
+        $this->addressesRepository = $addressesRepository;
     }
 
     public function setTempDir(string $tempDir)
@@ -109,6 +114,11 @@ class InvoiceGenerator
     {
         if (!$this->invoicesRepository->isPaymentInvoiceable($payment)) {
             throw new PaymentNotInvoiceableException($payment->id);
+        }
+
+        $address = $this->addressesRepository->address($user, 'invoice');
+        if (!$address) {
+            throw new \Exception("Unable to find [invoice] address for user ID [$user->id].");
         }
 
         $mutex = new PredisMutex([$this->redis()], 'invoice_generator_' . $payment->id);
