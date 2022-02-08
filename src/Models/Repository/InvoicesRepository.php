@@ -50,9 +50,6 @@ class InvoicesRepository extends Repository
     final public function add(ActiveRow $user, ActiveRow $payment, ActiveRow $invoiceNumber)
     {
         $address = $this->addressesRepository->address($user, 'invoice');
-        if (!$address) {
-            throw new \Exception("Unable to find [invoice] address for user ID [$user->id].");
-        }
 
         if (trim($address->company_name) == '' || $address->company_name === null) {
             $buyerName = $address->first_name . ' ' . $address->last_name;
