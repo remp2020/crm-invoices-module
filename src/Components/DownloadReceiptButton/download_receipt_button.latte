@@ -1,5 +1,11 @@
 {if $showButton}
+    {if $admin}
+        <a href="{plink :Invoices:ReceiptsAdmin:downloadReceipt $paymentId}" class="btn btn-sm btn-primary">
+            <i class="fa fa-download"></i> {_invoices.frontend.invoice_button.download}
+        </a>
+    {else}
     <a href="{plink ':Invoices:Receipts:downloadReceipt' $paymentId}" class="btn btn-sm btn-primary">
         <i class="fa fa-download"></i> {_invoices.frontend.download_receipt}
     </a>
+    {/if}
 {/if}
