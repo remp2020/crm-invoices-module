@@ -17,6 +17,8 @@ class DownloadReceiptButton extends BaseWidget
 {
     private $templateName = 'download_receipt_button.latte';
 
+    private bool $admin = false;
+
     public function __construct(
         WidgetManager $widgetManager
     ) {
@@ -28,6 +30,11 @@ class DownloadReceiptButton extends BaseWidget
         return 'downloadreceiptbutton';
     }
 
+    public function setAdmin()
+    {
+        $this->admin = true;
+    }
+
     public function render($payment)
     {
         $isReceiptable = $payment->related('payment_meta')
@@ -36,6 +43,7 @@ class DownloadReceiptButton extends BaseWidget
 
         $this->template->paymentId = $payment->id;
         $this->template->showButton = $isReceiptable;
+        $this->template->admin = $this->admin;
         $this->template->setFile(__DIR__ . '/' . $this->templateName);
         $this->template->render();
     }

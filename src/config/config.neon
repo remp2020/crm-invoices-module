@@ -22,6 +22,7 @@ services:
 
 	- Crm\InvoicesModule\Components\DownloadReceiptButton
 	- Crm\InvoicesModule\Components\DownloadReceiptButtonFactory
+	- Crm\InvoicesModule\Components\ReceiptAdminButtonFactory
 	- Crm\InvoicesModule\Components\InvoiceDetailsWidget
 	- Crm\InvoicesModule\Components\InvoiceLabel
 	- Crm\InvoicesModule\Components\InvoiceAdminButtonFactory
