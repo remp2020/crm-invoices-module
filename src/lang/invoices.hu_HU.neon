@@ -129,4 +129,3 @@ form:
 			country_id: "Meg kell adni az országot"
 		options:
 			foreign_country: "A külföldi kézbesítéssel kapcsolatos információkért, kérjük, írjon az %contactEmail% címre."
-
