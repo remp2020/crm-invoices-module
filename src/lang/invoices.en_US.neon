@@ -133,7 +133,7 @@ form:
 			zip: ZIP is required
 			country_id: Country is required
 			company_id: Business ID is required
-			company_tax_id: Tax ID  is required
+			company_tax_id: Tax ID is required
 			company_vat_id: VAT number is required
 		options:
 			foreign_country: "For delivery to foreign countries please contact us through %contactEmail%"
