@@ -98,10 +98,10 @@ form:
 			number: Házszám
 			city: Település
 			zip: Irányítószám
+			country_id: Ország
 			company_id: "IČO/nyilvántartási szám"
 			company_tax_id: "DIČ/adószám"
 			company_vat_id: "IČDPH/áfás adószám"
-			country_id: Ország
 			send: "Mentés"
 			save: "Adatok mentése"
 		placeholder:
@@ -119,9 +119,9 @@ form:
 			number: "Meg kell adni a házszámot"
 			city: "Meg kell adni a településnevet"
 			zip: "Meg kell adni az irányítószámot"
+			country_id: "Meg kell adni az országot"
 			company_id: "Meg kell adni az IČO-t/nyilvántartási számot"
 			company_tax_id: "Meg kell adni a DIČ-et/adószámot"
 			company_vat_id: "Meg kell adni az IČDPH-t/áfás adószámot"
-			country_id: "Meg kell adni az országot"
 		options:
 			foreign_country: "A külföldi kézbesítéssel kapcsolatos információkért, kérjük, írjon az %contactEmail% címre."
