@@ -10,10 +10,6 @@ frontend:
 		download: Számla letöltése
 		invoice_details: Számlázás részletek
 
-	invoice_generated:
-		info: "Ön már kérvényezett számlát ehhez az előfizetéshez. Amennyiben a számlával kapcsolatos problémája, vagy kérdése támadt, úgy kérjük írjon nekünk a blabla@ujszo.com cimre."
-		success: "Számla igénylését továbbítottuk az Új Szó-nak."
-
 	invoice_details:
 		title: Számlázási adatok
 		invoices_link_prefix: "Eddigi számlái itt találhatja meg: "
