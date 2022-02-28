@@ -1,0 +1,222 @@
+menu:
+    invoice_details: Invoice details
+
+frontend:
+    invoice_button:
+        no_invoice: No invoice
+        not_available_anymore: Invoice not available anymore
+        generate: Generate invoice
+        system_error: System failure! Please contact tech support!
+        invoice: invoice
+        download: Download invoice
+        edit: Edit invoice
+        invoice_details: Invoice details
+
+    invoice_details:
+        title: Invoice details
+        invoices_link_prefix: You can find your invoices in
+        invoices_link: Payments
+        invoices_link_suffix: Please enter your invoice address.
+
+    change_invoice_details:
+        submit: Save
+        invoice: I want invoice
+        company_name:
+            label: Company name
+            placeholder: name of the company on the invoice
+            required: Company name is required
+        address:
+            label: Address
+            placeholder: invoice address
+            required: Invoice address is required
+        number:
+            label: House number
+            placeholder: e.g. 134
+            required: House number is required
+        city:
+            label: City
+            placeholder: fill in the city
+            required: City is required
+        zip:
+            label: ZIP
+            placeholder: fill in the ZIP code
+            required: ZIP is required
+        company_id:
+            label: Company ID
+            placeholder: e.g. 23590235
+            required: Company ID is required
+        company_tax_id:
+            label: Tax ID
+            placeholder: e.g. 1248745412
+            required: Tax ID is required
+        company_vat_id:
+            label: VAT ID
+            placeholder: e.g. SK1248745412
+            required: VAT ID is required
+        success: Your address was successfuly changed.
+        warning: "You can generate an invoice only within 14 days of payment. You can generate invoices <a href='%link%' style='text-decoration: underline;'>here</a>."
+    download_receipt: Download receipt
+    proforma_invoice:
+        title: Proforma invoice payment
+        form_title: 'Please fill up your invoice details to complete the order'
+        thank_you: 'Thank you for the order, the invoice will be sent to your email within 3 working days.'
+
+admin:
+    menu:
+        export: Invoice export
+    user_form:
+        invoices: Invoices
+        invoice: Enable invoicing
+        disable_autoinvoice: Disable automatic generation of invoices
+    default:
+        export: Invoice export
+        filelist: Generated files
+        download: Download
+        delete: Delete
+        time: Time
+        filename: File name
+    export_form:
+        from_time: From
+        to_time: To
+        invoices: Invoices
+        generate: Generate
+        scheduled: "Batch generation was scheduled, please wait."
+    edit:
+        title: Edit invoice
+        edit_invoice: Edit buyer address
+        current_invoice_address: Use current invoice address
+        edit_items: Edit items
+        back_to_user: Back to user detail
+        success: Invoice was successfuly changed.
+    scenarios:
+        has_invoice:
+            label: Payment has generated invoice
+
+component:
+    payment_success_invoice_widget:
+        require_invoice: I need an invoice
+        require_invoice_info: "If you need invoice, please don't forget to fill your billing details. If you don't fill it in this step, it will not be possible in the future."
+        fill_invoice_address: Fill in the invoice address
+        saved: Saved
+
+    invoice_label:
+        invoice: Invoice
+
+form:
+    invoice:
+        label:
+            company_name: Company name
+            address: Address
+            number: Number
+            city: City
+            zip: ZIP
+            country_id: Country
+            company_id: Businness ID
+            company_tax_id: Tax ID
+            company_vat_id: VAT number
+            send: Save
+            save: Save
+        placeholder:
+            company_name: company name as writte on invoices
+            address: billing addresse
+            number: house number
+            city: fill your city
+            zip: fill your zip
+            company_id: e.g. 23590235
+            company_tax_id: e.g. 2359023574
+            company_vat_id: e.g. SK2359023574
+        required:
+            company_name: Company name is required
+            address: Company address is required
+            number: House number is required
+            city: City is required
+            zip: ZIP is required
+            country_id: Country is required
+            company_id: Business ID is required
+            company_tax_id: Tax ID is required
+            company_vat_id: VAT number is required
+        options:
+            foreign_country: "For delivery to foreign countries please contact us through %contactEmail%"
+
+invoice_template:
+    title: Invoice
+    date_issued: Issue date
+    date_due: Due date
+    date_delivered: Date of delivery
+    variable_symbol: Variable symbol
+    constant_symbol: Constant symbol
+    company_id: Company ID
+    company_tax_id: Tax ID
+    company_vat_id: VAT ID
+    buyer: Buyer
+    supplier: Supplier
+    invoice_details: Invoice details
+    item_name: Item name
+    item_count: Count
+    unit_price: Unit price
+    vat: VAT
+    unit_price_with_vat: "Unit price (with VAT)"
+    vat_amount_per_item: "VAT (amount)"
+    item_sum_with_vat: Sum with VAT
+    deposit: Deposit
+    note:
+        title: Note
+        invoice_paid: "Invoice is payed. Please do not pay again!"
+    price_no_vat: VAT base
+    vat_amount: VAT amount
+    item_sum: Sum
+    sum: Total sum
+    sum_deposit: Paid deposit
+    sum_remains_to_pay: Remains to pay
+    summary: Summary
+    bank_account: Bank account
+    bank: Bank
+    bank_iban: IBAN
+    bank_swift: SWIFT
+    stamp_and_signature: Stamp and signature
+
+config:
+    category: Invoices
+    supplier_name:
+        name: 'Company'
+        description: 'Invoice company name (e.g. Company Ltd.)'
+    supplier_address:
+        name: 'Address'
+        description: 'Invoice company address (e.g. 957 Sycamore St.)'
+    supplier_city:
+        name: 'City'
+        description: 'Invoice company city (e.g. Morgantown)'
+    supplier_zip:
+        name: 'ZIP'
+        description: 'Invoice company ZIP (e.g. WV 26508)'
+    supplier_id:
+        name: 'Business ID'
+        description: 'Invoice business ID (e.g. 1234567-8)'
+    supplier_tax_id:
+        name: 'Tax ID'
+        description: 'Invoice tax ID (e.g. 912-71-1234)'
+    supplier_vat_id:
+        name: 'VAT reg. no.'
+        description: 'Invoice VAT reg. no. (e.g. SK1234567890)'
+    supplier_bank_account_number:
+        name: 'Bank number'
+        description: 'Bank number in old format (e.g. 1234567890/1234)'
+    supplier_bank_name:
+        name: 'Bank name'
+        description: 'Whole bank name, will be displayed on invoice (e.g. Random bank, Inc)'
+    supplier_iban:
+        name: 'IBAN'
+        description: 'Bank number in IBAN format (e.g. SK35 5000 0000 0549 1000 0003)'
+    supplier_swift:
+        name: 'SWIFT'
+        description: 'Bank number SWIFT (e.g. TATRSKBX)'
+    business_register_detail:
+        name: 'Business register detail'
+        description: "Where was business registered (eg. 'Business register of the District Court Bratislava I., section: sro, id: 4242/DA')"
+    invoice_constant_symbol:
+        name: 'Constant symbol'
+        description: "Constant symbol (code) used on invoice. If you don't know, leave default '0308'."
+    attach_invoice_to_payment_notification:
+        name: 'Generate and send an invoice as an attachment to a notification after payment'
+    generate_invoice_after_payment:
+        name: 'Generate an invoice immediately after payment'

@@ -1,0 +1,225 @@
+menu:
+    invoice_details: Fakturačné údaje
+
+frontend:
+    invoice_button:
+        no_invoice: Bez faktúry
+        not_available_anymore: Faktúra už nedostupná
+        generate: Vygeneruj faktúru
+        system_error: Systémová chyba! Prosím kontaktujte technickú podporu!
+        invoice: Faktúra
+        download: Stiahni faktúru
+        edit: Uprav faktúru
+        invoice_details: Fakturačné údaje
+
+    invoice_details:
+        title: Fakturačné údaje
+        invoices_link_prefix: Svoje vystavené faktúry nájdete v časti
+        invoices_link: Platby
+        invoices_link_suffix: Na tomto mieste prosím uložte vašu fakturačnú adresu a údaje.
+
+    change_invoice_details:
+        submit: Uložiť
+        invoice: Chcem faktúru
+        company_name:
+            label: Názov firmy
+            placeholder: názov firmy na faktúre
+            required: Názov firmy musí byť vyplnený
+        address:
+            label: Adresa
+            placeholder: fakturačná adresa
+            required: Adresa musí byť vyplnená
+        number:
+            label: Číslo domu
+            placeholder: napríklad 134
+            required: Číslo domu musí byť vyplnené
+        city:
+            label: Mesto
+            placeholder: napíšte mesto
+            required: Mesto musí byť vyplnené
+        zip:
+            label: PSČ
+            placeholder: napíšte PSČ
+            required: PSČ musí byť vyplnené
+        company_id:
+            label: IČO
+            placeholder: napríklad 92385982
+            required: IČO musí byť vyplnené
+        company_tax_id:
+            label: DIČ
+            placeholder: napríklad 5492385982
+            required: DIČ musí byť vyplnené
+        company_vat_id:
+            label: IČDPH
+            placeholder: napríklad SK5492385982
+            required: IČDPH musí byť vyplnené
+        success: Vaša adresa bola úspešne zmenená.
+        warning: "Faktúru si môžete vygenerovať len do 14 dní po zaplatení. Pre vygenerovanie faktúr <a href='%link%' style='text-decoration: underline;'>kliknite sem</a>."
+    download_receipt: Stiahnuť potvrdenie
+    proforma_invoice:
+        title: Platba predfaktúrou
+        form_title: 'Pre dokončenie objednávky prosím vyplňte fakturačné údaje'
+        thank_you: 'Ďakujeme za vašu objednávku, predfaktúru Vám zašleme do 3 pracovných dní e-mailom.'
+
+admin:
+    menu:
+        export: Export faktúr
+    user_form:
+        invoices: Faktúry
+        invoice: Povoliť fakturovanie
+        disable_autoinvoice: Vypni automatické vystavovanie faktúr
+    default:
+        export: Export faktúr
+        filelist: Vygenerované súbory
+        download: Stiahnúť
+        delete: Zmazať
+        time: Čas
+        filename: Meno súboru
+    export_form:
+        from_time: Začiatok
+        to_time: Koniec
+        invoices: Faktúry
+        generate: Vygeneruj
+        scheduled: "Generovanie faktúr bolo naplánované, chvíľu počkajte."
+    edit:
+        title: Úprava faktúry
+        edit_invoice: Upraviť adresu odoberateľa
+        current_invoice_address: Použiť aktuálnu fakturačnú adresu
+        edit_items: Upraviť položky
+        back_to_user: Späť na používateľa
+        success: Faktúra bola úspešne zmenená.
+    scenarios:
+        has_invoice:
+            label: Platba má vygenerovanú faktúru
+
+component:
+    payment_success_invoice_widget:
+        require_invoice: Požadujem faktúru
+        require_invoice_info: "Ak požadujete faktúru, nezabudnite vyplniť Vaše fakturačné údaje. Ak ich nevyplníte v tomto kroku, už to nebude možné."
+        fill_invoice_address: Vyplniť fakturačnú adresu
+        saved: Všetky údaje uložené
+
+    invoice_label:
+        invoice: Faktúra
+
+form:
+    invoice:
+        label:
+            company_name: Názov firmy
+            address: Adresa
+            number: Číslo
+            city: Mesto
+            zip: PSČ
+            country_id: Krajina
+            company_id: IČO
+            company_tax_id: DIČ
+            company_vat_id: IČDPH
+            send: Uložiť
+            save: Uložiť údaje
+        placeholder:
+            company_name: názov firmy na faktúre
+            address: fakturačná adresa
+            number: napíšte číslo domu
+            city: napíšte mesto
+            zip: napíšte PSČ
+            company_id: napríklad 25412547
+            company_tax_id: napríklad 2541254765
+            company_vat_id: napríklad SK2541254765
+        required:
+            company_name: Názov firmy musí byť vyplnený
+            address: Adresa firmy musí byť vyplnená
+            number: Číslo domu musí byť vyplnené
+            city: Mesto musí byť vyplnené
+            zip: PSČ musí byť vyplnené
+            country_id: Krajina musí byť vyplnená
+            company_id: IČO musí byť vyplnené
+            company_tax_id: DIČ musí byť vyplnené
+            company_vat_id: IČDPH musí byť vyplnené
+        options:
+            foreign_country: "Pre informácie o doručení do zahraničia nás, prosím, kontaktujte na %contactEmail%"
+    change_invoice_items:
+        item: Položka %i%
+        placeholder: Názov položky
+
+invoice_template:
+    title: Faktúra
+    date_issued: Dátum vyhotovenia
+    date_due: Dátum splatnosti
+    date_delivered: Dátum dodania tovaru/služby
+    variable_symbol: Variabilný symbol
+    constant_symbol: Konštantný symbol
+    company_id: IČO
+    company_tax_id: DIČ
+    company_vat_id: IČ DPH
+    buyer: Odberateľ
+    supplier: Dodávateľ
+    invoice_details: Fakturačné údaje
+    item_name: Názov položky
+    item_count: Počet
+    unit_price: JC bez DPH
+    vat: Sadzba DPH
+    unit_price_with_vat: JC s DPH
+    vat_amount_per_item: DPH
+    item_sum_with_vat: Celkom s DPH
+    deposit: Preddavok
+    note:
+        title: Poznámka
+        invoice_paid: "Faktúra už bola uhradená, prosím, neuhrádzajte!"
+    price_no_vat: Základ DPH
+    vat_amount: Výška DPH
+    item_sum: Spolu
+    sum: Celková suma
+    sum_deposit: Uhradené zálohy
+    sum_remains_to_pay: Zostáva na úhradu
+    summary: Zhrnutie
+    bank_account: Bankový účet
+    bank: Banka
+    bank_iban: IBAN
+    bank_swift: SWIFT
+    stamp_and_signature: Pečiatka a podpis
+
+config:
+    category: Faktúry
+    supplier_name:
+        name: 'Firma'
+        description: 'Meno dodávateľa (napr. N Press, s.r.o.)'
+    supplier_address:
+        name: 'Adresa'
+        description: 'Adresa dodávateľa (napr. Bratislavská 14)'
+    supplier_city:
+        name: 'Mesto'
+        description: 'Mesto dodávateľa (napr. Bratislava)'
+    supplier_zip:
+        name: 'PSČ'
+        description: 'PSČ dodávateľa (napr. 841 07)'
+    supplier_id:
+        name: 'IČO'
+        description: 'Identifikačné číslo dodávateľa (napr. 12345679)'
+    supplier_tax_id:
+        name: 'DIČ'
+        description: 'Daňové identifikačné číslo (napr. 1234567890)'
+    supplier_vat_id:
+        name: 'IČDPH'
+        description: 'Číslo DPH (napr. SK1234567890)'
+    supplier_bank_account_number:
+        name: 'Ćíslo bankového účtu'
+        description: 'Ćíslo bankového účtu v starom formáte (napr. 1234567890/1234)'
+    supplier_bank_name:
+        name: 'Meno banky'
+        description: 'Celé meno banky zobrazené na faktúre (napr. Tatra banka, a.s.)'
+    supplier_iban:
+        name: 'IBAN'
+        description: 'Číslo účtu v IBAN formáte (napr. SK35 5000 0000 0549 1000 0003)'
+    supplier_swift:
+        name: 'SWIFT'
+        description: 'Číslo účtu v SWIFT formáte (napr. TATRSKBX)'
+    business_register_detail:
+        name: 'Detail registrácie spoločnosti'
+        description: "Kde bola spoločnosť zaregistrovaná (napr. 'Spoločnosť bola zaregistrovaná na okresnom súde Bratislava I., typ: sro, id: 4242/DA')"
+    invoice_constant_symbol:
+        name: 'Konštantný symbol'
+        description: "Konštantný symbol (kód) použitý vo faktúre. Ak neviete čo vyplniť, nechajte predvolené '0308'."
+    attach_invoice_to_payment_notification:
+        name: 'Vygenerovať a odoslať faktúru ako prílohu k notifikácií po platbe'
+    generate_invoice_after_payment:
+        name: 'Vygenerovať faktúru ihneď po platbe'
