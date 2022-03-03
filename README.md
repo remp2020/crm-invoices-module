@@ -1,5 +1,7 @@
 # CRM Invoices Module
 
+[![Translation status @ Weblate](https://hosted.weblate.org/widgets/remp-crm/-/invoices-module/svg-badge.svg)](https://hosted.weblate.org/projects/remp-crm/invoices-module/)
+
 Invoices module is an extension to [Payments module](https://github.com/remp2020/crm-payments-module) to provide
 invoices for confirmed payments. You can customize the layout of invoices based on the section below.
 
