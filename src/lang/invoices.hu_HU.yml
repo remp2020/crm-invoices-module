@@ -12,7 +12,7 @@ frontend:
 
     invoice_details:
         title: Számlázási adatok
-        invoices_link_prefix: "Eddigi számlái itt találhatja meg: "
+        invoices_link_prefix: "Eddigi számlái itt találhatja meg"
         invoices_link: fizetések
         invoices_link_suffix: "Ezen a helye, kérjük, mentse el számlázási címét és adatait.."
 
