@@ -156,15 +156,15 @@ class UserInvoiceFormFactory
             'invoice'
         );
 
-        // invoice address can be accepted automatically
-        if ($changeRequest) {
-            $this->addressChangeRequestsRepository->acceptRequest($changeRequest);
-        }
-
         $updateArray = [
             'invoice' => 1,
         ];
         $this->usersRepository->update($user, $updateArray);
+
+        // invoice address can be accepted automatically
+        if ($changeRequest) {
+            $this->addressChangeRequestsRepository->acceptRequest($changeRequest);
+        }
 
         $this->onSave->__invoke($form, $user);
     }
