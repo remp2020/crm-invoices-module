@@ -24,7 +24,6 @@ class PaymentSuccessInvoiceWidget extends BaseWidget
 
     private $invoicesRepository;
 
-
     public function __construct(
         WidgetManager $widgetManager,
         InvoicesRepository $invoicesRepository

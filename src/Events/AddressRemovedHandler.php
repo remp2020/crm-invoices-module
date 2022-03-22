@@ -23,7 +23,7 @@ class AddressRemovedHandler extends AbstractListener
         }
 
         $address = $event->getAddress();
-        if (!$address->type === 'invoice') {
+        if ($address->type !== 'invoice') {
             return;
         }
 
