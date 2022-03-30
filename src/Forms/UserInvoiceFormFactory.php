@@ -108,8 +108,7 @@ class UserInvoiceFormFactory
             ->getControlPrototype()
             ->setName('button')
             ->setAttribute('class', 'btn btn-success')
-            ->setAttribute('style', 'float: right')
-            ->setHtml($this->translator->translate('invoices.form.invoice.label.save'));
+            ->setAttribute('style', 'float: right');
 
         $defaults = [];
 
