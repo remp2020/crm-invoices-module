@@ -25,9 +25,9 @@ frontend:
             placeholder: název firmy na faktuře
             required: Název firmy musí být vyplněn
         address:
-            label: Adresa
+            label: Ulice
             placeholder: fakturační adresa
-            required: Adresa musí být vyplněna
+            required: Ulice musí být vyplněna
         number:
             label: Číslo domu
             placeholder: například 134
@@ -105,7 +105,7 @@ form:
     invoice:
         label:
             company_name: Název firmy
-            address: Adresa
+            address: Ulice
             number: Číslo
             city: Město
             zip: PSČ
@@ -117,7 +117,7 @@ form:
             save: Uložit údaje
         placeholder:
             company_name: název firmy na faktuře
-            address: fakturační adresa
+            address: napište ulici
             number: napište číslo domu
             city: napište město
             zip: napište PSČ
@@ -126,7 +126,7 @@ form:
             company_vat_id: například CZ2359023536
         required:
             company_name: Název firmy musí být vyplněn
-            address: Adresa firmy musí být vyplněna
+            address: Ulice musí být vyplněna
             number: Číslo domu musí být vyplněno
             city: Město musí být vyplněno
             zip: PSČ musí být vyplněno

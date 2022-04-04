@@ -26,9 +26,9 @@ frontend:
             placeholder: name of the company on the invoice
             required: Company name is required
         address:
-            label: Address
-            placeholder: invoice address
-            required: Invoice address is required
+            label: Street
+            placeholder: fill in the street
+            required: Street is required
         number:
             label: House number
             placeholder: e.g. 134
@@ -106,7 +106,7 @@ form:
     invoice:
         label:
             company_name: Company name
-            address: Address
+            address: Street
             number: Number
             city: City
             zip: ZIP
@@ -117,8 +117,8 @@ form:
             send: Save
             save: Save
         placeholder:
-            company_name: company name as writte on invoices
-            address: billing addresse
+            company_name: company name as written on invoices
+            address: street of billing address
             number: house number
             city: fill your city
             zip: fill your zip
@@ -127,7 +127,7 @@ form:
             company_vat_id: e.g. SK2359023574
         required:
             company_name: Company name is required
-            address: Company address is required
+            address: Street is required
             number: House number is required
             city: City is required
             zip: ZIP is required
