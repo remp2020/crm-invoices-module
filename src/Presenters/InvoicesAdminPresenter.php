@@ -128,11 +128,14 @@ class InvoicesAdminPresenter extends AdminPresenter
             ->setHtmlAttribute('class', 'flatpickr');
         $form->addText('to_time', 'invoices.admin.export_form.to_time')
             ->setHtmlAttribute('class', 'flatpickr');
+        $form->addCheckbox('b2b_only', 'invoices.admin.export_form.b2b_only')
+            ->setHtmlAttribute('style', 'margin: 0 5px');
         $form->addText('invoices', 'invoices.admin.export_form.invoices');
         $form->addSubmit('submit', 'invoices.admin.export_form.generate');
         $form->setDefaults([
             'from_time' => DateTime::from('-1 month')->format(DATE_RFC3339),
             'to_time' => DateTime::from('now')->format(DATE_RFC3339),
+            'b2b_only' => true,
         ]);
         $form->onSuccess[] = function (Form $form, $values) {
             if ($values->invoices) {
@@ -148,6 +151,7 @@ class InvoicesAdminPresenter extends AdminPresenter
                 $this->hermesEmitter->emit(new HermesMessage('invoice_zip', [
                     'from_time' => $values['from_time'],
                     'to_time' => $values['to_time'],
+                    'b2b_only' => $values['b2b_only'],
                 ]), HermesMessage::PRIORITY_LOW);
 
                 $this->flashMessage($this->translator->translate('invoices.admin.export_form.scheduled'));

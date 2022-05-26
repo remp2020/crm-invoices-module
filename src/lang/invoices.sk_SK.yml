@@ -78,6 +78,8 @@ admin:
     export_form:
         from_time: Začiatok
         to_time: Koniec
+        b2b_only: Zahrnúť iba B2B faktúry
+        b2b_tooltip: Zahrnie faktúry s vyplneným IČO, DIČ alebo IČ DPH.
         invoices: Faktúry
         generate: Vygeneruj
         scheduled: "Generovanie faktúr bolo naplánované, chvíľu počkajte."

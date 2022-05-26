@@ -83,14 +83,24 @@ class ZipInvoicesHandler implements HandlerInterface
             return true;
         }
 
-        if (isset($payload['from_time']) && isset($payload['to_time'])) {
+        if (isset($payload['from_time']) && isset($payload['to_time']) && isset($payload['b2b_only'])) {
             $from = DateTime::from(strtotime($payload['from_time']));
             $to = DateTime::from(strtotime($payload['to_time']))->setTime(23, 59, 59, 999);
 
             $payments = $this->paymentsRepository->all()->where([
                 'invoice.delivery_date >=' => $from,
                 'invoice.delivery_date <=' => $to,
-            ])->order('created_at DESC')->fetchAll();
+            ])->order('created_at DESC');
+
+            if ($payload['b2b_only']) {
+                $payments->whereOr([
+                    'invoice.buyer_id NOT ? AND invoice.buyer_id != ?' => [null, ''],
+                    'invoice.buyer_tax_id NOT ? AND invoice.buyer_tax_id != ?' => [null, ''],
+                    'invoice.buyer_vat_id NOT ? AND invoice.buyer_vat_id != ?' => [null, ''],
+                ]);
+            }
+
+            $payments = $payments->fetchAll();
 
             if (count($payments) === 0) {
                 $this->logger->info("No invoices with delivery dates between [{$from}] and [{$to}] found.");

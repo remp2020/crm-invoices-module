@@ -78,6 +78,8 @@ admin:
     export_form:
         from_time: From
         to_time: To
+        b2b_only: Include only B2B invoices
+        b2b_tooltip: Includes invoices with filled buyer's company ID, VAT ID or TAX ID.
         invoices: Invoices
         generate: Generate
         scheduled: "Batch generation was scheduled, please wait."
