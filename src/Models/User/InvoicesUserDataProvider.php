@@ -25,9 +25,9 @@ class InvoicesUserDataProvider implements UserDataProviderInterface
         return 'invoices';
     }
 
-    public function data($userId)
+    public function data($userId): ?array
     {
-        return [];
+        return null;
     }
 
     public function download($userId)
