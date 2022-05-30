@@ -29,6 +29,8 @@ class NewAddressHandlerTest extends DatabaseTestCase
 
     private NewAddressHandler $newAddressHandler;
 
+    private UsersRepository $usersRepository;
+
     private ?ActiveRow $paymentGateway = null;
     private ?ActiveRow $user = null;
 
@@ -56,19 +58,24 @@ class NewAddressHandlerTest extends DatabaseTestCase
     {
         parent::setUp();
 
+
         // register own dispatcher because dispatcher initialized by Nette's DI keeps all registered handlers (no way to remove them)
         $this->dispatcher = new Dispatcher($this->inject(DriverInterface::class));
-
         $this->newAddressHandler = $this->inject(NewAddressHandler::class);
+
+        $this->usersRepository = $this->getRepository(UsersRepository::class);
     }
 
-    public function testSuccess()
+    public function testSuccessUser()
     {
         $user = $this->getUser();
+        $this->assertEquals(1, $user->invoice);
+        $this->assertEquals(0, $user->disable_auto_invoice);
+
         $address = $this->addUserAddress('invoice');
         $payment = $this->addPayment($user, new DateTime(), new DateTime());
 
-        $event = new NewAddressEvent($address);
+        $event = new NewAddressEvent($address, $admin = false);
 
         // set observer (mocked handler) to observe hermes handler
         // whole GenerateInvoiceHandler is tested by separate class GenerateInvoiceHandlerTest
@@ -102,6 +109,65 @@ class NewAddressHandlerTest extends DatabaseTestCase
         // handle league & hermes events
         $this->newAddressHandler->handle($event);
         $this->dispatcher->handle();
+
+        // no change
+        $user = $this->usersRepository->find($user->id);
+        $this->assertEquals(1, $user->invoice);
+        $this->assertEquals(0, $user->disable_auto_invoice);
+    }
+
+
+    public function testSuccessAdmin()
+    {
+        $user = $this->getUser();
+        // disable auto invoicing; update by admin should enable it automatically
+        $this->usersRepository->update($user, ['invoice' => false, 'disable_auto_invoice' => true]);
+        $user = $this->usersRepository->find($user->id);
+        $this->assertEquals(0, $user->invoice);
+        $this->assertEquals(1, $user->disable_auto_invoice);
+
+        $address = $this->addUserAddress('invoice');
+        $payment = $this->addPayment($user, new DateTime(), new DateTime());
+
+        $event = new NewAddressEvent($address, $admin = true);
+
+        // set observer (mocked handler) to observe hermes handler
+        // whole GenerateInvoiceHandler is tested by separate class GenerateInvoiceHandlerTest
+        $generateInvoiceHandlerObserver = $this->createMock(GenerateInvoiceHandler::class);
+        // handler should be received only once and should contain correct payment id
+        $generateInvoiceHandlerObserver->expects($this->once())
+            ->method('handle')
+            ->with(
+                $this->callback(function (MessageInterface $hermesMessage) use ($payment) {
+                    if ($hermesMessage->getType() !== 'generate_invoice') {
+                        return false;
+                    }
+                    $payload = $hermesMessage->getPayload();
+                    if (!isset($payload['payment_id'])) {
+                        return false;
+                    }
+
+                    if ($payload['payment_id'] !== $payment->id) {
+                        return false;
+                    }
+                    return true;
+                })
+            );
+
+        // register observer as hermes handler
+        $this->dispatcher->registerHandler(
+            'generate_invoice',
+            $generateInvoiceHandlerObserver
+        );
+
+        // handle league & hermes events
+        $this->newAddressHandler->handle($event);
+        $this->dispatcher->handle();
+
+        // changed to enabled invoicing
+        $user = $this->usersRepository->find($user->id);
+        $this->assertEquals(1, $user->invoice);
+        $this->assertEquals(0, $user->disable_auto_invoice);
     }
 
     public function testAddressIncorrectType()
@@ -190,11 +256,8 @@ class NewAddressHandlerTest extends DatabaseTestCase
         /** @var UserManager $userManager */
         $userManager = $this->inject(UserManager::class);
 
-        /** @var UsersRepository $usersRepository */
-        $usersRepository = $this->inject(UsersRepository::class);
-
         $user = $userManager->addNewUser('example@example.com', false, 'unknown', null, false);
-        $usersRepository->update($user, [
+        $this->usersRepository->update($user, [
             'invoice' => true,
             'disable_auto_invoice' => false
         ]);

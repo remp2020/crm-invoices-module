@@ -110,10 +110,6 @@ class InvoicesModule extends CrmModule
             $this->getInstance(\Crm\InvoicesModule\Events\AddressChangedHandler::class)
         );
         $emitter->addListener(
-            \Crm\UsersModule\Events\NewAddressEvent::class,
-            $this->getInstance(\Crm\InvoicesModule\Events\AddressChangedHandler::class)
-        );
-        $emitter->addListener(
             \Crm\UsersModule\Events\AddressRemovedEvent::class,
             $this->getInstance(\Crm\InvoicesModule\Events\AddressRemovedHandler::class)
         );

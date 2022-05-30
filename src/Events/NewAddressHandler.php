@@ -6,6 +6,7 @@ use Crm\ApplicationModule\Hermes\HermesMessage;
 use Crm\InvoicesModule\Repository\InvoicesRepository;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
 use Crm\UsersModule\Events\NewAddressEvent;
+use Crm\UsersModule\Repository\UsersRepository;
 use League\Event\AbstractListener;
 use League\Event\EventInterface;
 use Tomaj\Hermes\Emitter as HermesEmitter;
@@ -18,14 +19,18 @@ class NewAddressHandler extends AbstractListener
 
     private PaymentsRepository $paymentsRepository;
 
+    private UsersRepository $usersRepository;
+
     public function __construct(
         HermesEmitter $hermesEmitter,
         InvoicesRepository $invoicesRepository,
-        PaymentsRepository $paymentsRepository
+        PaymentsRepository $paymentsRepository,
+        UsersRepository $usersRepository
     ) {
         $this->hermesEmitter = $hermesEmitter;
         $this->invoicesRepository = $invoicesRepository;
         $this->paymentsRepository = $paymentsRepository;
+        $this->usersRepository = $usersRepository;
     }
 
     public function handle(EventInterface $event)
@@ -37,6 +42,14 @@ class NewAddressHandler extends AbstractListener
         $address = $event->getAddress();
         if ($address->type !== 'invoice') {
             return;
+        }
+
+        // if invoice address was created by admin, enable invoicing (there is no reason to add invoicing address without enabling it)
+        if ($event->isAdmin()) {
+            $this->usersRepository->update($address->user, [
+                'invoice' => true,
+                'disable_auto_invoice' => false,
+            ]);
         }
 
         $payments = $this->paymentsRepository->userPayments($address->user_id)
