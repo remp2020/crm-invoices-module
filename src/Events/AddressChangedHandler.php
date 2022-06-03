@@ -9,7 +9,7 @@ use League\Event\EventInterface;
 
 class AddressChangedHandler extends AbstractListener
 {
-    private $usersRepository;
+    private UsersRepository $usersRepository;
 
     public function __construct(
         UsersRepository $usersRepository
@@ -20,7 +20,7 @@ class AddressChangedHandler extends AbstractListener
     public function handle(EventInterface $event)
     {
         if (!($event instanceof IAddressEvent)) {
-            throw new \Exception("invalid type of event received: " . get_class($event));
+            throw new \Exception('Invalid type of event. Expected: [' . IAddressEvent::class . ']. Received: [' . get_class($event) . '].');
         }
 
         $address = $event->getAddress();

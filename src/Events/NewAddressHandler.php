@@ -2,41 +2,36 @@
 
 namespace Crm\InvoicesModule\Events;
 
-use Crm\ApplicationModule\Config\ApplicationConfig;
 use Crm\ApplicationModule\Hermes\HermesMessage;
 use Crm\InvoicesModule\Repository\InvoicesRepository;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
 use Crm\UsersModule\Events\NewAddressEvent;
 use League\Event\AbstractListener;
 use League\Event\EventInterface;
-use Tomaj\Hermes\Emitter;
+use Tomaj\Hermes\Emitter as HermesEmitter;
 
 class NewAddressHandler extends AbstractListener
 {
-    private $hermesEmitter;
+    private HermesEmitter $hermesEmitter;
 
-    private $applicationConfig;
+    private InvoicesRepository $invoicesRepository;
 
-    private $paymentsRepository;
-
-    private $invoicesRepository;
+    private PaymentsRepository $paymentsRepository;
 
     public function __construct(
-        Emitter $hermesEmitter,
-        ApplicationConfig $applicationConfig,
-        PaymentsRepository $paymentsRepository,
-        InvoicesRepository $invoicesRepository
+        HermesEmitter $hermesEmitter,
+        InvoicesRepository $invoicesRepository,
+        PaymentsRepository $paymentsRepository
     ) {
         $this->hermesEmitter = $hermesEmitter;
-        $this->applicationConfig = $applicationConfig;
-        $this->paymentsRepository = $paymentsRepository;
         $this->invoicesRepository = $invoicesRepository;
+        $this->paymentsRepository = $paymentsRepository;
     }
 
     public function handle(EventInterface $event)
     {
         if (!($event instanceof NewAddressEvent)) {
-            throw new \Exception('NewAddressEvent object expected, instead ' . get_class($event) . ' received');
+            throw new \Exception('Invalid type of event. Expected: [' . NewAddressEvent::class . ']. Received: [' . get_class($event) . '].');
         }
 
         $address = $event->getAddress();

@@ -7,46 +7,44 @@ use Crm\InvoicesModule\InvoiceGenerator;
 use Crm\InvoicesModule\Repository\InvoicesRepository;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
 use Crm\UsersModule\Repository\AddressesRepository;
-use Psr\Log\LoggerAwareTrait;
 use Tomaj\Hermes\Handler\HandlerInterface;
 use Tomaj\Hermes\MessageInterface;
 use Tracy\Debugger;
-use Tracy\ILogger;
 
 class GenerateInvoiceHandler implements HandlerInterface
 {
-    use LoggerAwareTrait;
+    private InvoiceGenerator $invoiceGenerator;
 
-    private $invoiceGenerator;
+    private AddressesRepository $addressesRepository;
 
-    private $addressesRepository;
+    private InvoicesRepository $invoicesRepository;
 
-    private $applicationConfig;
-
-    private $paymentsRepository;
-
-    private $invoicesRepository;
+    private PaymentsRepository $paymentsRepository;
 
     public function __construct(
-        InvoiceGenerator $invoiceGenerator,
         AddressesRepository $addressesRepository,
         ApplicationConfig $applicationConfig,
-        PaymentsRepository $paymentsRepository,
-        InvoicesRepository $invoicesRepository
+        InvoiceGenerator $invoiceGenerator,
+        InvoicesRepository $invoicesRepository,
+        PaymentsRepository $paymentsRepository
     ) {
-        $this->invoiceGenerator = $invoiceGenerator;
         $this->addressesRepository = $addressesRepository;
         $this->applicationConfig = $applicationConfig;
-        $this->paymentsRepository = $paymentsRepository;
+        $this->invoiceGenerator = $invoiceGenerator;
         $this->invoicesRepository = $invoicesRepository;
+        $this->paymentsRepository = $paymentsRepository;
     }
 
-    public function handle(MessageInterface $event): bool
+    public function handle(MessageInterface $message): bool
     {
-        $payload = $event->getPayload();
+        $payload = $message->getPayload();
+        if (!isset($payload['payment_id'])) {
+            Debugger::log('Unable to generate invoice, event is missing `payment_id`.', Debugger::ERROR);
+            return false;
+        }
         $payment = $this->paymentsRepository->find($payload['payment_id']);
         if (!$payment) {
-            Debugger::log('Unable to find payment to generate invoice for: ' . $payload['payment_id'], ILogger::ERROR);
+            Debugger::log("Unable to find payment to generate invoice for payment_id [{$payload['payment_id']}.", Debugger::ERROR);
             return false;
         }
 
@@ -54,11 +52,11 @@ class GenerateInvoiceHandler implements HandlerInterface
 
         $address = $this->addressesRepository->address($user, 'invoice');
         if (!$address) {
-            return true;
+            return false;
         }
 
         if (!$this->invoicesRepository->isPaymentInvoiceable($payment)) {
-            return true;
+            return false;
         }
 
         $this->invoiceGenerator->generate($user, $payment);

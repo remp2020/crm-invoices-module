@@ -50,6 +50,9 @@ class InvoicesRepository extends Repository
     final public function add(ActiveRow $user, ActiveRow $payment, ActiveRow $invoiceNumber)
     {
         $address = $this->addressesRepository->address($user, 'invoice');
+        if (!$address) {
+            throw new \Exception("Address is missing. Invoice for payment VS [{$payment->variable_symbol}] cannot be generated.");
+        }
 
         if (!$address->company_name || trim($address->company_name) == '' || $address->company_name === null) {
             $buyerName = $address->first_name . ' ' . $address->last_name;

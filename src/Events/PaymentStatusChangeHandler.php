@@ -8,17 +8,17 @@ use Crm\PaymentsModule\Events\PaymentChangeStatusEvent;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
 use League\Event\AbstractListener;
 use League\Event\EventInterface;
-use Tomaj\Hermes\Emitter;
+use Tomaj\Hermes\Emitter as HermesEmitter;
 
 class PaymentStatusChangeHandler extends AbstractListener
 {
-    private $applicationConfig;
+    private ApplicationConfig $applicationConfig;
 
-    private $hermesEmitter;
+    private HermesEmitter $hermesEmitter;
 
     public function __construct(
         ApplicationConfig $applicationConfig,
-        Emitter $hermesEmitter
+        HermesEmitter $hermesEmitter
     ) {
         $this->applicationConfig = $applicationConfig;
         $this->hermesEmitter = $hermesEmitter;
@@ -27,7 +27,7 @@ class PaymentStatusChangeHandler extends AbstractListener
     public function handle(EventInterface $event)
     {
         if (!($event instanceof PaymentChangeStatusEvent)) {
-            throw new \Exception('PaymentChangeStatusEvent object expected, instead ' . get_class($event) . ' received');
+            throw new \Exception('Invalid type of event. Expected: [' . PaymentChangeStatusEvent::class . ']. Received: [' . get_class($event) . '].');
         }
 
         $payment = $event->getPayment();
