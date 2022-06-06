@@ -126,7 +126,7 @@ class InvoicesGeneratorGenerateTest extends DatabaseTestCase
         $invoiceNumber = $this->inject(InvoiceNumber::class);
         $nextInvoiceNumber = $invoiceNumber->getNextInvoiceNumber($payment);
         $invoice = $this->invoicesRepository->add($user, $payment, $nextInvoiceNumber);
-//        $invoiceLastUpdated = $invoice->updated_at; // keep this for later assert
+        $invoiceLastUpdated = $invoice->updated_date; // keep this for later assert
         $this->paymentsRepository->update($payment, ['invoice_id' => $invoice->id]);
 
         // ensure there is only this one invoice & invoice number
@@ -155,8 +155,7 @@ class InvoicesGeneratorGenerateTest extends DatabaseTestCase
         $this->assertEquals($payment->invoice_id, $updatedInvoice->id);
 
         // and previous invoice not updated
-        // TODO: We don't have updated_at column for invoices; will be added later
-//        $this->assertEquals($invoiceLastUpdated, $updatedInvoice->updated_at);
+        $this->assertEquals($invoiceLastUpdated, $updatedInvoice->updated_date);
     }
 
     public function testSuccessTwoPaymentsWithSameVS()

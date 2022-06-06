@@ -60,6 +60,7 @@ class InvoicesRepository extends Repository
             $buyerName = $address->company_name;
         }
 
+        $now =  new DateTime();
         $data = [
             'buyer_name' => $buyerName,
             'buyer_address' => trim("{$address->address} {$address->number}"),
@@ -79,7 +80,8 @@ class InvoicesRepository extends Repository
             'variable_symbol' => $payment->variable_symbol,
             'payment_date' => $payment->paid_at,
             'delivery_date' => $invoiceNumber->delivered_at,
-            'created_date' => new DateTime(),
+            'created_date' => $now,
+            'updated_date' => $now,
             'invoice_number_id' => $invoiceNumber
         ];
 
@@ -121,6 +123,12 @@ class InvoicesRepository extends Repository
         }
 
         return $invoice;
+    }
+
+    final public function update(ActiveRow &$invoice, $data): bool
+    {
+        $data['updated_date'] = new DateTime();
+        return parent::update($invoice, $data);
     }
 
     final public function findBetween(DateTime $fromTime, DateTime $toTime, $field = 'delivery_date')
