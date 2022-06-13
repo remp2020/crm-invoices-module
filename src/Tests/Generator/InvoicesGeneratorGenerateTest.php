@@ -364,7 +364,7 @@ class InvoicesGeneratorGenerateTest extends DatabaseTestCase
         try {
             $this->invoiceGenerator->generate($user, $payment);
         } catch (\Exception $catchedException) {
-            $shouldThrowException = new \Exception("Unable to find [invoice] address for user ID [$user->id].");
+            $shouldThrowException = new PaymentNotInvoiceableException($payment->id);
             $this->assertEquals($catchedException->getMessage(), $shouldThrowException->getMessage());
         }
 

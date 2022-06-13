@@ -103,23 +103,15 @@ class InvoiceGenerator
     }
 
     /**
-     * @param $user
-     * @param $payment
-     *
-     * @return PdfResponse|null
      * @throws PaymentNotInvoiceableException
      * @throws InvoiceGenerationException
      * @throws \Crm\ApplicationModule\RedisClientTraitException
      */
-    public function generate($user, $payment)
+    public function generate(ActiveRow $user, ActiveRow $payment): ?PdfResponse
     {
-        if (!$this->invoicesRepository->isPaymentInvoiceable($payment)) {
+        // TODO: move exception throwing inside isPaymentInvoiceable - we should return better errors (with codes) than just generic message with payment id
+        if (!$this->invoicesRepository->isPaymentInvoiceable($payment, $ignoreUserInvoice = false, $checkUserAddress = true)) {
             throw new PaymentNotInvoiceableException($payment->id);
-        }
-
-        $address = $this->addressesRepository->address($user, 'invoice');
-        if (!$address) {
-            throw new \Exception("Unable to find [invoice] address for user ID [$user->id].");
         }
 
         $mutex = new PredisMutex([$this->redis()], 'invoice_generator_' . $payment->id);

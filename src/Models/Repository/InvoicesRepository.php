@@ -139,7 +139,7 @@ class InvoicesRepository extends Repository
     /**
      * isPaymentInvoiceable returns true if invoice can be generated.
      */
-    final public function isPaymentInvoiceable(ActiveRow $payment, bool $ignoreUserInvoice = false): bool
+    final public function isPaymentInvoiceable(ActiveRow $payment, bool $ignoreUserInvoice = false, bool $checkUserAddress = false): bool
     {
         // user setting
         if (!$ignoreUserInvoice && !$payment->user->invoice) {
@@ -170,6 +170,10 @@ class InvoicesRepository extends Repository
         }
 
         if (!self::paymentInInvoiceablePeriod($payment, new DateTime())) {
+            return false;
+        }
+
+        if ($checkUserAddress && ($this->addressesRepository->address($payment->user, 'invoice') === null)) {
             return false;
         }
 

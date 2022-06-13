@@ -9,6 +9,7 @@ use Crm\ApplicationModule\Seeders\ConfigsSeeder;
 use Crm\ApplicationModule\Tests\DatabaseTestCase;
 use Crm\InvoicesModule\Hermes\GenerateInvoiceHandler;
 use Crm\InvoicesModule\Repository\InvoiceItemsRepository;
+use Crm\InvoicesModule\Repository\InvoiceNumber;
 use Crm\InvoicesModule\Repository\InvoiceNumbersRepository;
 use Crm\InvoicesModule\Repository\InvoicesRepository;
 use Crm\InvoicesModule\Seeders\AddressTypesSeeder;
@@ -176,7 +177,7 @@ class GenerateInvoiceHandlerTest extends DatabaseTestCase
         $this->assertEquals(0, $this->invoicesRepository->totalCount());
     }
 
-    public function testMissingAddress()
+    public function testPaymentHasInvoice()
     {
         $payment = $this->addPayment(
             $this->getUser(),
@@ -184,10 +185,21 @@ class GenerateInvoiceHandlerTest extends DatabaseTestCase
             new DateTime(),
             new DateTime()
         );
+        $this->addUserAddress('invoice');
 
         // checks before emit
         $this->assertEquals(0, $this->invoiceNumbersRepository->totalCount());
         $this->assertEquals(0, $this->invoicesRepository->totalCount());
+
+        // add invoice to payment
+        /** @var InvoiceNumber $invoiceNumber */
+        $invoiceNumber = $this->inject(InvoiceNumber::class);
+        $nextInvoiceNumber = $invoiceNumber->getNextInvoiceNumber($payment);
+        $invoice = $this->invoicesRepository->add($this->getUser(), $payment, $nextInvoiceNumber);
+        $invoiceLastUpdated = $invoice->updated_date; // keep this for later assert
+        $this->paymentsRepository->update($payment, ['invoice_id' => $invoice->id]);
+        $this->assertEquals(1, $this->invoiceNumbersRepository->totalCount());
+        $this->assertEquals(1, $this->invoicesRepository->totalCount());
 
         $message = new HermesMessage('generate_invoice', [
             'payment_id' => $payment->id
@@ -196,44 +208,15 @@ class GenerateInvoiceHandlerTest extends DatabaseTestCase
         // *******************************************************************
         // test checks start here
         $result = $this->generateInvoiceHandler->handle($message);
-        $this->assertFalse($result);
+        $this->assertTrue($result);
 
-        // no invoice number or invoice generated
-        $this->assertEquals(0, $this->invoiceNumbersRepository->totalCount());
-        $this->assertEquals(0, $this->invoicesRepository->totalCount());
-    }
+        // no new invoice number or invoice generated
+        $this->assertEquals(1, $this->invoiceNumbersRepository->totalCount());
+        $this->assertEquals(1, $this->invoicesRepository->totalCount());
 
-    public function testUserWithAddressButNotInvoiceType()
-    {
-        $payment = $this->addPayment(
-            $this->getUser(),
-            $this->getSubscriptionType(),
-            new DateTime(),
-            new DateTime()
-        );
-
-        // checks before emit
-        $this->assertEquals(0, $this->invoiceNumbersRepository->totalCount());
-        $this->assertEquals(0, $this->invoicesRepository->totalCount());
-
-        // add address that is not an invoice address type
-        /** @var AddressTypesRepository $addressTypesRepository */
-        $addressTypesRepository = $this->inject(AddressTypesRepository::class);
-        $addressTypesRepository->add('not-an-invoice-type', 'Not an invoice address type');
-        $this->addUserAddress('not-an-invoice-type');
-
-        $message = new HermesMessage('generate_invoice', [
-            'payment_id' => $payment->id
-        ]);
-
-        // *******************************************************************
-        // test checks start here
-        $result = $this->generateInvoiceHandler->handle($message);
-        $this->assertFalse($result);
-
-        // no invoice number or invoice generated
-        $this->assertEquals(0, $this->invoiceNumbersRepository->totalCount());
-        $this->assertEquals(0, $this->invoicesRepository->totalCount());
+        // and previous invoice not updated
+        $invoice = $this->invoicesRepository->find($invoice->id);
+        $this->assertEquals($invoiceLastUpdated, $invoice->updated_date);
     }
 
     public function testInvalidPaymentState()
@@ -247,12 +230,21 @@ class GenerateInvoiceHandlerTest extends DatabaseTestCase
 
         $this->addUserAddress('invoice');
 
+        // checks before emit
+        $this->assertEquals(0, $this->invoiceNumbersRepository->totalCount());
+        $this->assertEquals(0, $this->invoicesRepository->totalCount());
+
         $message = new HermesMessage('generate_invoice', [
             'payment_id' => $payment->id
         ]);
+
+        // *******************************************************************
+        // test checks start here
         $result = $this->generateInvoiceHandler->handle($message);
         $this->assertFalse($result);
-        // no invoices generated
+
+        // no invoice number or invoice generated
+        $this->assertEquals(0, $this->invoiceNumbersRepository->totalCount());
         $this->assertEquals(0, $this->invoicesRepository->totalCount());
     }
 

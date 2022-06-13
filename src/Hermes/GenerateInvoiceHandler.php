@@ -2,11 +2,9 @@
 
 namespace Crm\InvoicesModule\Hermes;
 
-use Crm\ApplicationModule\Config\ApplicationConfig;
 use Crm\InvoicesModule\InvoiceGenerator;
 use Crm\InvoicesModule\Repository\InvoicesRepository;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
-use Crm\UsersModule\Repository\AddressesRepository;
 use Tomaj\Hermes\Handler\HandlerInterface;
 use Tomaj\Hermes\MessageInterface;
 use Tracy\Debugger;
@@ -15,21 +13,15 @@ class GenerateInvoiceHandler implements HandlerInterface
 {
     private InvoiceGenerator $invoiceGenerator;
 
-    private AddressesRepository $addressesRepository;
-
     private InvoicesRepository $invoicesRepository;
 
     private PaymentsRepository $paymentsRepository;
 
     public function __construct(
-        AddressesRepository $addressesRepository,
-        ApplicationConfig $applicationConfig,
         InvoiceGenerator $invoiceGenerator,
         InvoicesRepository $invoicesRepository,
         PaymentsRepository $paymentsRepository
     ) {
-        $this->addressesRepository = $addressesRepository;
-        $this->applicationConfig = $applicationConfig;
         $this->invoiceGenerator = $invoiceGenerator;
         $this->invoicesRepository = $invoicesRepository;
         $this->paymentsRepository = $paymentsRepository;
@@ -48,14 +40,14 @@ class GenerateInvoiceHandler implements HandlerInterface
             return false;
         }
 
-        $user = $payment->user;
-
-        $address = $this->addressesRepository->address($user, 'invoice');
-        if (!$address) {
-            return false;
+        // invoice exists, no need to generate it
+        if ($payment->invoice_id !== null) {
+            return true;
         }
 
-        if (!$this->invoicesRepository->isPaymentInvoiceable($payment)) {
+        $user = $payment->user;
+
+        if (!$this->invoicesRepository->isPaymentInvoiceable($payment, false, true)) {
             return false;
         }
 

@@ -4,6 +4,7 @@ namespace Crm\InvoicesModule\Tests\Repository;
 
 use Crm\ApplicationModule\Tests\DatabaseTestCase;
 use Crm\InvoicesModule\Repository\InvoicesRepository;
+use Crm\InvoicesModule\Seeders\AddressTypesSeeder;
 use Crm\PaymentsModule\PaymentItem\PaymentItemContainer;
 use Crm\PaymentsModule\Repository\PaymentGatewaysRepository;
 use Crm\PaymentsModule\Repository\PaymentItemMetaRepository;
@@ -11,6 +12,9 @@ use Crm\PaymentsModule\Repository\PaymentItemsRepository;
 use Crm\PaymentsModule\Repository\PaymentMetaRepository;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
 use Crm\UsersModule\Auth\UserManager;
+use Crm\UsersModule\Repository\AddressTypesRepository;
+use Crm\UsersModule\Repository\AddressesRepository;
+use Crm\UsersModule\Repository\CountriesRepository;
 use Crm\UsersModule\Repository\UsersRepository;
 use Nette\Database\Table\ActiveRow;
 use Nette\Utils\DateTime;
@@ -30,6 +34,9 @@ class IsPaymentInvoiceableTest extends DatabaseTestCase
     protected function requiredRepositories(): array
     {
         return [
+            AddressTypesRepository::class,
+            AddressesRepository::class,
+            CountriesRepository::class,
             InvoicesRepository::class,
             PaymentGatewaysRepository::class,
             PaymentsRepository::class,
@@ -43,6 +50,7 @@ class IsPaymentInvoiceableTest extends DatabaseTestCase
     protected function requiredSeeders(): array
     {
         return [
+            AddressTypesSeeder::class,
         ];
     }
 
@@ -183,6 +191,57 @@ class IsPaymentInvoiceableTest extends DatabaseTestCase
         $this->assertFalse($isPaymentInvoiceable);
     }
 
+    public function testAddressCheckSuccess()
+    {
+        $user = $this->getUser();
+        $this->usersRepository->update($user, ['invoice' => true]);
+        $this->usersRepository->update($user, ['disable_auto_invoice' => false]);
+
+        $payment = $this->addPayment(
+            $user,
+            new DateTime(),
+            new DateTime(),
+        );
+        $this->addUserAddress('invoice');
+
+        $isPaymentInvoiceable = $this->invoicesRepository->isPaymentInvoiceable($payment, $ignoreUserInvoice = false, $checkUserAddress = true);
+        $this->assertTrue($isPaymentInvoiceable);
+    }
+
+    public function testAddressCheckMissingAddress()
+    {
+        $user = $this->getUser();
+        $this->usersRepository->update($user, ['invoice' => true]);
+        $this->usersRepository->update($user, ['disable_auto_invoice' => false]);
+
+        $payment = $this->addPayment(
+            $user,
+            new DateTime(),
+            new DateTime(),
+        );
+
+        $isPaymentInvoiceable = $this->invoicesRepository->isPaymentInvoiceable($payment, $ignoreUserInvoice = false, $checkUserAddress = true);
+        $this->assertFalse($isPaymentInvoiceable);
+    }
+
+    public function testAddressCheckIncorrectAddressType()
+    {
+        $payment = $this->addPayment(
+            $this->getUser(),
+            new DateTime(),
+            new DateTime()
+        );
+
+        // add address that is not an invoice address type
+        /** @var AddressTypesRepository $addressTypesRepository */
+        $addressTypesRepository = $this->inject(AddressTypesRepository::class);
+        $addressTypesRepository->add('not-an-invoice-type', 'Not an invoice address type');
+        $this->addUserAddress('not-an-invoice-type');
+
+        $isPaymentInvoiceable = $this->invoicesRepository->isPaymentInvoiceable($payment, $ignoreUserInvoice = false, $checkUserAddress = true);
+        $this->assertFalse($isPaymentInvoiceable);
+    }
+
     /* *******************************************************************
      * Helper functions
      * ***************************************************************** */
@@ -239,5 +298,27 @@ class IsPaymentInvoiceableTest extends DatabaseTestCase
         }
 
         return $this->paymentsRepository->find($payment->id);
+    }
+
+    private function addUserAddress(string $addressType): ActiveRow
+    {
+        /** @var CountriesRepository $countriesRepository */
+        $countriesRepository = $this->getRepository(CountriesRepository::class);
+        $country = $countriesRepository->add('SK', 'Slovensko', null);
+
+        /** @var AddressesRepository $addressesRepository */
+        $addressesRepository = $this->getRepository(AddressesRepository::class);
+        return $addressesRepository->add(
+            $this->getUser(),
+            $addressType,
+            'Someone',
+            'Somewhat',
+            'Very Long Street',
+            '42',
+            'Neverville',
+            '13579',
+            $country->id,
+            '+99987654321',
+        );
     }
 }
