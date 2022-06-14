@@ -3,7 +3,6 @@
 namespace Crm\InvoicesModule\Events;
 
 use Crm\ApplicationModule\Hermes\HermesMessage;
-use Crm\InvoicesModule\Repository\InvoicesRepository;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
 use Crm\UsersModule\Events\NewAddressEvent;
 use Crm\UsersModule\Repository\UsersRepository;
@@ -15,20 +14,16 @@ class NewAddressHandler extends AbstractListener
 {
     private HermesEmitter $hermesEmitter;
 
-    private InvoicesRepository $invoicesRepository;
-
     private PaymentsRepository $paymentsRepository;
 
     private UsersRepository $usersRepository;
 
     public function __construct(
         HermesEmitter $hermesEmitter,
-        InvoicesRepository $invoicesRepository,
         PaymentsRepository $paymentsRepository,
         UsersRepository $usersRepository
     ) {
         $this->hermesEmitter = $hermesEmitter;
-        $this->invoicesRepository = $invoicesRepository;
         $this->paymentsRepository = $paymentsRepository;
         $this->usersRepository = $usersRepository;
     }
@@ -57,11 +52,9 @@ class NewAddressHandler extends AbstractListener
             ->fetchAll();
 
         foreach ($payments as $payment) {
-            if ($this->invoicesRepository->isPaymentInvoiceable($payment)) {
-                $this->hermesEmitter->emit(new HermesMessage('generate_invoice', [
-                    'payment_id' => $payment->id
-                ]), HermesMessage::PRIORITY_LOW);
-            }
+            $this->hermesEmitter->emit(new HermesMessage('generate_invoice', [
+                'payment_id' => $payment->id
+            ]), HermesMessage::PRIORITY_LOW);
         }
     }
 }

@@ -241,7 +241,7 @@ class GenerateInvoiceHandlerTest extends DatabaseTestCase
         // *******************************************************************
         // test checks start here
         $result = $this->generateInvoiceHandler->handle($message);
-        $this->assertFalse($result);
+        $this->assertTrue($result);
 
         // no invoice number or invoice generated
         $this->assertEquals(0, $this->invoiceNumbersRepository->totalCount());

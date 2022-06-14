@@ -3,7 +3,7 @@
 namespace Crm\InvoicesModule\Hermes;
 
 use Crm\InvoicesModule\InvoiceGenerator;
-use Crm\InvoicesModule\Repository\InvoicesRepository;
+use Crm\InvoicesModule\PaymentNotInvoiceableException;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
 use Tomaj\Hermes\Handler\HandlerInterface;
 use Tomaj\Hermes\MessageInterface;
@@ -13,17 +13,13 @@ class GenerateInvoiceHandler implements HandlerInterface
 {
     private InvoiceGenerator $invoiceGenerator;
 
-    private InvoicesRepository $invoicesRepository;
-
     private PaymentsRepository $paymentsRepository;
 
     public function __construct(
         InvoiceGenerator $invoiceGenerator,
-        InvoicesRepository $invoicesRepository,
         PaymentsRepository $paymentsRepository
     ) {
         $this->invoiceGenerator = $invoiceGenerator;
-        $this->invoicesRepository = $invoicesRepository;
         $this->paymentsRepository = $paymentsRepository;
     }
 
@@ -45,13 +41,13 @@ class GenerateInvoiceHandler implements HandlerInterface
             return true;
         }
 
-        $user = $payment->user;
-
-        if (!$this->invoicesRepository->isPaymentInvoiceable($payment, false, true)) {
-            return false;
+        try {
+            $this->invoiceGenerator->generate($payment->user, $payment);
+        } catch (PaymentNotInvoiceableException $exception) {
+            // eg. payment is not invoiceable / user doesn't have invoice address / today is outside of invoice period for payment
+            // this is not an error, no need to log it / throw it
+            return true;
         }
-
-        $this->invoiceGenerator->generate($user, $payment);
         return true;
     }
 }
