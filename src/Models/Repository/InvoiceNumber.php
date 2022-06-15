@@ -7,11 +7,9 @@ use Nette\Database\Table\ActiveRow;
 
 class InvoiceNumber implements InvoiceNumberInterface
 {
-    private $invoiceNumbersRepository;
-
-    public function __construct(InvoiceNumbersRepository $invoiceNumbersRepository)
-    {
-        $this->invoiceNumbersRepository = $invoiceNumbersRepository;
+    public function __construct(
+        private InvoiceNumbersRepository $invoiceNumbersRepository
+    ) {
     }
 
     final public function getNextInvoiceNumber(ActiveRow $payment): ActiveRow

@@ -2,6 +2,7 @@
 
 namespace Crm\InvoicesModule\Tests\Generator;
 
+use Crm\ApplicationModule\Config\Repository\ConfigsRepository;
 use Crm\ApplicationModule\Tests\DatabaseTestCase;
 use Crm\InvoicesModule\InvoiceGenerator;
 use Crm\InvoicesModule\PaymentNotInvoiceableException;
@@ -10,6 +11,7 @@ use Crm\InvoicesModule\Repository\InvoiceNumber;
 use Crm\InvoicesModule\Repository\InvoiceNumbersRepository;
 use Crm\InvoicesModule\Repository\InvoicesRepository;
 use Crm\InvoicesModule\Seeders\AddressTypesSeeder;
+use Crm\InvoicesModule\Seeders\ConfigsSeeder;
 use Crm\PaymentsModule\PaymentItem\PaymentItemContainer;
 use Crm\PaymentsModule\Repository\PaymentGatewaysRepository;
 use Crm\PaymentsModule\Repository\PaymentItemsRepository;
@@ -33,6 +35,7 @@ class InvoicesGeneratorGenerateTest extends DatabaseTestCase
 
     private InvoiceGenerator $invoiceGenerator;
 
+    private ConfigsRepository $configsRepository;
     private InvoiceNumbersRepository $invoiceNumbersRepository;
     private InvoicesRepository $invoicesRepository;
     private PaymentsRepository $paymentsRepository;
@@ -43,6 +46,7 @@ class InvoicesGeneratorGenerateTest extends DatabaseTestCase
         return [
             AddressesRepository::class,
             AddressTypesRepository::class,
+            ConfigsRepository::class,
             CountriesRepository::class,
             InvoiceItemsRepository::class,
             InvoiceNumbersRepository::class,
@@ -58,6 +62,7 @@ class InvoicesGeneratorGenerateTest extends DatabaseTestCase
     {
         return [
             AddressTypesSeeder::class,
+            ConfigsSeeder::class, // supplier/invoicing configs
         ];
     }
 
@@ -70,6 +75,18 @@ class InvoicesGeneratorGenerateTest extends DatabaseTestCase
         $this->invoicesRepository = $this->getRepository(InvoicesRepository::class);
         $this->paymentsRepository = $this->getRepository(PaymentsRepository::class);
         $this->usersRepository = $this->getRepository(UsersRepository::class);
+
+        $this->configsRepository = $this->getRepository(ConfigsRepository::class);
+        $supplierConfig = $this->configsRepository->findBy('name', 'supplier_name');
+        $this->configsRepository->update($supplierConfig, ['value' => 'Test invoice supplier']);
+        $supplierConfig = $this->configsRepository->findBy('name', 'supplier_address');
+        $this->configsRepository->update($supplierConfig, ['value' => 'Test avenue']);
+        $supplierConfig = $this->configsRepository->findBy('name', 'supplier_city');
+        $this->configsRepository->update($supplierConfig, ['value' => 'Invoiceville']);
+
+        // ensure before tests that hidden invoice is disabled (it's default, but we want to be sure)
+        $generateInvoiceNumberForPaidPayment = $this->configsRepository->findBy('name', 'generate_invoice_number_for_paid_payment');
+        $this->assertEquals(0, $generateInvoiceNumberForPaidPayment->value);
     }
 
     /* *******************************************************************
@@ -245,7 +262,8 @@ class InvoicesGeneratorGenerateTest extends DatabaseTestCase
         );
         $this->addUserAddress('invoice');
 
-        // but disable user invoicing flag
+        // *******************************************************************
+        // USER INVOICE FLAG DISABLED
         $this->usersRepository->update($user, [
             'invoice' => false,
         ]);
@@ -256,7 +274,7 @@ class InvoicesGeneratorGenerateTest extends DatabaseTestCase
         $this->assertEquals(0, $this->invoicesRepository->totalCount());
 
         // *******************************************************************
-        // test checks start here
+        // (invoice=0) test checks start here
 
         // catching & testing exception manually so we can continue with tests
         // (expectExceptionObject would stop processing)
@@ -271,6 +289,37 @@ class InvoicesGeneratorGenerateTest extends DatabaseTestCase
         // no invoice or invoice number generated
         $this->assertEquals(0, $this->invoiceNumbersRepository->totalCount());
         $this->assertEquals(0, $this->invoicesRepository->totalCount());
+
+        // *******************************************************************
+        // USER INVOICE FLAG ENABLED
+        $this->usersRepository->update($user, [
+            'invoice' => true,
+        ]);
+        $user = $this->usersRepository->find($user->id);
+
+        // ensure there are no invoices & invoice number
+        $this->assertEquals(0, $this->invoiceNumbersRepository->totalCount());
+        $this->assertEquals(0, $this->invoicesRepository->totalCount());
+
+        // *******************************************************************
+        // (invoice=1) test checks start here
+
+        $response = $this->invoiceGenerator->generate($user, $payment);
+
+        // testing only instance; we don't want to test rendering of template in this test
+        $this->assertInstanceOf(PdfResponse::class, $response);
+
+        // check if only one invoice was generated
+        $this->assertEquals(1, $this->invoiceNumbersRepository->totalCount());
+        $invoices = $this->invoicesRepository->getTable()->fetchAll();
+        $this->assertEquals(1, count($invoices));
+        $invoice = reset($invoices);
+
+        $this->assertEquals($payment->variable_symbol, $invoice->variable_symbol);
+
+        // fetch payment again; invoice was attached by generator
+        $payment = $this->paymentsRepository->find($payment->id);
+        $this->assertEquals($invoice->id, $payment->invoice_id);
     }
 
     public function testAdminDisabledInvoicing()
@@ -284,7 +333,7 @@ class InvoicesGeneratorGenerateTest extends DatabaseTestCase
         );
         $this->addUserAddress('invoice');
 
-        // but disable invoicing by admin
+        // ADMIN DISABLE INVOICE FLAG ENABLED
         $this->usersRepository->update($user, [
             'disable_auto_invoice' => true,
         ]);
@@ -295,7 +344,7 @@ class InvoicesGeneratorGenerateTest extends DatabaseTestCase
         $this->assertEquals(0, $this->invoicesRepository->totalCount());
 
         // *******************************************************************
-        // test checks start here
+        // (disable_auto_invoice=1) test checks start here
 
         // catching & testing exception manually so we can continue with tests
         // (expectExceptionObject would stop processing)
@@ -310,6 +359,37 @@ class InvoicesGeneratorGenerateTest extends DatabaseTestCase
         // no invoice or invoice number generated
         $this->assertEquals(0, $this->invoiceNumbersRepository->totalCount());
         $this->assertEquals(0, $this->invoicesRepository->totalCount());
+
+        // *******************************************************************
+        // ADMIN DISABLE INVOICE FLAG DISABLED
+        $this->usersRepository->update($user, [
+            'disable_auto_invoice' => false,
+        ]);
+        $user = $this->usersRepository->find($user->id);
+
+        // ensure there are no invoices & invoice number
+        $this->assertEquals(0, $this->invoiceNumbersRepository->totalCount());
+        $this->assertEquals(0, $this->invoicesRepository->totalCount());
+
+        // *******************************************************************
+        // (disable_auto_invoice=0) test checks start here
+
+        $response = $this->invoiceGenerator->generate($user, $payment);
+
+        // testing only instance; we don't want to test rendering of template in this test
+        $this->assertInstanceOf(PdfResponse::class, $response);
+
+        // check if only one invoice was generated
+        $this->assertEquals(1, $this->invoiceNumbersRepository->totalCount());
+        $invoices = $this->invoicesRepository->getTable()->fetchAll();
+        $this->assertEquals(1, count($invoices));
+        $invoice = reset($invoices);
+
+        $this->assertEquals($payment->variable_symbol, $invoice->variable_symbol);
+
+        // fetch payment again; invoice was attached by generator
+        $payment = $this->paymentsRepository->find($payment->id);
+        $this->assertEquals($invoice->id, $payment->invoice_id);
     }
 
     public function testPaymentNotPaid()
@@ -357,7 +437,7 @@ class InvoicesGeneratorGenerateTest extends DatabaseTestCase
         $this->assertEquals(0, $this->invoicesRepository->totalCount());
 
         // *******************************************************************
-        // test checks start here
+        // (no address) test checks start here
 
         // catching & testing exception manually so we can continue with tests
         // (expectExceptionObject would stop processing)
@@ -371,6 +451,334 @@ class InvoicesGeneratorGenerateTest extends DatabaseTestCase
         // no invoice or invoice number generated
         $this->assertEquals(0, $this->invoiceNumbersRepository->totalCount());
         $this->assertEquals(0, $this->invoicesRepository->totalCount());
+
+        // *******************************************************************
+        // ADD ADDRESS LATER *************************************************
+        $address = $this->addUserAddress('invoice');
+
+        // *******************************************************************
+        // (address added) test checks start here
+
+        $response = $this->invoiceGenerator->generate($user, $payment);
+
+        // testing only instance; we don't want to test rendering of template in this test
+        $this->assertInstanceOf(PdfResponse::class, $response);
+
+        // check if only one invoice was generated
+        $this->assertEquals(1, $this->invoiceNumbersRepository->totalCount());
+        $invoices = $this->invoicesRepository->getTable()->fetchAll();
+        $this->assertEquals(1, count($invoices));
+        $invoice = reset($invoices);
+
+        $this->assertEquals($payment->variable_symbol, $invoice->variable_symbol);
+
+        // fetch payment again; invoice was attached by generator
+        $payment = $this->paymentsRepository->find($payment->id);
+        $this->assertEquals($invoice->id, $payment->invoice_id);
+
+        // and address on invoice is not empty
+        $this->assertEquals($address->first_name . ' ' . $address->last_name, $invoice->buyer_name);
+        $this->assertEquals($address->address . ' ' . $address->number, $invoice->buyer_address);
+        $this->assertEquals($address->city, $invoice->buyer_city);
+        $this->assertEquals($address->zip, $invoice->buyer_zip);
+        $this->assertEquals($address->country_id, $invoice->buyer_country_id);
+    }
+
+    /* *******************************************************************
+     * Same tests but with enabled config `generate_invoice_number_for_paid_payment`.
+     * ***************************************************************** */
+
+    private function enableGenerateInvoiceHiddenIfAddressMissingConfig()
+    {
+        // enable config
+        $generateInvoiceNumberForPaidPayment = $this->configsRepository->findBy('name', 'generate_invoice_number_for_paid_payment');
+        $this->configsRepository->update($generateInvoiceNumberForPaidPayment, ['value' => true]);
+    }
+
+    public function testWithHiddenInvoiceNumberEnabledSuccess()
+    {
+        $this->enableGenerateInvoiceHiddenIfAddressMissingConfig();
+        // no change in result of test
+        $this->testSuccess();
+    }
+
+    public function testWithHiddenInvoiceNumberEnabledSuccessButInvoiceAlreadyExisted()
+    {
+        $this->enableGenerateInvoiceHiddenIfAddressMissingConfig();
+        // no change in result of test
+        $this->testSuccessButInvoiceAlreadyExisted();
+    }
+
+    public function testWithHiddenInvoiceNumberEnabledSuccessTwoPaymentsWithSameVS()
+    {
+        $this->enableGenerateInvoiceHiddenIfAddressMissingConfig();
+        // no change in result of test
+        $this->testSuccessTwoPaymentsWithSameVS();
+    }
+
+    public function testWithHiddenInvoiceNumberEnabledUserDisabledInvoicing()
+    {
+        $this->enableGenerateInvoiceHiddenIfAddressMissingConfig();
+        // test changed; with config enabled, we ignore user `invoice` settings (and hidden invoice number is generated)
+        // $this->testUserDisabledInvoicing();
+
+        // prepare "success" conditions
+        $user = $this->getUser();
+        $payment = $this->addPayment(
+            $user,
+            new DateTime(),
+            new DateTime(),
+        );
+        $address = $this->addUserAddress('invoice');
+
+        // *******************************************************************
+        // USER INVOICE FLAG DISABLED
+        $this->usersRepository->update($user, [
+            'invoice' => false,
+        ]);
+        $user = $this->usersRepository->find($user->id);
+
+        // ensure there are no invoices & invoice numbers
+        $this->assertEquals(0, $this->invoiceNumbersRepository->totalCount());
+        $this->assertEquals(0, $this->invoicesRepository->totalCount());
+
+        // *******************************************************************
+        // (invoice=0) test checks start here
+
+        // catching & testing exception manually so we can continue with tests
+        // (expectExceptionObject would stop processing)
+        try {
+            $this->invoiceGenerator->generate($user, $payment);
+        } catch (\Exception $catchedException) {
+            $this->assertInstanceOf(PaymentNotInvoiceableException::class, $catchedException);
+            $shouldThrow = new PaymentNotInvoiceableException($payment->id);
+            $this->assertEquals($catchedException->getMessage(), $shouldThrow->getMessage());
+        }
+
+        // invoice number was generated but no invoice
+        $this->assertEquals(1, $this->invoiceNumbersRepository->totalCount());
+        $this->assertEquals(0, $this->invoicesRepository->totalCount());
+
+        // invoice number is linked to payment
+        $firstInvoiceNumber = $this->invoiceNumbersRepository->getTable()->fetch();
+        $payment = $this->paymentsRepository->find($payment->id); // refresh data
+        $this->assertEquals($payment->invoice_number_id, $firstInvoiceNumber->id);
+        // not used by any invoice
+        $this->assertNull($this->invoicesRepository->findBy('invoice_number_id', $firstInvoiceNumber->id));
+
+        // *******************************************************************
+        // USER INVOICE FLAG ENABLED
+        $this->usersRepository->update($user, [
+            'invoice' => true,
+        ]);
+        $user = $this->usersRepository->find($user->id);
+
+        // ensure there are no invoices & and only one invoice number
+        $this->assertEquals(1, $this->invoiceNumbersRepository->totalCount());
+        $this->assertEquals(0, $this->invoicesRepository->totalCount());
+
+        // *******************************************************************
+        // (invoice=1) test checks start here
+
+        $result = $this->invoiceGenerator->generate($user, $payment);
+        $this->assertNotNull($result); // invoice was generated & returned
+
+        // refresh payment data
+        $payment = $this->paymentsRepository->find($payment->id);
+
+        // no new invoice number was generated
+        $invoiceNumbers = $this->invoiceNumbersRepository->getTable()->fetchAll();
+        $this->assertEquals(1, count($invoiceNumbers));
+        $updatedInvoiceNumber = reset($invoiceNumbers);
+        // just to be sure, check if number wasn't changed (eg. update; or removal & newly generated)
+        $this->assertEquals($firstInvoiceNumber->number, $updatedInvoiceNumber->number);
+        $this->assertEquals($firstInvoiceNumber->id, $updatedInvoiceNumber->id);
+
+        // invoice was generated
+        $invoices = $this->invoicesRepository->getTable()->fetchAll();
+        $this->assertEquals(1, count($invoices));
+        $invoice = reset($invoices);
+        $this->assertEquals($firstInvoiceNumber->number, $invoice->invoice_number->number);
+
+        // fetch payment again; invoice now should be attached by generator
+        // (because address is not missing and invoice is not hidden)
+        $payment = $this->paymentsRepository->find($payment->id);
+        $this->assertEquals($invoice->id, $payment->invoice_id);
+        $this->assertEquals($payment->variable_symbol, $invoice->variable_symbol);
+        $this->assertEquals($payment->invoice_number_id, $updatedInvoiceNumber->id);
+    }
+
+    public function testWithHiddenInvoiceNumberEnabledAdminDisabledInvoicing()
+    {
+        $this->enableGenerateInvoiceHiddenIfAddressMissingConfig();
+        // test changed; with config enabled, we ignore admin `disable_auto_invoice` setting (and hidden invoice number is generated)
+        // $this->testAdminDisabledInvoicing();
+
+        // prepare "success" conditions
+        $user = $this->getUser();
+        $payment = $this->addPayment(
+            $user,
+            new DateTime(),
+            new DateTime(),
+        );
+        $this->addUserAddress('invoice');
+
+        // ADMIN DISABLE INVOICE FLAG ENABLED
+        $this->usersRepository->update($user, [
+            'disable_auto_invoice' => true,
+        ]);
+        $user = $this->usersRepository->find($user->id);
+
+        // ensure there are no invoices & invoice numbers
+        $this->assertEquals(0, $this->invoiceNumbersRepository->totalCount());
+        $this->assertEquals(0, $this->invoicesRepository->totalCount());
+
+        // *******************************************************************
+        // (disable_auto_invoice=1) test checks start here
+
+        // catching & testing exception manually so we can continue with tests
+        // (expectExceptionObject would stop processing)
+        try {
+            $this->invoiceGenerator->generate($user, $payment);
+        } catch (\Exception $catchedException) {
+            $this->assertInstanceOf(PaymentNotInvoiceableException::class, $catchedException);
+            $shouldThrow = new PaymentNotInvoiceableException($payment->id);
+            $this->assertEquals($catchedException->getMessage(), $shouldThrow->getMessage());
+        }
+
+        // invoice number was generated but no invoice
+        $this->assertEquals(1, $this->invoiceNumbersRepository->totalCount());
+        $this->assertEquals(0, $this->invoicesRepository->totalCount());
+
+        // invoice number is linked to payment
+        $firstInvoiceNumber = $this->invoiceNumbersRepository->getTable()->fetch();
+        $payment = $this->paymentsRepository->find($payment->id); // refresh data
+        $this->assertEquals($payment->invoice_number_id, $firstInvoiceNumber->id);
+        // not used by any invoice
+        $this->assertNull($this->invoicesRepository->findBy('invoice_number_id', $firstInvoiceNumber->id));
+
+        // *******************************************************************
+        // ADMIN DISABLE INVOICE FLAG DISABLED
+        $this->usersRepository->update($user, [
+            'disable_auto_invoice' => false,
+        ]);
+        $user = $this->usersRepository->find($user->id);
+
+        // ensure there are no invoices & and only one invoice number
+        $this->assertEquals(1, $this->invoiceNumbersRepository->totalCount());
+        $this->assertEquals(0, $this->invoicesRepository->totalCount());
+
+        // *******************************************************************
+        // (disable_auto_invoice=0) test checks start here
+
+        $response = $this->invoiceGenerator->generate($user, $payment);
+
+        // testing only instance; we don't want to test rendering of template in this test
+        $this->assertInstanceOf(PdfResponse::class, $response);
+
+        // check if only one invoice was generated
+        $this->assertEquals(1, $this->invoiceNumbersRepository->totalCount());
+        $invoices = $this->invoicesRepository->getTable()->fetchAll();
+        $this->assertEquals(1, count($invoices));
+        $invoice = reset($invoices);
+
+        $this->assertEquals($payment->variable_symbol, $invoice->variable_symbol);
+
+        // fetch payment again; invoice was attached by generator
+        $payment = $this->paymentsRepository->find($payment->id);
+        $this->assertEquals($invoice->id, $payment->invoice_id);
+    }
+
+    public function testWithHiddenInvoiceNumberEnabledPaymentNotPaid()
+    {
+        $this->enableGenerateInvoiceHiddenIfAddressMissingConfig();
+        // no change in result of test
+        $this->testPaymentNotPaid();
+    }
+
+    public function testWithHiddenInvoiceNumberEnabledMissingAddress()
+    {
+        $this->enableGenerateInvoiceHiddenIfAddressMissingConfig();
+        // test changed; with config enabled, we ignore missing address (and hidden invoice number is generated)
+        // $this->testMissingAddress();
+
+        // *******************************************************************
+        // NO ADDRESS ****************************************************
+        $user = $this->getUser();
+        $payment = $this->addPayment(
+            $user,
+            new DateTime(),
+            new DateTime(),
+        );
+
+        // ensure there are no invoices & invoice numbers
+        $this->assertEquals(0, $this->invoiceNumbersRepository->totalCount());
+        $this->assertEquals(0, $this->invoicesRepository->totalCount());
+
+        // *******************************************************************
+        // (no address) test checks start here
+
+        // catching & testing exception manually so we can continue with tests
+        // (expectExceptionObject would stop processing)
+        try {
+            $this->invoiceGenerator->generate($user, $payment);
+        } catch (\Exception $catchedException) {
+            $this->assertInstanceOf(PaymentNotInvoiceableException::class, $catchedException);
+            $shouldThrow = new PaymentNotInvoiceableException($payment->id);
+            $this->assertEquals($catchedException->getMessage(), $shouldThrow->getMessage());
+        }
+
+        // refresh payment data
+        $payment = $this->paymentsRepository->find($payment->id);
+
+        // no invoice was generated
+        $this->assertEquals(0, $this->invoicesRepository->totalCount());
+
+        // but there is one invoice number linked to payment
+        $invoiceNumbers = $this->invoiceNumbersRepository->getTable()->fetchAll();
+        $this->assertEquals(1, count($invoiceNumbers));
+        $firstInvoiceNumber = reset($invoiceNumbers);
+        $this->assertEquals($payment->invoice_number_id, $firstInvoiceNumber->id);
+        // not used by any invoice
+        $this->assertNull($this->invoicesRepository->findBy('invoice_number_id', $firstInvoiceNumber->id));
+
+        // *******************************************************************
+        // ADD ADDRESS LATER *************************************************
+        $address = $this->addUserAddress('invoice');
+
+        // *******************************************************************
+        // (address added) test checks start here
+
+        $result = $this->invoiceGenerator->generate($user, $payment); // this would be triggered by handler AddressChangedHandler after address was added
+        $this->assertNotNull($result); // invoice was generated & returned
+
+        // no new invoice number was generated
+        $invoiceNumbers = $this->invoiceNumbersRepository->getTable()->fetchAll();
+        $this->assertEquals(1, count($invoiceNumbers));
+        $updatedInvoiceNumber = reset($invoiceNumbers);
+        // just to be sure, check if number wasn't changed (eg. update; or removal & newly generated)
+        $this->assertEquals($firstInvoiceNumber->number, $updatedInvoiceNumber->number);
+        $this->assertEquals($firstInvoiceNumber->id, $updatedInvoiceNumber->id);
+
+        // invoice was generated
+        $invoices = $this->invoicesRepository->getTable()->fetchAll();
+        $this->assertEquals(1, count($invoices));
+        $invoice = reset($invoices);
+        $this->assertEquals($firstInvoiceNumber->number, $invoice->invoice_number->number);
+
+        // fetch payment again; invoice now should be attached by generator
+        // (because address is not missing and invoice is not hidden)
+        $payment = $this->paymentsRepository->find($payment->id);
+        $this->assertEquals($invoice->id, $payment->invoice_id);
+        $this->assertEquals($payment->variable_symbol, $invoice->variable_symbol);
+        $this->assertEquals($payment->invoice_number_id, $updatedInvoiceNumber->id);
+
+        // and address on invoice is not empty
+        $this->assertEquals($address->first_name . ' ' . $address->last_name, $invoice->buyer_name);
+        $this->assertEquals($address->address . ' ' . $address->number, $invoice->buyer_address);
+        $this->assertEquals($address->city, $invoice->buyer_city);
+        $this->assertEquals($address->zip, $invoice->buyer_zip);
+        $this->assertEquals($address->country_id, $invoice->buyer_country_id);
     }
 
     /* *******************************************************************

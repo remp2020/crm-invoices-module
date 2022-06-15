@@ -32,38 +32,17 @@ class InvoiceGenerator
     /** @var string */
     private $tempDir;
 
-    private $invoicesRepository;
-
-    private $paymentsRepository;
-
-    private $applicationConfig;
-
-    private $priceHelper;
-
-    private $translator;
-
-    private $invoiceNumber;
-
-    private $addressesRepository;
-
     public function __construct(
-        InvoicesRepository $invoicesRepository,
-        PaymentsRepository $paymentsRepository,
-        ApplicationConfig $applicationConfig,
-        PriceHelper $priceHelper,
-        Translator $translator,
-        InvoiceNumberInterface $invoiceNumber,
+        private InvoicesRepository $invoicesRepository,
+        private PaymentsRepository $paymentsRepository,
+        private ApplicationConfig $applicationConfig,
+        private PriceHelper $priceHelper,
+        private Translator $translator,
+        private InvoiceNumberInterface $invoiceNumber,
         RedisClientFactory $redisClientFactory,
-        AddressesRepository $addressesRepository
+        private AddressesRepository $addressesRepository
     ) {
-        $this->invoicesRepository = $invoicesRepository;
-        $this->paymentsRepository = $paymentsRepository;
-        $this->applicationConfig = $applicationConfig;
-        $this->priceHelper = $priceHelper;
-        $this->translator = $translator;
-        $this->invoiceNumber = $invoiceNumber;
         $this->redisClientFactory = $redisClientFactory;
-        $this->addressesRepository = $addressesRepository;
     }
 
     public function setTempDir(string $tempDir)
@@ -109,25 +88,55 @@ class InvoiceGenerator
      */
     public function generate(ActiveRow $user, ActiveRow $payment): ?PdfResponse
     {
-        // TODO: move exception throwing inside isPaymentInvoiceable - we should return better errors (with codes) than just generic message with payment id
-        if (!$this->invoicesRepository->isPaymentInvoiceable($payment, $ignoreUserInvoice = false, $checkUserAddress = true)) {
-            throw new PaymentNotInvoiceableException($payment->id);
-        }
+        // load before mutex in case config is not in cache (do not want to slow down mutex)
+        $generateInvoiceNumberForPaidPayment = filter_var($this->applicationConfig->get('generate_invoice_number_for_paid_payment'), FILTER_VALIDATE_BOOLEAN);
 
         $mutex = new PredisMutex([$this->redis()], 'invoice_generator_' . $payment->id);
-
-        $mutex->synchronized(function () use ($user, $payment) {
+        $mutex->synchronized(function () use ($user, $payment, $generateInvoiceNumberForPaidPayment) {
+            // refresh to have current data
             $payment = $this->paymentsRepository->find($payment->id);
 
-            if ($payment && $payment->invoice_id === null) {
-                $invoiceNumber = $this->invoiceNumber->getNextInvoiceNumber($payment);
-                $invoice = $this->invoicesRepository->add($user, $payment, $invoiceNumber);
+            // invoice exists
+            if ($payment->invoice_id !== null) {
+                return;
+            }
 
+            $paymentInvoiceable = $this->invoicesRepository->isPaymentInvoiceable($payment, false, true);
+
+            if ($payment->invoice_number === null) {
+                $generateInvoiceNumber = false;
+
+                $invoiceNumberGeneratable = $this->invoicesRepository->isInvoiceNumberGeneratable($payment);
+
+                // generate invoice number if payment is invoiceable
+                if ($paymentInvoiceable) {
+                    $generateInvoiceNumber = true;
+                // or if invoice number generation is enabled for every paid payment
+                } elseif ($generateInvoiceNumberForPaidPayment && $invoiceNumberGeneratable) {
+                    $generateInvoiceNumber = true;
+                }
+
+                if ($generateInvoiceNumber) {
+                    $invoiceNumber = $this->invoiceNumber->getNextInvoiceNumber($payment);
+                    $this->paymentsRepository->update($payment, [
+                        'invoice_number_id' => $invoiceNumber->id,
+                    ]);
+                }
+            }
+
+            // payment is invoiceable => generate invoice
+            if ($paymentInvoiceable && $payment->invoice_number) {
+                $invoice = $this->invoicesRepository->add($user, $payment, $payment->invoice_number);
                 $this->paymentsRepository->update($payment, ['invoice_id' => $invoice->id]);
+            } else {
+                throw new PaymentNotInvoiceableException($payment->id);
             }
         });
 
         $payment = $this->paymentsRepository->find($payment->id);
+        if ($payment->invoice_id === null) {
+            return null;
+        }
 
         return $this->renderInvoicePDF($user, $payment);
     }

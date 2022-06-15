@@ -14,22 +14,13 @@ class ConfigsSeeder implements ISeeder
 {
     use ConfigsTrait;
 
-    private $configCategoriesRepository;
-
-    private $configsRepository;
-
-    private $configBuilder;
-
     public function __construct(
-        ConfigCategoriesRepository $configCategoriesRepository,
-        ConfigsRepository $configsRepository,
-        ConfigBuilder $configBuilder
+        private ConfigCategoriesRepository $configCategoriesRepository,
+        private ConfigsRepository $configsRepository,
+        private ConfigBuilder $configBuilder
     ) {
-        $this->configCategoriesRepository = $configCategoriesRepository;
-        $this->configsRepository = $configsRepository;
-        $this->configBuilder = $configBuilder;
     }
-    
+
     public function seed(OutputInterface $output)
     {
         $category = $this->getCategory($output, 'invoices.config.category', 'fa fa-file-invoice', 200);
@@ -197,6 +188,17 @@ class ConfigsSeeder implements ISeeder
             null,
             true,
             1300
+        );
+
+        $this->addConfig(
+            $output,
+            $category,
+            'generate_invoice_number_for_paid_payment',
+            ApplicationConfig::TYPE_BOOLEAN,
+            'invoices.config.generate_invoice_number_for_paid_payment.name',
+            'invoices.config.generate_invoice_number_for_paid_payment.description',
+            false, // keeping compatible with previous state of invoice generation
+            1400
         );
     }
 }

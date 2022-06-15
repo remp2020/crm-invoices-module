@@ -257,7 +257,7 @@ class InvoicesRepositoryTest extends DatabaseTestCase
         }
     }
 
-    public function testMissingAddress()
+    public function testMissingAddressNoInvoice()
     {
         $user = $this->getUser();
         $payment = $this->addPayment($user, new DateTime(), new DateTime(), $this->getSubscriptionType());
@@ -270,8 +270,13 @@ class InvoicesRepositoryTest extends DatabaseTestCase
         $this->assertEquals(0, $this->invoicesRepository->totalCount());
         $this->assertEquals(0, $this->invoiceItemsRepository->totalCount());
 
-        $this->expectExceptionObject(new \Exception("Address is missing. Invoice for payment VS [{$payment->variable_symbol}] cannot be generated."));
-        $this->invoicesRepository->add($user, $payment, $nextInvoiceNumber);
+        // catching & testing exception manually so we can continue with tests
+        // (expectExceptionObject would stop processing)
+        try {
+            $this->invoicesRepository->add($user, $payment, $nextInvoiceNumber);
+        } catch (\Exception $catchedException) {
+            $this->assertEquals($catchedException->getMessage(), "Buyer's address is missing. Invoice for payment VS [{$payment->variable_symbol}] cannot be created.");
+        }
 
         // *******************************************************************
         // test checks start here

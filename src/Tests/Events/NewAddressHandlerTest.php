@@ -110,7 +110,7 @@ class NewAddressHandlerTest extends DatabaseTestCase
         $this->newAddressHandler->handle($event);
         $this->dispatcher->handle();
 
-        // no change
+        // no change to user's invoicing settings
         $user = $this->usersRepository->find($user->id);
         $this->assertEquals(1, $user->invoice);
         $this->assertEquals(0, $user->disable_auto_invoice);

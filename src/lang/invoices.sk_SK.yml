@@ -229,3 +229,6 @@ config:
         name: 'Vygenerovať a odoslať faktúru ako prílohu k notifikácií po platbe'
     generate_invoice_after_payment:
         name: 'Vygenerovať faktúru ihneď po platbe'
+    generate_invoice_number_for_paid_payment:
+        name: 'Vygenerovať číslo faktúry pre každú zaplatenú platbu'
+        description: "Číslo faktúry bude vygenerovaná pre každú zaplatenú platbu ignorujúc chýbajúcu adresu, nastavenia užívateľa (nefaktúrovať) a `invoiceable` nastavenie platby. Faktúra bude vygenerovaná (a stiahnuteľná) ihneď ako užívateľ pridá / opraví fakturačnú adresu alebo povolí faktúrovanie pre svoj účet. Generovanie čísla faktúry bez vygenerovania faktúry pomôže dodržať číselník faktúr a uľahčí pregenerovanie a stiahnutie faktúry po skončení faktúračnej doby (ale pred účtovným uzavretím mesiaca)."

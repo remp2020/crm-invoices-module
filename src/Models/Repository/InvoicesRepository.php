@@ -20,56 +20,54 @@ class InvoicesRepository extends Repository
 {
     public const PAYMENT_INVOICEABLE_PERIOD_DAYS = 15;
 
-    private $applicationConfig;
-
-    private $addressesRepository;
-
-    private $invoiceItemsRepository;
-
-    private $userDateHelper;
-
     protected $tableName = 'invoices';
 
     public function __construct(
         Explorer $database,
-        ApplicationConfig $applicationConfig,
-        AddressesRepository $addressesRepository,
-        InvoiceItemsRepository $invoiceItemsRepository,
+        private ApplicationConfig $applicationConfig,
+        private AddressesRepository $addressesRepository,
+        private InvoiceItemsRepository $invoiceItemsRepository,
         AuditLogRepository $auditLogRepository,
-        UserDateHelper $userDateHelper
+        private UserDateHelper $userDateHelper
     ) {
         parent::__construct($database);
-        $this->applicationConfig = $applicationConfig;
-        $this->addressesRepository = $addressesRepository;
-        $this->invoiceItemsRepository = $invoiceItemsRepository;
+
         $this->auditLogRepository = $auditLogRepository;
         $this->userDateHelper = clone $userDateHelper;
         $this->userDateHelper->setFormat([IntlDateFormatter::MEDIUM, IntlDateFormatter::SHORT]);
     }
 
+    // TODO: deprecate use of $invoiceNumber & load it from payment ($payment->invoice_number)
     final public function add(ActiveRow $user, ActiveRow $payment, ActiveRow $invoiceNumber)
     {
+        $now =  new DateTime();
+
         $address = $this->addressesRepository->address($user, 'invoice');
         if (!$address) {
-            throw new \Exception("Address is missing. Invoice for payment VS [{$payment->variable_symbol}] cannot be generated.");
+            throw new \Exception("Buyer's address is missing. Invoice for payment VS [{$payment->variable_symbol}] cannot be created.");
         }
 
-        if (!$address->company_name || trim($address->company_name) == '' || $address->company_name === null) {
-            $buyerName = $address->first_name . ' ' . $address->last_name;
+        // use company name if set; otherwise join first name & last name
+        if (isset($address->company_name) && !empty(trim($address->company_name))) {
+            $buyerName = trim($address->company_name);
         } else {
-            $buyerName = $address->company_name;
+            $buyerName = trim(($address->first_name ?? '') . ' ' . ($address->last_name ?? ''));
+        }
+        // join street & number into address
+        if ($address->address) {
+            $buyerAddress = trim($address->address . ' ' . $address->number ?? '');
         }
 
-        $now =  new DateTime();
         $data = [
-            'buyer_name' => $buyerName,
-            'buyer_address' => trim("{$address->address} {$address->number}"),
-            'buyer_zip' => $address->zip,
-            'buyer_city' => $address->city,
-            'buyer_country_id' => $address->country_id,
-            'buyer_id' => $address->company_id,
-            'buyer_tax_id' => $address->company_tax_id,
-            'buyer_vat_id' => $address->company_vat_id,
+            'buyer_name' => !empty($buyerName) ? $buyerName : null,
+            'buyer_address' => $buyerAddress ?? null,
+            'buyer_zip' => $address->zip ?? null,
+            'buyer_city' => $address->city ?? null,
+            'buyer_country_id' => $address->country_id ?? null,
+            'buyer_id' => $address->company_id ?? null,
+            'buyer_tax_id' => $address->company_tax_id ?? null,
+            'buyer_vat_id' => $address->company_vat_id ?? null,
+
             'supplier_name' => $this->applicationConfig->get('supplier_name'),
             'supplier_address' => $this->applicationConfig->get('supplier_address'),
             'supplier_city' => $this->applicationConfig->get('supplier_city'),
@@ -77,6 +75,7 @@ class InvoicesRepository extends Repository
             'supplier_id' => $this->applicationConfig->get('supplier_id'),
             'supplier_tax_id' => $this->applicationConfig->get('supplier_tax_id'),
             'supplier_vat_id' => $this->applicationConfig->get('supplier_vat_id'),
+
             'variable_symbol' => $payment->variable_symbol,
             'payment_date' => $payment->paid_at,
             'delivery_date' => $invoiceNumber->delivered_at,
@@ -87,7 +86,7 @@ class InvoicesRepository extends Repository
 
         /** @var ActiveRow $invoice */
         $invoice = $this->insert($data);
-        if (!$invoice) {
+        if (!($invoice instanceof ActiveRow)) {
             return $invoice;
         }
 
@@ -137,10 +136,14 @@ class InvoicesRepository extends Repository
     }
 
     /**
-     * isPaymentInvoiceable returns true if invoice can be generated.
+     * Returns true if invoice can be generated.
      */
     final public function isPaymentInvoiceable(ActiveRow $payment, bool $ignoreUserInvoice = false, bool $checkUserAddress = false): bool
     {
+        if (!$this->isInvoiceNumberGeneratable($payment)) {
+            return false;
+        }
+
         // user setting
         if (!$ignoreUserInvoice && !$payment->user->invoice) {
             return false;
@@ -148,15 +151,6 @@ class InvoicesRepository extends Repository
 
         // admin setting
         if ($payment->user->disable_auto_invoice) {
-            return false;
-        }
-
-        // check payment status
-        if ($payment->status !== PaymentsRepository::STATUS_PAID) {
-            return false;
-        }
-        if ($payment->paid_at === null) {
-            Debugger::log("There's a paid payment without paid_at date: " . $payment->id, ILogger::WARNING);
             return false;
         }
 
@@ -169,11 +163,28 @@ class InvoicesRepository extends Repository
             return false;
         }
 
-        if (!self::paymentInInvoiceablePeriod($payment, new DateTime())) {
+        if ($checkUserAddress && ($this->addressesRepository->address($payment->user, 'invoice') === null)) {
             return false;
         }
 
-        if ($checkUserAddress && ($this->addressesRepository->address($payment->user, 'invoice') === null)) {
+        return true;
+    }
+
+    /**
+     * Returns true if invoice number can be generated for payment.
+     */
+    final public function isInvoiceNumberGeneratable(ActiveRow $payment): bool
+    {
+        // check payment status
+        if ($payment->status !== PaymentsRepository::STATUS_PAID) {
+            return false;
+        }
+        if ($payment->paid_at === null) {
+            Debugger::log("There's a paid payment without paid_at date: " . $payment->id, ILogger::WARNING);
+            return false;
+        }
+
+        if (!self::paymentInInvoiceablePeriod($payment, new DateTime())) {
             return false;
         }
 

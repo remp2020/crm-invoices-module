@@ -12,20 +12,11 @@ use Tomaj\Hermes\Emitter as HermesEmitter;
 
 class NewAddressHandler extends AbstractListener
 {
-    private HermesEmitter $hermesEmitter;
-
-    private PaymentsRepository $paymentsRepository;
-
-    private UsersRepository $usersRepository;
-
     public function __construct(
-        HermesEmitter $hermesEmitter,
-        PaymentsRepository $paymentsRepository,
-        UsersRepository $usersRepository
+        private HermesEmitter $hermesEmitter,
+        private PaymentsRepository $paymentsRepository,
+        private UsersRepository $usersRepository
     ) {
-        $this->hermesEmitter = $hermesEmitter;
-        $this->paymentsRepository = $paymentsRepository;
-        $this->usersRepository = $usersRepository;
     }
 
     public function handle(EventInterface $event)
@@ -46,6 +37,12 @@ class NewAddressHandler extends AbstractListener
                 'disable_auto_invoice' => false,
             ]);
         }
+
+        // TODO: Should we check generate_invoice_after_payment config (see PaymentStatusChangeHandler)? If it is disabled, we probably shouldn't generate invoice automatically.
+
+        // TODO: Should we check generate_invoice_number_for_paid_payment also here?
+        //       We are generating useless hermes messages if user has disabled invoicing ->
+        //       invoice is already generated as hidden by `PaymentStatusChangeHandler`
 
         $payments = $this->paymentsRepository->userPayments($address->user_id)
             ->where('invoice_id', null)

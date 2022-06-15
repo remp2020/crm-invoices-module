@@ -226,3 +226,6 @@ config:
         name: 'Generate and send an invoice as an attachment to a notification after payment'
     generate_invoice_after_payment:
         name: 'Generate an invoice immediately after payment'
+    generate_invoice_number_for_paid_payment:
+        name: 'Generate an invoice number for every paid payment'
+        description: "An invoice number will be generated for each paid payment, ignoring missing user address, user settings (do not invoice) and `invoiceable` flag on payment. The invoice will be generated (and downloadable) as soon as the user adds / corrects the billing address or enables invoicing for their account. Generating an invoice number without generating an invoice will help to maintain the invoice number sequence and make it easier to generate and download the invoice after the end of the invoicing period (but before the accounting close of the month)."
