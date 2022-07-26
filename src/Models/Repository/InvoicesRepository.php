@@ -107,6 +107,7 @@ class InvoicesRepository extends Repository
                 $text,
                 $item->count,
                 $item->amount,
+                $item->amount_without_vat,
                 $item->vat,
                 $this->applicationConfig->get('currency')
             );

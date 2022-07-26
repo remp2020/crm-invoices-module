@@ -245,15 +245,13 @@
         {foreach $invoice->related('invoice_items') as $invoiceItem}
             {var $vatRates[$invoiceItem->vat] = true}
             {var $totalItemPrice = $invoiceItem->count * $invoiceItem->price}
-            {var $vatCoef = 1 + $invoiceItem->vat / 100}
             {var $currency = $invoiceItem->currency}
-            {var $vatAmount = round($invoiceItem->price / $vatCoef * ($vatCoef - 1), 2)}
-            {var $itemAmount = $invoiceItem->price - $vatAmount}
+            {var $vatAmount = $invoiceItem->price - $invoiceItem->price_without_vat}
 
             <tr n:class="$i == 0 ? first-child, real-item">
                 <td class="item_name">{$invoiceItem->text|noescape}</td>
                 <td>{$invoiceItem->count}</td>
-                <td>{$itemAmount|price:$currency}</td>
+                <td>{$invoiceItem->price_without_vat|price:$currency}</td>
                 <td>{$invoiceItem->vat}%</td>
                 <td>{$vatAmount|price:$currency}</td>
                 <td>{$invoiceItem->price|price:$currency}</td>
@@ -310,12 +308,11 @@
             {foreach $vatRates as $rate => $_}
                 <tr>
                     {var $itemsPrice = $invoice->related('invoice_items')->where('vat', $rate)->sum('price * count')}
-                    {var $vatCoef = 1 + $rate / 100}
-                    {var $vatAmount = round($itemsPrice / $vatCoef * ($vatCoef - 1), 2)}
-                    {var $itemAmount = $itemsPrice - $vatAmount}
+                    {var $itemsPriceWithoutVat = $invoice->related('invoice_items')->where('vat', $rate)->sum('price_without_vat * count')}
+                    {var $vatAmount = $itemsPrice - $itemsPriceWithoutVat}
 
                     <td>{$rate}%</td>
-                    <td>{$itemAmount|price:$currency}</td>
+                    <td>{$itemsPriceWithoutVat|price:$currency}</td>
                     <td>{$vatAmount|price:$currency}</td>
                     <td>{$itemsPrice|price:$currency}</td>
                 </tr>
