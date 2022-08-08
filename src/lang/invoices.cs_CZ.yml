@@ -52,6 +52,10 @@ frontend:
             label: IČ DPH
             placeholder: například CZ2359023591
             required: IČ DPH musí být vyplněno
+        country_id:
+            label: Země
+            required: Země musí být vyplněna
+            foreign_country: "Pro informace o doručení do zahraničí nás prosím kontaktujte na %contactEmail%"
         success: Vaše adresa byla úspěšně změněna.
         warning: "Fakturu si můžete vygenerovat pouze do 14 dní od zaplacení. Pro vygenerování faktur <a href='%link%' style='text-decoration: underline;'>klikněte sem</a>."
     download_receipt: Stáhnout potvrzení

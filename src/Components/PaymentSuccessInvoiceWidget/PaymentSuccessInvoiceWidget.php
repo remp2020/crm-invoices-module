@@ -9,6 +9,7 @@ use Crm\InvoicesModule\Repository\InvoicesRepository;
 use Crm\PaymentsModule\Gateways\BankTransfer;
 use Crm\PaymentsModule\PaymentAwareInterface;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
+use Nette\Application\UI\Form;
 use Nette\Database\Table\ActiveRow;
 
 /**
@@ -58,6 +59,9 @@ class PaymentSuccessInvoiceWidget extends BaseWidget
         $form = $factory->create($this->getPayment());
         $factory->onSave = function ($form, $user) {
             $form['done']->setValue(1);
+            $this->redrawControl('invoiceFormSnippet');
+        };
+        $form->onError[] = function (Form $form) {
             $this->redrawControl('invoiceFormSnippet');
         };
 

@@ -2,13 +2,13 @@
 
 namespace Crm\InvoicesModule\Forms;
 
+use Crm\ApplicationModule\Config\ApplicationConfig;
 use Crm\ApplicationModule\DataProvider\DataProviderManager;
 use Crm\UsersModule\DataProvider\AddressFormDataProviderInterface;
 use Crm\UsersModule\Repository\AddressChangeRequestsRepository;
 use Crm\UsersModule\Repository\AddressesRepository;
 use Crm\UsersModule\Repository\CountriesRepository;
 use Crm\UsersModule\Repository\UsersRepository;
-use League\Event\Emitter;
 use Nette\Application\BadRequestException;
 use Nette\Application\UI\Form;
 use Nette\Localization\Translator;
@@ -20,39 +20,38 @@ class ChangeInvoiceDetailsFormFactory
     /* callback function */
     public $onSuccess;
 
-    /** @var  User */
-    private $user;
+    private User $user;
 
-    private $usersRepository;
+    private UsersRepository $usersRepository;
 
-    private $addressesRepository;
+    private AddressesRepository $addressesRepository;
 
-    private $countriesRepository;
+    private CountriesRepository $countriesRepository;
 
-    private $addressChangeRequestsRepository;
+    private AddressChangeRequestsRepository $addressChangeRequestsRepository;
 
-    private $emitter;
+    private Translator $translator;
 
-    private $translator;
+    private DataProviderManager $dataProviderManager;
 
-    private $dataProviderManager;
+    private ApplicationConfig $applicationConfig;
 
     public function __construct(
         UsersRepository $usersRepository,
         AddressesRepository $addressesRepository,
         CountriesRepository $countriesRepository,
         AddressChangeRequestsRepository $addressChangeRequestsRepository,
-        Emitter $emitter,
         Translator $translator,
-        DataProviderManager $dataProviderManager
+        DataProviderManager $dataProviderManager,
+        ApplicationConfig $applicationConfig
     ) {
         $this->usersRepository = $usersRepository;
         $this->addressesRepository = $addressesRepository;
         $this->countriesRepository = $countriesRepository;
         $this->addressChangeRequestsRepository = $addressChangeRequestsRepository;
-        $this->emitter = $emitter;
         $this->translator = $translator;
         $this->dataProviderManager = $dataProviderManager;
+        $this->applicationConfig = $applicationConfig;
     }
 
     /**
@@ -84,6 +83,7 @@ class ChangeInvoiceDetailsFormFactory
         }
 
         $form->setRenderer(new BootstrapRenderer());
+        $form->setTranslator($this->translator);
         $form->addProtection();
 
         $invoiceCheckbox = $form->addCheckbox('invoice', $this->translator->translate('invoices.frontend.change_invoice_details.invoice'));
@@ -95,31 +95,39 @@ class ChangeInvoiceDetailsFormFactory
             1
         )
             ->setMaxLength(150)
-            ->setHtmlAttribute('placeholder', $this->translator->translate('invoices.frontend.change_invoice_details.company_name.placeholder'))
+            ->setHtmlAttribute('placeholder', 'invoices.frontend.change_invoice_details.company_name.placeholder')
             ->addConditionOn($invoiceCheckbox, Form::EQUAL, true)
-            ->setRequired($this->translator->translate('invoices.frontend.change_invoice_details.company_name.required'));
-        $form->addText('address', $this->translator->translate('invoices.frontend.change_invoice_details.address.label'))
-            ->setHtmlAttribute('placeholder', $this->translator->translate('invoices.frontend.change_invoice_details.address.placeholder'))
+            ->setRequired('invoices.frontend.change_invoice_details.company_name.required');
+        $form->addText('address', 'invoices.frontend.change_invoice_details.address.label')
+            ->setHtmlAttribute('placeholder', 'invoices.frontend.change_invoice_details.address.placeholder')
             ->addConditionOn($invoiceCheckbox, Form::EQUAL, true)
-            ->setRequired($this->translator->translate('invoices.frontend.change_invoice_details.address.required'));
-        $form->addText('number', $this->translator->translate('invoices.frontend.change_invoice_details.number.label'))
-            ->setHtmlAttribute('placeholder', $this->translator->translate('invoices.frontend.change_invoice_details.number.placeholder'))
+            ->setRequired('invoices.frontend.change_invoice_details.address.required');
+        $form->addText('number', 'invoices.frontend.change_invoice_details.number.label')
+            ->setHtmlAttribute('placeholder', 'invoices.frontend.change_invoice_details.number.placeholder')
             ->addConditionOn($invoiceCheckbox, Form::EQUAL, true)
-            ->setRequired($this->translator->translate('invoices.frontend.change_invoice_details.number.required'));
-        $form->addText('city', $this->translator->translate('invoices.frontend.change_invoice_details.city.label'))
-            ->setHtmlAttribute('placeholder', $this->translator->translate('invoices.frontend.change_invoice_details.city.placeholder'))
+            ->setRequired('invoices.frontend.change_invoice_details.number.required');
+        $form->addText('city', 'invoices.frontend.change_invoice_details.city.label')
+            ->setHtmlAttribute('placeholder', 'invoices.frontend.change_invoice_details.city.placeholder')
             ->addConditionOn($invoiceCheckbox, Form::EQUAL, true)
-            ->setRequired($this->translator->translate('invoices.frontend.change_invoice_details.city.required'));
+            ->setRequired('invoices.frontend.change_invoice_details.city.required');
         $form->addText('zip', $this->translator->translate('invoices.frontend.change_invoice_details.zip.label'))
-            ->setHtmlAttribute('placeholder', $this->translator->translate('invoices.frontend.change_invoice_details.zip.placeholder'))
+            ->setHtmlAttribute('placeholder', 'invoices.frontend.change_invoice_details.zip.placeholder')
             ->addConditionOn($invoiceCheckbox, Form::EQUAL, true)
             ->setRequired($this->translator->translate('invoices.frontend.change_invoice_details.zip.required'));
-        $form->addText('company_id', $this->translator->translate('invoices.frontend.change_invoice_details.company_id.label'))
-            ->setHtmlAttribute('placeholder', $this->translator->translate('invoices.frontend.change_invoice_details.company_id.placeholder'));
-        $form->addText('company_tax_id', $this->translator->translate('invoices.frontend.change_invoice_details.company_tax_id.label'))
-            ->setHtmlAttribute('placeholder', $this->translator->translate('invoices.frontend.change_invoice_details.company_tax_id.placeholder'));
-        $form->addText('company_vat_id', $this->translator->translate('invoices.frontend.change_invoice_details.company_vat_id.label'))
-            ->setHtmlAttribute('placeholder', $this->translator->translate('invoices.frontend.change_invoice_details.company_vat_id.placeholder'));
+        $form->addText('company_id', 'invoices.frontend.change_invoice_details.company_id.label')
+            ->setHtmlAttribute('placeholder', 'invoices.frontend.change_invoice_details.company_id.placeholder');
+        $form->addText('company_tax_id', 'invoices.frontend.change_invoice_details.company_tax_id.label')
+            ->setHtmlAttribute('placeholder', 'invoices.frontend.change_invoice_details.company_tax_id.placeholder');
+        $form->addText('company_vat_id', 'invoices.frontend.change_invoice_details.company_vat_id.label')
+            ->setHtmlAttribute('placeholder', 'invoices.frontend.change_invoice_details.company_vat_id.placeholder');
+
+        $contactEmail = $this->applicationConfig->get('contact_email');
+        $form->addSelect('country_id', 'invoices.frontend.change_invoice_details.country_id.label', $this->countriesRepository->getDefaultCountryPair())
+            ->setOption('id', 'invoice-country')
+            ->setOption(
+                'description',
+                $this->translator->translate('invoices.frontend.change_invoice_details.country_id.foreign_country', ['contactEmail' => $contactEmail])
+            );
 
         /** @var AddressFormDataProviderInterface $providers */
         $providers = $this->dataProviderManager->getProviders('invoices.dataprovider.invoice_address_form', AddressFormDataProviderInterface::class);

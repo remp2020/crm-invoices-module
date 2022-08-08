@@ -53,6 +53,10 @@ frontend:
             label: VAT ID
             placeholder: e.g. SK1248745412
             required: VAT ID is required
+        country_id:
+            label: Country
+            required: Country is required
+            foreign_country: "For delivery to foreign countries please contact us through %contactEmail%"
         success: Your address was successfuly changed.
         warning: "You can generate an invoice only within 14 days of payment. You can generate invoices <a href='%link%' style='text-decoration: underline;'>here</a>."
     download_receipt: Download receipt

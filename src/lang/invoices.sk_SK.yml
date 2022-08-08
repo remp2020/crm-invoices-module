@@ -53,6 +53,10 @@ frontend:
             label: IČDPH
             placeholder: napríklad SK5492385982
             required: IČDPH musí byť vyplnené
+        country_id:
+            label: Krajina
+            required: Krajina musí byť vyplnená
+            foreign_country: "Pre informácie o doručení do zahraničia nás, prosím, kontaktujte na %contactEmail%"
         success: Vaša adresa bola úspešne zmenená.
         warning: "Faktúru si môžete vygenerovať len do 14 dní po zaplatení. Pre vygenerovanie faktúr <a href='%link%' style='text-decoration: underline;'>kliknite sem</a>."
     download_receipt: Stiahnuť potvrdenie
