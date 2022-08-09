@@ -12,7 +12,7 @@ class AlterInvoiceItemsAddPriceWithoutVat extends AbstractMigration
 
         $sql = <<<SQL
 UPDATE `invoice_items` 
-SET `price_without_vat` = ROUND(`price` / (1 + (`vat`/100)), 2); 
+SET `price_without_vat` = ROUND(`price` / (1 + (`vat`/100)), 2);
 SQL;
         $this->execute($sql);
 
