@@ -27,7 +27,7 @@ class InvoiceSandbox
             $result[] = $file;
         }
         usort($result, function ($file1, $file2) {
-            return $file1->getCTime() < $file2->getCTime();
+            return ($file1->getCTime() <=> $file2->getCTime()) * -1;
         });
         return $result;
     }

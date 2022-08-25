@@ -2,6 +2,7 @@
 
 namespace Crm\InvoicesModule;
 
+use Contributte\Translation\Translator;
 use Crm\ApplicationModule\Config\ApplicationConfig;
 use Crm\ApplicationModule\Helpers\PriceHelper;
 use Crm\ApplicationModule\RedisClientFactory;
@@ -10,8 +11,8 @@ use Crm\InvoicesModule\Model\InvoiceNumberInterface;
 use Crm\InvoicesModule\Repository\InvoicesRepository;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
 use Crm\UsersModule\Repository\AddressesRepository;
-use Kdyby\Translation\Translator;
 use Latte\Engine;
+use Latte\Essential\TranslatorExtension;
 use Mpdf\Mpdf;
 use Nette\Database\Table\ActiveRow;
 use Nette\Http\Request;
@@ -171,7 +172,7 @@ class InvoiceGenerator
         $invoice = $this->invoicesRepository->find($payment->invoice_id);
         $engine = new Engine();
         $engine->addFilter('price', [$this->priceHelper, 'process']);
-        $engine->addFilter('translate', [$this->translator, 'translate']);
+        $engine->addExtension(new TranslatorExtension($this->translator));
 
         $template = $engine->renderToString(
             $this->getTemplateFile(),

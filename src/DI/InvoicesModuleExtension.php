@@ -2,10 +2,10 @@
 
 namespace Crm\InvoicesModule\DI;
 
-use Kdyby\Translation\DI\ITranslationProvider;
+use Contributte\Translation\DI\TranslationProviderInterface;
 use Nette\DI\CompilerExtension;
 
-class InvoicesModuleExtension extends CompilerExtension implements ITranslationProvider
+class InvoicesModuleExtension extends CompilerExtension implements TranslationProviderInterface
 {
     public function loadConfiguration()
     {
@@ -27,7 +27,7 @@ class InvoicesModuleExtension extends CompilerExtension implements ITranslationP
      * Return array of directories, that contain resources for translator.
      * @return string[]
      */
-    public function getTranslationResources()
+    public function getTranslationResources(): array
     {
         return [__DIR__ . '/../lang/'];
     }

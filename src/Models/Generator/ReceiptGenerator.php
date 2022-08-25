@@ -2,11 +2,12 @@
 
 namespace Crm\InvoicesModule;
 
+use Contributte\Translation\Translator;
 use Crm\ApplicationModule\Config\ApplicationConfig;
 use Crm\ApplicationModule\Helpers\PriceHelper;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
-use Kdyby\Translation\Translator;
 use Latte\Engine;
+use Latte\Essential\TranslatorExtension;
 use Nette\Database\Table\ActiveRow;
 use PdfResponse\PdfResponse;
 use Tracy\Debugger;
@@ -80,7 +81,7 @@ class ReceiptGenerator
     {
         $engine = new Engine();
         $engine->addFilter('price', [$this->priceHelper, 'process']);
-        $engine->addFilter('translate', [$this->translator, 'translate']);
+        $engine->addExtension(new TranslatorExtension($this->translator));
 
         $template = $engine->renderToString(
             $this->getTemplateFile(),
