@@ -13,10 +13,12 @@
 		</div>
 	{elseif $paymentInvoicable}
 		{var $invoiceAddress = $payment->user->related('addresses')->where('deleted_at IS NULL')->where(['type' => 'invoice'])->limit(1)->fetch()}
-		{if $invoiceAddress && $invoiceAddress->company_id !== null && $invoiceAddress->company_tax_id !== null}
+		{if $invoiceAddress && $invoiceAddress->company_id !== null}
 			<a href="{plink :Invoices:InvoicesAdmin:downloadInvoice $payment->id}" target="_bank" class="btn btn-primary btn-sm"><i class="fa fa-magic"></i> {_invoices.frontend.invoice_button.generate}</a>
+		{elseif $invoiceAddress}
+			<a href="{plink :Users:AddressAdmin:edit $invoiceAddress->id}" class="btn btn-primary btn-sm"><i class="fa fa fa-star-half-o"></i> {_invoices.frontend.invoice_button.invoice_details}</a>
 		{else}
-			<a href="{plink :Users:UsersAdmin:Edit $payment->user->id}" class="btn btn-primary btn-sm"><i class="fa fa fa-star-half-o"></i> {_invoices.frontend.invoice_button.invoice_details}</a>
+			<a href="{plink :Users:AddressAdmin:new userId => $payment->user->id}" class="btn btn-primary btn-sm"><i class="fa fa fa-star-half-o"></i> {_invoices.frontend.invoice_button.invoice_details}</a>
 		{/if}
 	{elseif $paidButNotInvoiceableAnymore}
 		<span class="btn btn-sm btn-default disabled">
