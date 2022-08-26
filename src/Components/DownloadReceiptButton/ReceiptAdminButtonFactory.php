@@ -2,23 +2,23 @@
 
 namespace Crm\InvoicesModule\Components;
 
+use Crm\ApplicationModule\Widget\LazyWidgetManager;
 use Crm\ApplicationModule\Widget\WidgetFactoryInterface;
 use Crm\ApplicationModule\Widget\WidgetInterface;
-use Crm\ApplicationModule\Widget\WidgetManager;
 
 class ReceiptAdminButtonFactory implements WidgetFactoryInterface
 {
-    protected $widgetManager;
+    protected LazyWidgetManager $lazyWidgetManager;
 
     public function __construct(
-        WidgetManager $widgetManager
+        LazyWidgetManager $lazyWidgetManager
     ) {
-        $this->widgetManager = $widgetManager;
+        $this->lazyWidgetManager = $lazyWidgetManager;
     }
 
     public function create(): WidgetInterface
     {
-        $receiptButton = new DownloadReceiptButton($this->widgetManager);
+        $receiptButton = new DownloadReceiptButton($this->lazyWidgetManager);
         $receiptButton->setAdmin();
         return $receiptButton;
     }

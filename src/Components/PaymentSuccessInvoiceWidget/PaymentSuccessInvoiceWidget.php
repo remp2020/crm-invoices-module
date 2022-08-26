@@ -2,8 +2,8 @@
 
 namespace Crm\InvoicesModule\Components;
 
-use Crm\ApplicationModule\Widget\BaseWidget;
-use Crm\ApplicationModule\Widget\WidgetManager;
+use Crm\ApplicationModule\Widget\BaseLazyWidget;
+use Crm\ApplicationModule\Widget\LazyWidgetManager;
 use Crm\InvoicesModule\Forms\UserInvoiceFormFactory;
 use Crm\InvoicesModule\Repository\InvoicesRepository;
 use Crm\PaymentsModule\Gateways\BankTransfer;
@@ -19,17 +19,17 @@ use Nette\Database\Table\ActiveRow;
  *
  * @package Crm\InvoicesModule\Components
  */
-class PaymentSuccessInvoiceWidget extends BaseWidget
+class PaymentSuccessInvoiceWidget extends BaseLazyWidget
 {
     protected $templatePath = __DIR__ . DIRECTORY_SEPARATOR . 'payment_success_invoice_widget.latte';
 
     private $invoicesRepository;
 
     public function __construct(
-        WidgetManager $widgetManager,
+        LazyWidgetManager $lazyWidgetManager,
         InvoicesRepository $invoicesRepository
     ) {
-        parent::__construct($widgetManager);
+        parent::__construct($lazyWidgetManager);
         $this->invoicesRepository = $invoicesRepository;
     }
 

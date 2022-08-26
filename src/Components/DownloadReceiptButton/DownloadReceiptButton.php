@@ -2,8 +2,7 @@
 
 namespace Crm\InvoicesModule\Components;
 
-use Crm\ApplicationModule\Widget\BaseWidget;
-use Crm\ApplicationModule\Widget\WidgetManager;
+use Crm\ApplicationModule\Widget\BaseLazyWidget;
 
 /**
  * Download receipt button widget.
@@ -13,17 +12,11 @@ use Crm\ApplicationModule\Widget\WidgetManager;
  *
  * @package Crm\InvoicesModule\Components
  */
-class DownloadReceiptButton extends BaseWidget
+class DownloadReceiptButton extends BaseLazyWidget
 {
     private $templateName = 'download_receipt_button.latte';
 
     private bool $admin = false;
-
-    public function __construct(
-        WidgetManager $widgetManager
-    ) {
-        parent::__construct($widgetManager);
-    }
 
     public function identifier()
     {

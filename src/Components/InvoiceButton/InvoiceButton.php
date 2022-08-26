@@ -2,8 +2,8 @@
 
 namespace Crm\InvoicesModule\Components;
 
-use Crm\ApplicationModule\Widget\BaseWidget;
-use Crm\ApplicationModule\Widget\WidgetManager;
+use Crm\ApplicationModule\Widget\BaseLazyWidget;
+use Crm\ApplicationModule\Widget\LazyWidgetManager;
 use Crm\InvoicesModule\Repository\InvoicesRepository;
 use Nette\Utils\DateTime;
 
@@ -15,7 +15,7 @@ use Nette\Utils\DateTime;
  *
  * @package Crm\InvoicesModule\Components
  */
-class InvoiceButton extends BaseWidget
+class InvoiceButton extends BaseLazyWidget
 {
     private $templateName = 'invoice_button.latte';
 
@@ -25,9 +25,9 @@ class InvoiceButton extends BaseWidget
 
     public function __construct(
         InvoicesRepository $invoicesRepository,
-        WidgetManager $widgetManager
+        LazyWidgetManager $lazyWidgetManager
     ) {
-        parent::__construct($widgetManager);
+        parent::__construct($lazyWidgetManager);
         $this->invoicesRepository = $invoicesRepository;
     }
 

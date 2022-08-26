@@ -2,12 +2,12 @@
 
 namespace Crm\InvoicesModule\Components;
 
-use Crm\ApplicationModule\Widget\BaseWidget;
-use Crm\ApplicationModule\Widget\WidgetManager;
+use Crm\ApplicationModule\Widget\BaseLazyWidget;
+use Crm\ApplicationModule\Widget\LazyWidgetManager;
 use Crm\InvoicesModule\Forms\ChangeInvoiceDetailsFormFactory;
 use Nette\Localization\Translator;
 
-class InvoiceDetailsWidget extends BaseWidget
+class InvoiceDetailsWidget extends BaseLazyWidget
 {
     private $templateName = 'invoice_details_widget.latte';
 
@@ -16,11 +16,11 @@ class InvoiceDetailsWidget extends BaseWidget
     private $changeInvoiceDetailsFormFactory;
 
     public function __construct(
-        WidgetManager $widgetManager,
+        LazyWidgetManager $lazyWidgetManager,
         Translator $translator,
         ChangeInvoiceDetailsFormFactory $changeInvoiceDetailsFormFactory
     ) {
-        parent::__construct($widgetManager);
+        parent::__construct($lazyWidgetManager);
 
         $this->translator = $translator;
         $this->changeInvoiceDetailsFormFactory = $changeInvoiceDetailsFormFactory;

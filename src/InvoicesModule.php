@@ -10,7 +10,7 @@ use Crm\ApplicationModule\Menu\MenuContainerInterface;
 use Crm\ApplicationModule\Menu\MenuItem;
 use Crm\ApplicationModule\SeederManager;
 use Crm\ApplicationModule\User\UserDataRegistrator;
-use Crm\ApplicationModule\Widget\WidgetManagerInterface;
+use Crm\ApplicationModule\Widget\LazyWidgetManagerInterface;
 use Crm\InvoicesModule\Scenarios\HasInvoiceCriteria;
 use Crm\InvoicesModule\Seeders\AddressTypesSeeder;
 use Crm\InvoicesModule\Seeders\ConfigsSeeder;
@@ -39,48 +39,48 @@ class InvoicesModule extends CrmModule
         $menuContainer->attachMenuItem($menuItem);
     }
 
-    public function registerWidgets(WidgetManagerInterface $widgetManager)
+    public function registerLazyWidgets(LazyWidgetManagerInterface $widgetManager)
     {
         $widgetManager->registerWidgetFactory(
             'admin.payments.listing.action',
-            $this->getInstance(\Crm\InvoicesModule\Components\InvoiceAdminButtonFactory::class),
+            \Crm\InvoicesModule\Components\InvoiceAdminButtonFactory::class,
             400
         );
         $widgetManager->registerWidgetFactory(
             'frontend.payments.listing.receipts',
-            $this->getInstance(\Crm\InvoicesModule\Components\InvoiceFrontendButtonFactory::class),
+            \Crm\InvoicesModule\Components\InvoiceFrontendButtonFactory::class,
             400
         );
         $widgetManager->registerWidgetFactory(
             'frontend.payments.refund.receipts',
-            $this->getInstance(\Crm\InvoicesModule\Components\InvoiceFrontendButtonFactory::class),
+            \Crm\InvoicesModule\Components\InvoiceFrontendButtonFactory::class,
             400
         );
         $widgetManager->registerWidgetFactory(
             'frontend.payments.listing.receipts',
-            $this->getInstance(\Crm\InvoicesModule\Components\DownloadReceiptButtonFactory::class),
+            \Crm\InvoicesModule\Components\DownloadReceiptButtonFactory::class,
             500
         );
 
         $widgetManager->registerWidgetFactory(
             'admin.payments.listing.action',
-            $this->getInstance(\Crm\InvoicesModule\Components\ReceiptAdminButtonFactory::class),
+            \Crm\InvoicesModule\Components\ReceiptAdminButtonFactory::class,
             500
         );
 
         $widgetManager->registerWidget(
             'payment.address',
-            $this->getInstance(\Crm\InvoicesModule\Components\PaymentSuccessInvoiceWidget::class)
+            \Crm\InvoicesModule\Components\PaymentSuccessInvoiceWidget::class
         );
 
         $widgetManager->registerWidget(
             'admin.user.list.emailcolumn',
-            $this->getInstance(\Crm\InvoicesModule\Components\InvoiceLabel::class)
+            \Crm\InvoicesModule\Components\InvoiceLabel::class
         );
 
         $widgetManager->registerWidget(
             'invoices.frontend.invoice_details',
-            $this->getInstance(\Crm\InvoicesModule\Components\InvoiceDetailsWidget::class)
+            \Crm\InvoicesModule\Components\InvoiceDetailsWidget::class
         );
     }
 

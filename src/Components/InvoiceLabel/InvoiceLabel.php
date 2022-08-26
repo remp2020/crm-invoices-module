@@ -2,7 +2,7 @@
 
 namespace Crm\InvoicesModule\Components;
 
-use Crm\ApplicationModule\Widget\BaseWidget;
+use Crm\ApplicationModule\Widget\BaseLazyWidget;
 
 /**
  * Simple invoice badge component.
@@ -10,7 +10,7 @@ use Crm\ApplicationModule\Widget\BaseWidget;
  *
  * @package Crm\InvoicesModule\Components
  */
-class InvoiceLabel extends BaseWidget
+class InvoiceLabel extends BaseLazyWidget
 {
     private $templateName = 'invoice_label.latte';
 

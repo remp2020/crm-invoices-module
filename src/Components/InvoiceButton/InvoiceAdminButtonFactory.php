@@ -2,29 +2,28 @@
 
 namespace Crm\InvoicesModule\Components;
 
+use Crm\ApplicationModule\Widget\LazyWidgetManager;
 use Crm\ApplicationModule\Widget\WidgetFactoryInterface;
 use Crm\ApplicationModule\Widget\WidgetInterface;
-use Crm\ApplicationModule\Widget\WidgetManager;
 use Crm\InvoicesModule\Repository\InvoicesRepository;
 
 class InvoiceAdminButtonFactory implements WidgetFactoryInterface
 {
-    /** @var WidgetManager */
-    protected $widgetManager;
+    protected LazyWidgetManager $lazyWidgetManager;
 
-    private $invoicesRepository;
+    private InvoicesRepository $invoicesRepository;
 
     public function __construct(
         InvoicesRepository $invoicesRepository,
-        WidgetManager $widgetManager
+        LazyWidgetManager $lazyWidgetManager
     ) {
-        $this->widgetManager = $widgetManager;
+        $this->lazyWidgetManager = $lazyWidgetManager;
         $this->invoicesRepository = $invoicesRepository;
     }
 
     public function create(): WidgetInterface
     {
-        $invoiceButton = new InvoiceButton($this->invoicesRepository, $this->widgetManager);
+        $invoiceButton = new InvoiceButton($this->invoicesRepository, $this->lazyWidgetManager);
         $invoiceButton->setAdmin();
         return $invoiceButton;
     }
