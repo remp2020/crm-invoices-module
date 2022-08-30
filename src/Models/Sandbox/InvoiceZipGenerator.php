@@ -7,17 +7,14 @@ use ZipArchive;
 
 class InvoiceZipGenerator
 {
-    private $sandbox;
+    private InvoiceGenerator $invoiceGenerator;
 
-    private $invoiceGenerator;
-
-    public function __construct(InvoiceSandbox $sandbox, InvoiceGenerator $invoiceGenerator)
+    public function __construct(InvoiceGenerator $invoiceGenerator)
     {
-        $this->sandbox = $sandbox;
         $this->invoiceGenerator = $invoiceGenerator;
     }
 
-    public function generate($payments)
+    public function generate($payments): false|string
     {
         $zip = new ZipArchive();
         $zipFile = tempnam(sys_get_temp_dir(), 'invoicesZip_');
@@ -30,7 +27,7 @@ class InvoiceZipGenerator
             $tmpFile = tmpfile();
             fwrite($tmpFile, $invoiceContent);
 
-            $zip->open($zipFile, ZipArchive::CREATE);
+            $zip->open($zipFile, ZipArchive::OVERWRITE);
             $zip->addFile(stream_get_meta_data($tmpFile)['uri'], 'invoices/' . $fileName);
             $zip->close();
 
