@@ -14,10 +14,12 @@ class InvoiceZipGenerator
         $this->invoiceGenerator = $invoiceGenerator;
     }
 
-    public function generate($payments): false|string
+    public function generate($payments): string|false
     {
         $zip = new ZipArchive();
         $zipFile = tempnam(sys_get_temp_dir(), 'invoicesZip_');
+        // file cannot exist and be empty when opening with ZipArchive::CREATE
+        unlink($zipFile);
 
         foreach ($payments as $payment) {
             $invoiceContent = $this->invoiceGenerator->generateInvoiceAsString($payment);
@@ -27,7 +29,7 @@ class InvoiceZipGenerator
             $tmpFile = tmpfile();
             fwrite($tmpFile, $invoiceContent);
 
-            $zip->open($zipFile, ZipArchive::OVERWRITE);
+            $zip->open($zipFile, ZipArchive::CREATE);
             $zip->addFile(stream_get_meta_data($tmpFile)['uri'], 'invoices/' . $fileName);
             $zip->close();
 
