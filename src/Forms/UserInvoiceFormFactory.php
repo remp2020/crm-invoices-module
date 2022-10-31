@@ -80,10 +80,13 @@ class UserInvoiceFormFactory
             ->setHtmlAttribute('placeholder', 'invoices.form.invoice.placeholder.zip')
             ->setRequired('invoices.form.invoice.required.zip');
         $form->addText('company_id', 'invoices.form.invoice.label.company_id')
+            ->setNullable()
             ->setHtmlAttribute('placeholder', 'invoices.form.invoice.placeholder.company_id');
         $form->addText('company_tax_id', 'invoices.form.invoice.label.company_tax_id')
+            ->setNullable()
             ->setHtmlAttribute('placeholder', 'invoices.form.invoice.placeholder.company_tax_id');
         $form->addText('company_vat_id', 'invoices.form.invoice.label.company_vat_id')
+            ->setNullable()
             ->setHtmlAttribute('placeholder', 'invoices.form.invoice.placeholder.company_vat_id');
 
         $contactEmail = $this->applicationConfig->get('contact_email');

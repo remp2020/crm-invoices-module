@@ -96,30 +96,38 @@ class ChangeInvoiceDetailsFormFactory
         )
             ->setMaxLength(150)
             ->setHtmlAttribute('placeholder', 'invoices.frontend.change_invoice_details.company_name.placeholder')
+            ->setNullable()
             ->addConditionOn($invoiceCheckbox, Form::EQUAL, true)
             ->setRequired('invoices.frontend.change_invoice_details.company_name.required');
         $form->addText('address', 'invoices.frontend.change_invoice_details.address.label')
             ->setHtmlAttribute('placeholder', 'invoices.frontend.change_invoice_details.address.placeholder')
+            ->setNullable()
             ->addConditionOn($invoiceCheckbox, Form::EQUAL, true)
             ->setRequired('invoices.frontend.change_invoice_details.address.required');
         $form->addText('number', 'invoices.frontend.change_invoice_details.number.label')
             ->setHtmlAttribute('placeholder', 'invoices.frontend.change_invoice_details.number.placeholder')
+            ->setNullable()
             ->addConditionOn($invoiceCheckbox, Form::EQUAL, true)
             ->setRequired('invoices.frontend.change_invoice_details.number.required');
         $form->addText('city', 'invoices.frontend.change_invoice_details.city.label')
             ->setHtmlAttribute('placeholder', 'invoices.frontend.change_invoice_details.city.placeholder')
+            ->setNullable()
             ->addConditionOn($invoiceCheckbox, Form::EQUAL, true)
             ->setRequired('invoices.frontend.change_invoice_details.city.required');
         $form->addText('zip', $this->translator->translate('invoices.frontend.change_invoice_details.zip.label'))
             ->setHtmlAttribute('placeholder', 'invoices.frontend.change_invoice_details.zip.placeholder')
+            ->setNullable()
             ->addConditionOn($invoiceCheckbox, Form::EQUAL, true)
             ->setRequired($this->translator->translate('invoices.frontend.change_invoice_details.zip.required'));
         $form->addText('company_id', 'invoices.frontend.change_invoice_details.company_id.label')
-            ->setHtmlAttribute('placeholder', 'invoices.frontend.change_invoice_details.company_id.placeholder');
+            ->setHtmlAttribute('placeholder', 'invoices.frontend.change_invoice_details.company_id.placeholder')
+            ->setNullable();
         $form->addText('company_tax_id', 'invoices.frontend.change_invoice_details.company_tax_id.label')
-            ->setHtmlAttribute('placeholder', 'invoices.frontend.change_invoice_details.company_tax_id.placeholder');
+            ->setHtmlAttribute('placeholder', 'invoices.frontend.change_invoice_details.company_tax_id.placeholder')
+            ->setNullable();
         $form->addText('company_vat_id', 'invoices.frontend.change_invoice_details.company_vat_id.label')
-            ->setHtmlAttribute('placeholder', 'invoices.frontend.change_invoice_details.company_vat_id.placeholder');
+            ->setHtmlAttribute('placeholder', 'invoices.frontend.change_invoice_details.company_vat_id.placeholder')
+            ->setNullable();
 
         $contactEmail = $this->applicationConfig->get('contact_email');
         $form->addSelect('country_id', 'invoices.frontend.change_invoice_details.country_id.label', $this->countriesRepository->getDefaultCountryPair())
