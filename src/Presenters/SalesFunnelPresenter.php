@@ -7,6 +7,7 @@ use Crm\InvoicesModule\Events\ProformaInvoiceCreatedEvent;
 use Crm\InvoicesModule\Forms\UserInvoiceFormFactory;
 use Crm\PaymentsModule\Repository\PaymentLogsRepository;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
+use Nette\Application\UI\Form;
 
 class SalesFunnelPresenter extends FrontendPresenter
 {
@@ -47,10 +48,14 @@ class SalesFunnelPresenter extends FrontendPresenter
         $form['done']->setValue(0);
 
         $presenter = $this;
-        $this->userInvoiceFormFactory->onSave = function ($form, $user) use ($presenter, $payment) {
+        $this->userInvoiceFormFactory->onSave = function (Form $form, $user) use ($presenter, $payment) {
             $form['done']->setValue(1);
             $presenter->redrawControl('invoiceFormSnippet');
             $this->emitter->emit(new ProformaInvoiceCreatedEvent($payment));
+        };
+
+        $form->onError[] = function (Form $form) use ($presenter) {
+            $presenter->redrawControl('invoiceFormSnippet');
         };
         return $form;
     }

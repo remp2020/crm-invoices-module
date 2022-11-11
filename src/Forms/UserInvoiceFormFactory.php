@@ -51,7 +51,7 @@ class UserInvoiceFormFactory
 
     public function create(ActiveRow $payment): Form
     {
-        $form = new Form;
+        $form = new Form();
 
         $this->payment = $payment;
         $user = $this->payment->user;
@@ -89,13 +89,30 @@ class UserInvoiceFormFactory
             ->setNullable()
             ->setHtmlAttribute('placeholder', 'invoices.form.invoice.placeholder.company_vat_id');
 
-        $contactEmail = $this->applicationConfig->get('contact_email');
-        $form->addSelect('country_id', 'invoices.form.invoice.label.country_id', $this->countriesRepository->getDefaultCountryPair())
+        $countrySelect = $form->addSelect('country_id', 'invoices.form.invoice.label.country_id', $this->countriesRepository->getDefaultCountryPair())
             ->setOption('id', 'invoice-country')
             ->setOption(
                 'description',
-                $this->translator->translate('invoices.form.invoice.options.foreign_country', ['contactEmail' => $contactEmail])
+                $this->translator->translate('invoices.form.invoice.options.foreign_country', ['contactEmail' => $this->applicationConfig->get('contact_email')])
             );
+
+        // at the moment, only default country is allowed for invoicing (we are missing VATs for other countries)
+        // but few legacy invoice addresses contain non-default country
+        $defaultCountryId = $this->countriesRepository->defaultCountry()->id;
+        if (isset($invoiceAddress->country_id) && $invoiceAddress->country_id !== $defaultCountryId) {
+            $country = $this->countriesRepository->find($invoiceAddress->country_id);
+            if ($country) {
+                // add user's non-default country into select list; otherwise FORM returns error (out of allowed values)
+                $countrySelect->setItems([$country->id => $country->name]);
+                // element & element description are highlighted as error when addError is triggered; no need to duplicate message
+                $countrySelect->addError('');
+                // and add bigger error above form
+                $form->addError($this->translator->translate(
+                    'invoices.form.invoice.options.foreign_country',
+                    ['contactEmail' => $this->applicationConfig->get('contact_email')]
+                ));
+            }
+        }
 
         $form->addHidden('VS', $payment->variable_symbol);
 
@@ -125,7 +142,7 @@ class UserInvoiceFormFactory
                 'number' => $invoiceAddress->number,
                 'zip' => $invoiceAddress->zip,
                 'city' => $invoiceAddress->city,
-                'country_id' => $invoiceAddress->country_id ? $invoiceAddress->country_id : $this->countriesRepository->defaultCountry()->id,
+                'country_id' => $invoiceAddress->country_id ?? $defaultCountryId,
             ]);
         }
 
@@ -135,9 +152,16 @@ class UserInvoiceFormFactory
         return $form;
     }
 
-    public function formSucceeded($form, $values)
+    public function formSucceeded(Form $form, $values)
     {
         $user = $this->payment->user;
+
+        // do not allow saving address with non-default country
+        // - at the moment we do not have correct VAT for foreign countries
+        if ($values->country_id !== $this->countriesRepository->defaultCountry()->id) {
+            // no error; error is displayed by form (defined for element country_id)
+            return;
+        }
 
         $invoiceAddress = $this->addressesRepository->address($user, 'invoice');
         $changeRequest = $this->addressChangeRequestsRepository->add(
