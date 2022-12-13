@@ -46,11 +46,11 @@ frontend:
             required: IČO musí být vyplněno
         company_tax_id:
             label: DIČ
-            placeholder: například 2359023591
+            placeholder: například CZ23590235
             required: DIČ musí být vyplněno
         company_vat_id:
             label: IČ DPH
-            placeholder: například CZ2359023591
+            placeholder: například CZ23590235
             required: IČ DPH musí být vyplněno
         country_id:
             label: Země
@@ -128,8 +128,8 @@ form:
             city: napište město
             zip: napište PSČ
             company_id: například 23590235
-            company_tax_id: například 2359023536
-            company_vat_id: například CZ2359023536
+            company_tax_id: například CZ23590235
+            company_vat_id: například CZ23590235
         required:
             company_name: Název firmy musí být vyplněn
             address: Ulice musí být vyplněna
