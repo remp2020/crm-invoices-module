@@ -51,7 +51,7 @@ class InvoicesRepository extends Repository
     {
         $address = $this->addressesRepository->address($user, 'invoice');
 
-        if (trim($address->company_name) == '' || $address->company_name === null) {
+        if (!$address->company_name || trim($address->company_name) == '' || $address->company_name === null) {
             $buyerName = $address->first_name . ' ' . $address->last_name;
         } else {
             $buyerName = $address->company_name;
