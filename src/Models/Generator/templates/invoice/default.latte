@@ -277,7 +277,7 @@
     <hr>
 
     {php ksort($vatRates)}
-    {var $totalPrice = $invoice->related('invoice_items')->sum('price * count')}
+    {var $totalPrice = $invoice->related('invoice_items')->sum('price * count') ?? 0.00}
 
     <!-- notes -->
     <div class="cell-xs-4 float">
@@ -307,8 +307,8 @@
             <tbody>
             {foreach $vatRates as $rate => $_}
                 <tr>
-                    {var $itemsPrice = $invoice->related('invoice_items')->where('vat', $rate)->sum('price * count')}
-                    {var $itemsPriceWithoutVat = $invoice->related('invoice_items')->where('vat', $rate)->sum('price_without_vat * count')}
+                    {var $itemsPrice = $invoice->related('invoice_items')->where('vat', $rate)->sum('price * count') ?? 0.00}
+                    {var $itemsPriceWithoutVat = $invoice->related('invoice_items')->where('vat', $rate)->sum('price_without_vat * count') ?? 0.00}
                     {var $vatAmount = $itemsPrice - $itemsPriceWithoutVat}
 
                     <td>{$rate}%</td>
