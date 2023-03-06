@@ -64,7 +64,7 @@ class PreNotificationEventHandler extends AbstractListener
         if (!$hermesMessageType) {
             return;
         }
-        if (!in_array($hermesMessageType, $this->enabledNotificationHermesTypes, false)) {
+        if (!in_array($hermesMessageType, $this->enabledNotificationHermesTypes, true)) {
             return;
         }
 
