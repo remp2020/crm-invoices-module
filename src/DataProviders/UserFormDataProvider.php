@@ -3,7 +3,6 @@
 namespace Crm\InvoicesModule\DataProvider;
 
 use Crm\ApplicationModule\DataProvider\DataProviderException;
-use Crm\ApplicationModule\Selection;
 use Crm\UsersModule\DataProvider\UserFormDataProviderInterface;
 use Crm\UsersModule\Repository\UsersRepository;
 use Nette\Application\UI\Form;
@@ -18,8 +17,6 @@ class UserFormDataProvider implements UserFormDataProviderInterface
     }
 
     /**
-     * @param array $params
-     * @return Selection
      * @throws DataProviderException
      */
     public function provide(array $params): Form
