@@ -195,7 +195,8 @@ class GenerateInvoiceHandlerTest extends DatabaseTestCase
         /** @var InvoiceNumber $invoiceNumber */
         $invoiceNumber = $this->inject(InvoiceNumber::class);
         $nextInvoiceNumber = $invoiceNumber->getNextInvoiceNumber($payment);
-        $invoice = $this->invoicesRepository->add($this->getUser(), $payment, $nextInvoiceNumber);
+        $this->paymentsRepository->update($payment, ['invoice_number_id' => $nextInvoiceNumber->id]);
+        $invoice = $this->invoicesRepository->add($this->getUser(), $payment);
         $invoiceLastUpdated = $invoice->updated_date; // keep this for later assert
         $this->paymentsRepository->update($payment, ['invoice_id' => $invoice->id]);
         $this->assertEquals(1, $this->invoiceNumbersRepository->totalCount());

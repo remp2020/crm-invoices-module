@@ -126,7 +126,7 @@ class InvoiceGenerator
 
             // payment is invoiceable => generate invoice
             if ($paymentInvoiceable && $payment->invoice_number) {
-                $invoice = $this->invoicesRepository->add($user, $payment, $payment->invoice_number);
+                $invoice = $this->invoicesRepository->add($user, $payment);
                 $this->paymentsRepository->update($payment, ['invoice_id' => $invoice->id]);
             } else {
                 throw new PaymentNotInvoiceableException($payment->id);

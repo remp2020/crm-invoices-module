@@ -134,11 +134,12 @@ class HasInvoiceCriteriaTest extends PaymentsTestCase
             $invoiceNumberRow = $invoiceNumbersRepository->getTable()
                 ->where('number = ?', '100000000')
                 ->fetch();
+            $this->paymentsRepository->update($paymentRow, ['invoice_number_id' => $invoiceNumberRow->id]);
 
             /** @var InvoicesRepository $invoicesRepository */
             $invoicesRepository = $this->getRepository(InvoicesRepository::class);
 
-            $invoice = $invoicesRepository->add($userRow, $paymentRow, $invoiceNumberRow);
+            $invoice = $invoicesRepository->add($userRow, $paymentRow);
 
             $paymentsRepository->update($paymentRow, ['invoice_id' => $invoice->id]);
         }

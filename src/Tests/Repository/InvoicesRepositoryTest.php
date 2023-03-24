@@ -122,13 +122,14 @@ class InvoicesRepositoryTest extends DatabaseTestCase
         /** @var InvoiceNumber $invoiceNumber */
         $invoiceNumber = $this->inject(InvoiceNumber::class);
         $nextInvoiceNumber = $invoiceNumber->getNextInvoiceNumber($payment);
+        $this->paymentsRepository->update($payment, ['invoice_number_id' => $nextInvoiceNumber->id]);
 
         $this->assertEquals(1, $this->invoiceNumbersRepository->totalCount());
         $this->assertEquals(0, $this->invoicesRepository->totalCount());
         $this->assertEquals(0, $this->invoiceItemsRepository->totalCount());
 
         // add invoice
-        $this->invoicesRepository->add($user, $payment, $nextInvoiceNumber);
+        $this->invoicesRepository->add($user, $payment);
 
         // *******************************************************************
         // test checks start here
@@ -199,12 +200,13 @@ class InvoicesRepositoryTest extends DatabaseTestCase
         /** @var InvoiceNumber $invoiceNumber */
         $invoiceNumber = $this->inject(InvoiceNumber::class);
         $nextInvoiceNumber = $invoiceNumber->getNextInvoiceNumber($payment);
+        $this->paymentsRepository->update($payment, ['invoice_number_id' => $nextInvoiceNumber->id]);
 
         $this->assertEquals(1, $this->invoiceNumbersRepository->totalCount());
         $this->assertEquals(0, $this->invoicesRepository->totalCount());
         $this->assertEquals(0, $this->invoiceItemsRepository->totalCount());
 
-        $this->invoicesRepository->add($user, $payment, $nextInvoiceNumber);
+        $this->invoicesRepository->add($user, $payment);
 
         // *******************************************************************
         // test checks start here
@@ -265,6 +267,7 @@ class InvoicesRepositoryTest extends DatabaseTestCase
         /** @var InvoiceNumber $invoiceNumber */
         $invoiceNumber = $this->inject(InvoiceNumber::class);
         $nextInvoiceNumber = $invoiceNumber->getNextInvoiceNumber($payment);
+        $this->paymentsRepository->update($payment, ['invoice_number_id' => $nextInvoiceNumber->id]);
 
         $this->assertEquals(1, $this->invoiceNumbersRepository->totalCount());
         $this->assertEquals(0, $this->invoicesRepository->totalCount());
@@ -273,7 +276,7 @@ class InvoicesRepositoryTest extends DatabaseTestCase
         // catching & testing exception manually so we can continue with tests
         // (expectExceptionObject would stop processing)
         try {
-            $this->invoicesRepository->add($user, $payment, $nextInvoiceNumber);
+            $this->invoicesRepository->add($user, $payment);
         } catch (\Exception $catchedException) {
             $this->assertEquals($catchedException->getMessage(), "Buyer's address is missing. Invoice for payment VS [{$payment->variable_symbol}] cannot be created.");
         }

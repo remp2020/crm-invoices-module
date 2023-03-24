@@ -37,9 +37,19 @@ class InvoicesRepository extends Repository
         $this->userDateHelper->setFormat([IntlDateFormatter::MEDIUM, IntlDateFormatter::SHORT]);
     }
 
-    // TODO: deprecate use of $invoiceNumber & load it from payment ($payment->invoice_number)
-    final public function add(ActiveRow $user, ActiveRow $payment, ActiveRow $invoiceNumber)
+    final public function add(ActiveRow $user, ActiveRow $payment, ActiveRow $invoiceNumber = null)
     {
+        if ($invoiceNumber !== null) {
+            // remp/crm#2804
+            trigger_error(
+                'Parameter `$invoiceNumber` is deprecated. Set invoice number to payment (`$payment->invoice_number_id`) before adding invoice. ' .
+                'Support will be removed in next major release.',
+                \E_USER_DEPRECATED
+            );
+        } else {
+            $invoiceNumber = $payment->invoice_number;
+        }
+
         $now =  new DateTime();
 
         $address = $this->addressesRepository->address($user, 'invoice');
