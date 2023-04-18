@@ -89,7 +89,8 @@ class InvoicesRepository extends Repository
             'variable_symbol' => $payment->variable_symbol,
             'payment_date' => $payment->paid_at,
             'delivery_date' => $invoiceNumber->delivered_at,
-            'created_date' => $now,
+            // set created_date (which is used as issued_date) to same date as invoice number was generated to follow sequence of numbers / invoices
+            'created_date' => $this->applicationConfig->get('generate_invoice_number_for_paid_payment') ? $invoiceNumber->delivered_at : $now,
             'updated_date' => $now,
             'invoice_number_id' => $invoiceNumber
         ];
