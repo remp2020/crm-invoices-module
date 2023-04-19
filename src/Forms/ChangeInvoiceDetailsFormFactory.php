@@ -4,6 +4,8 @@ namespace Crm\InvoicesModule\Forms;
 
 use Crm\ApplicationModule\Config\ApplicationConfig;
 use Crm\ApplicationModule\DataProvider\DataProviderManager;
+use Crm\ApplicationModule\Hermes\HermesMessage;
+use Crm\PaymentsModule\Repository\PaymentsRepository;
 use Crm\UsersModule\DataProvider\AddressFormDataProviderInterface;
 use Crm\UsersModule\Repository\AddressChangeRequestsRepository;
 use Crm\UsersModule\Repository\AddressesRepository;
@@ -14,6 +16,7 @@ use Nette\Application\UI\Form;
 use Nette\Localization\Translator;
 use Nette\Security\User;
 use Tomaj\Form\Renderer\BootstrapRenderer;
+use Tomaj\Hermes\Emitter;
 
 class ChangeInvoiceDetailsFormFactory
 {
@@ -22,36 +25,17 @@ class ChangeInvoiceDetailsFormFactory
 
     private User $user;
 
-    private UsersRepository $usersRepository;
-
-    private AddressesRepository $addressesRepository;
-
-    private CountriesRepository $countriesRepository;
-
-    private AddressChangeRequestsRepository $addressChangeRequestsRepository;
-
-    private Translator $translator;
-
-    private DataProviderManager $dataProviderManager;
-
-    private ApplicationConfig $applicationConfig;
-
     public function __construct(
-        UsersRepository $usersRepository,
-        AddressesRepository $addressesRepository,
-        CountriesRepository $countriesRepository,
-        AddressChangeRequestsRepository $addressChangeRequestsRepository,
-        Translator $translator,
-        DataProviderManager $dataProviderManager,
-        ApplicationConfig $applicationConfig
+        private UsersRepository $usersRepository,
+        private AddressesRepository $addressesRepository,
+        private CountriesRepository $countriesRepository,
+        private AddressChangeRequestsRepository $addressChangeRequestsRepository,
+        private Translator $translator,
+        private DataProviderManager $dataProviderManager,
+        private ApplicationConfig $applicationConfig,
+        private PaymentsRepository $paymentsRepository,
+        private Emitter $hermesEmitter,
     ) {
-        $this->usersRepository = $usersRepository;
-        $this->addressesRepository = $addressesRepository;
-        $this->countriesRepository = $countriesRepository;
-        $this->addressChangeRequestsRepository = $addressChangeRequestsRepository;
-        $this->translator = $translator;
-        $this->dataProviderManager = $dataProviderManager;
-        $this->applicationConfig = $applicationConfig;
     }
 
     /**
@@ -164,7 +148,11 @@ class ChangeInvoiceDetailsFormFactory
     {
         $userRow = $this->loadUserRow();
 
-        $this->usersRepository->update($userRow, ['invoice' => $values['invoice']]);
+        $changedInvoicing = false;
+        if ($userRow['invoice'] !== $values['invoice']) {
+            $this->usersRepository->update($userRow, ['invoice' => $values['invoice']]);
+            $changedInvoicing = true; // saving for later because $userRow is updated
+        }
 
         $invoiceAddress = $this->addressesRepository->address($userRow, 'invoice');
         $changeRequest = $this->addressChangeRequestsRepository->add(
@@ -186,6 +174,22 @@ class ChangeInvoiceDetailsFormFactory
         );
         if ($changeRequest) {
             $this->addressChangeRequestsRepository->acceptRequest($changeRequest);
+        } elseif ($changedInvoicing) {
+            // generate invoice for all invoiceable payments
+            // if address didn't change but invoicing setting did
+            // (if address changed, auto invoicing is handled by event handler AddressChangedHandler)
+
+            if ($userRow->invoice && !$userRow->disable_auto_invoice) {
+                $payments = $this->paymentsRepository->userPayments($userRow->id)
+                    ->where('invoice_id', null)
+                    ->fetchAll();
+
+                foreach ($payments as $payment) {
+                    $this->hermesEmitter->emit(new HermesMessage('generate_invoice', [
+                        'payment_id' => $payment->id
+                    ]), HermesMessage::PRIORITY_LOW);
+                }
+            }
         }
 
         $this->onSuccess->__invoke($form, $userRow);

@@ -3,17 +3,20 @@
 namespace Crm\InvoicesModule\DataProvider;
 
 use Crm\ApplicationModule\DataProvider\DataProviderException;
+use Crm\ApplicationModule\Hermes\HermesMessage;
+use Crm\PaymentsModule\Repository\PaymentsRepository;
 use Crm\UsersModule\DataProvider\UserFormDataProviderInterface;
 use Crm\UsersModule\Repository\UsersRepository;
 use Nette\Application\UI\Form;
+use Tomaj\Hermes\Emitter;
 
 class UserFormDataProvider implements UserFormDataProviderInterface
 {
-    private $usersRepository;
-
-    public function __construct(UsersRepository $usersRepository)
-    {
-        $this->usersRepository = $usersRepository;
+    public function __construct(
+        private Emitter $hermesEmitter,
+        private PaymentsRepository $paymentsRepository,
+        private UsersRepository $usersRepository,
+    ) {
     }
 
     /**
@@ -52,9 +55,30 @@ class UserFormDataProvider implements UserFormDataProviderInterface
     public function formSucceeded($form, $values)
     {
         $user = $this->usersRepository->findBy('email', $values->email);
-        $this->usersRepository->update($user, [
-            'invoice' => $values->invoices->invoice,
-            'disable_auto_invoice' => $values->invoices->disable_auto_invoice,
-        ]);
+
+        $changedInvoicing = [];
+        if ($user->invoice !== $values->invoices->invoice) {
+            $changedInvoicing['invoice'] = $values->invoices->invoice;
+        }
+        if ($user->disable_auto_invoice !== $values->invoices->disable_auto_invoice) {
+            $changedInvoicing['disable_auto_invoice'] = $values->invoices->disable_auto_invoice;
+        }
+
+        if (!empty($changedInvoicing)) {
+            $this->usersRepository->update($user, $changedInvoicing);
+
+            // if invoicing was enabled by this change, generate invoice for all invoiceable payments
+            if ($values->invoices->invoice && !$values->invoices->disable_auto_invoice) {
+                $payments = $this->paymentsRepository->userPayments($user->id)
+                    ->where('invoice_id', null)
+                    ->fetchAll();
+
+                foreach ($payments as $payment) {
+                    $this->hermesEmitter->emit(new HermesMessage('generate_invoice', [
+                        'payment_id' => $payment->id
+                    ]), HermesMessage::PRIORITY_LOW);
+                }
+            }
+        }
     }
 }
