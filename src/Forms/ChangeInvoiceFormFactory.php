@@ -61,12 +61,15 @@ class ChangeInvoiceFormFactory
         $form->addSelect('country_id', $this->translator->translate('invoices.form.invoice.label.country_id'), $this->countriesRepository->getAllPairs());
 
         $form->addText('company_id', $this->translator->translate('invoices.form.invoice.label.company_id'))
+            ->setNullable()
             ->setHtmlAttribute('placeholder', $this->translator->translate('invoices.form.invoice.placeholder.company_id'));
 
         $form->addText('company_tax_id', $this->translator->translate('invoices.form.invoice.label.company_tax_id'))
+            ->setNullable()
             ->setHtmlAttribute('placeholder', $this->translator->translate('invoices.form.invoice.placeholder.company_tax_id'));
 
         $form->addText('company_vat_id', $this->translator->translate('invoices.form.invoice.label.company_vat_id'))
+            ->setNullable()
             ->setHtmlAttribute('placeholder', $this->translator->translate('invoices.form.invoice.placeholder.company_vat_id'));
 
         /** @var AddressFormDataProviderInterface $providers */
