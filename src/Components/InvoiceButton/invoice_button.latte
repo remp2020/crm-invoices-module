@@ -1,30 +1,45 @@
 {if $admin}
+  <li class="menuitem-header">{_invoices.frontend.invoice_button.header}</li>
 	{if $payment->invoice}
-		<div class="btn-group" style="margin-bottom: 2px">
-			<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-							aria-expanded="false">
-				<i class="fas fa-file-invoice"></i>
-				{_invoices.frontend.invoice_button.invoice} <span class="caret"></span>
-			</button>
-			<ul class="dropdown-menu">
-				<li><a href="{plink :Invoices:InvoicesAdmin:downloadInvoice $payment->id}"><i class="fa fa-download"></i> {_invoices.frontend.invoice_button.download}</a></li>
-				<li><a href="{plink :Invoices:InvoicesAdmin:edit $payment->invoice->id}"><i class="fa fa-edit"></i> {_invoices.frontend.invoice_button.edit}</a></li>
-			</ul>
-		</div>
+    <li>
+      <a href="{plink :Invoices:InvoicesAdmin:downloadInvoice $payment->id}">
+        <i class="fa fa-download"></i> {_invoices.frontend.invoice_button.download}
+      </a>
+    </li>
+    <li>
+      <a href="{plink :Invoices:InvoicesAdmin:edit $payment->invoice->id}">
+        <i class="fa fa-edit"></i> {_invoices.frontend.invoice_button.edit}
+      </a>
+    </li>
 	{elseif $paymentInvoicable}
 		{var $invoiceAddress = $payment->user->related('addresses')->where('deleted_at IS NULL')->where(['type' => 'invoice'])->limit(1)->fetch()}
 		{if $invoiceAddress}
-			<a href="{plink :Invoices:InvoicesAdmin:downloadInvoice $payment->id}" target="_bank" class="btn btn-primary btn-sm"><i class="fa fa-magic"></i> {_invoices.frontend.invoice_button.generate}</a>
+			<li>
+			  <a href="{plink :Invoices:InvoicesAdmin:downloadInvoice $payment->id}" target="_bank">
+			    <i class="fa fa-magic"></i> {_invoices.frontend.invoice_button.generate}
+        </a>
+      </li>
 		{else}
-			<a href="{plink :Users:AddressAdmin:new userId => $payment->user->id}" class="btn btn-primary btn-sm"><i class="fa fa-star-half-stroke"></i> {_invoices.frontend.invoice_button.invoice_details}</a>
+      <li>
+			  <a href="{plink :Users:AddressAdmin:new userId => $payment->user->id}">
+			    <i class="fa fa-star-half-stroke"></i> {_invoices.frontend.invoice_button.invoice_details}
+        </a>
+      </li>
 		{/if}
 	{elseif $paidButNotInvoiceableAnymore}
-		<span class="btn btn-sm btn-default disabled">
-			<i class="fa fa-ban"></i> {_invoices.frontend.invoice_button.not_available_anymore}
-		</span>
+    <li>
+      <a class="disabled">
+        <i class="fa fa-ban"></i> {_invoices.frontend.invoice_button.not_available_anymore}
+      </a>
+    </li>
 	{else}
-	   	<span class="btn btn-sm btn-default disabled"><i class="fa fa-ban"></i> {_invoices.frontend.invoice_button.no_invoice}</span>
+    <li>
+      <a class="disabled">
+        <i class="fa fa-ban"></i> {_invoices.frontend.invoice_button.no_invoice}
+      </a>
+    </li>
 	{/if}
+
 {else}
 	{if $payment->invoice}
 	   	<a target="_blank" class="btn btn-sm btn-primary" href="{plink :Invoices:Invoices:DownloadInvoice $payment->id}"><i class="fa fa-download"></i> {_invoices.frontend.invoice_button.download}</a>

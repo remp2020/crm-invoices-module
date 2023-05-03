@@ -3,6 +3,7 @@ menu:
 
 frontend:
     invoice_button:
+        header: Faktura
         no_invoice: Bez faktury
         not_available_anymore: Faktura již nedostupná
         generate: Vygeneruj fakturu
@@ -58,7 +59,9 @@ frontend:
             foreign_country: "Pro informace o doručení do zahraničí nás prosím kontaktujte na %contactEmail%"
         success: Vaše adresa byla úspěšně změněna.
         warning: "Fakturu si můžete vygenerovat pouze do 14 dní od zaplacení. Pro vygenerování faktur <a href='%link%' style='text-decoration: underline;'>klikněte sem</a>."
-    download_receipt: Stáhnout potvrzení
+    download_receipt:
+        header: Potvrzení
+        download: Stáhnout potvrzení
     proforma_invoice:
         title: Platba předfakturou
         form_title: 'Pro dokončení objednávky prosím vyplňte fakturační údaje'

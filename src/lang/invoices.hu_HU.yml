@@ -55,7 +55,8 @@ frontend:
             required: "Meg kell adni az IČDPH-t (áfás adószámot)"
         success: "Sikeres címváltoztatás."
         warning: "A számlát csak a kifizetés utáni 14 napon belül hozhatja létre. A számla létrehozásához <a href='%link%' style='text-decoration: underline;'>kattintson ide</a>."
-    download_receipt: Igazolás letöltése
+    download_receipt:
+        download: Igazolás letöltése
     proforma_invoice:
         title: Fizetés előlegszámlával
         form_title: 'A megrendelés véglegesítéséhez, kérjük, töltse ki a számlázási adatokat'

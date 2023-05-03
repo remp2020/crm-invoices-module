@@ -42,7 +42,7 @@ class InvoicesModule extends CrmModule
     public function registerLazyWidgets(LazyWidgetManagerInterface $widgetManager)
     {
         $widgetManager->registerWidgetFactory(
-            'admin.payments.listing.action',
+            'admin.payments.listing.action.menu',
             \Crm\InvoicesModule\Components\InvoiceAdminButtonFactory::class,
             400
         );
@@ -63,7 +63,7 @@ class InvoicesModule extends CrmModule
         );
 
         $widgetManager->registerWidgetFactory(
-            'admin.payments.listing.action',
+            'admin.payments.listing.action.menu',
             \Crm\InvoicesModule\Components\ReceiptAdminButtonFactory::class,
             500
         );
