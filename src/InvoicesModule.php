@@ -143,6 +143,11 @@ class InvoicesModule extends CrmModule
             'users.dataprovider.user_form',
             $this->getInstance(\Crm\InvoicesModule\DataProvider\UserFormDataProvider::class)
         );
+
+        $dataProviderManager->registerDataProvider(
+            'admin.dataprovider.config_form',
+            $this->getInstance(\Crm\InvoicesModule\DataProvider\ConfigFormDataProvider::class)
+        );
     }
 
     public function registerUserData(UserDataRegistrator $dataRegistrator)

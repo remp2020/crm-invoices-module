@@ -30,6 +30,7 @@ services:
 	- Crm\InvoicesModule\Components\PaymentSuccessInvoiceWidget
 
 	- Crm\InvoicesModule\DataProvider\UserFormDataProvider
+	- Crm\InvoicesModule\DataProvider\ConfigFormDataProvider
 	- Crm\InvoicesModule\Events\AddressChangedHandler
 	- Crm\InvoicesModule\Events\AddressRemovedHandler
 	- Crm\InvoicesModule\Events\NewAddressHandler

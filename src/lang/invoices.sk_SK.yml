@@ -232,3 +232,13 @@ config:
     generate_invoice_number_for_paid_payment:
         name: 'Vygenerovať číslo faktúry pre každú zaplatenú platbu'
         description: "Číslo faktúry bude vygenerovaná pre každú zaplatenú platbu ignorujúc chýbajúcu adresu, nastavenia užívateľa (nefaktúrovať) a `invoiceable` nastavenie platby. Faktúra bude vygenerovaná (a stiahnuteľná) ihneď ako užívateľ pridá / opraví fakturačnú adresu alebo povolí faktúrovanie pre svoj účet. Generovanie čísla faktúry bez vygenerovania faktúry pomôže dodržať číselník faktúr a uľahčí pregenerovanie a stiahnutie faktúry po skončení faktúračnej doby (ale pred účtovným uzavretím mesiaca)."
+        required_because_of_invoice_limit_from_days: "Toto pole je povinné ak je nastavený \"Počet dní na vygenerovanie faktúry\" vačší ako %days%."
+    generate_invoice_limit_from:
+        name: Limit vygenerovania faktúry počítať od
+        description: Určuje od akého bodu sa počíta limit na vygenerovanie faktúry.
+        options:
+            limit_from_end_of_the_month: Posledného dňa v mesiaci
+            limit_from_payment: Dátumu platby
+    generate_invoice_limit_from_days:
+        name: Počet dní na vygenerovanie faktúry
+        description: 'Limit počtu dní do ktorého systém povolí vygenerovanie faktúry (závisí na: "Limit vygenerovania faktúry počítať od")'

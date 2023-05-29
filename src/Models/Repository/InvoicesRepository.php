@@ -18,7 +18,10 @@ use Tracy\ILogger;
 
 class InvoicesRepository extends Repository
 {
-    public const PAYMENT_INVOICEABLE_PERIOD_DAYS = 15;
+    public const GENERATE_INVOICE_LIMIT_FROM = 'generate_invoice_limit_from';
+    public const GENERATE_INVOICE_LIMIT_FROM_DAYS = 'generate_invoice_limit_from_days';
+    public const GENERATE_INVOICE_LIMIT_FROM_END_OF_THE_MONTH = 'limit_from_end_of_month';
+    public const GENERATE_INVOICE_LIMIT_FROM_PAYMENT = 'limit_from_payment';
 
     protected $tableName = 'invoices';
 
@@ -195,7 +198,7 @@ class InvoicesRepository extends Repository
             return false;
         }
 
-        if (!self::paymentInInvoiceablePeriod($payment, new DateTime())) {
+        if (!$this->paymentInInvoiceablePeriod($payment, new DateTime())) {
             return false;
         }
 
@@ -207,9 +210,21 @@ class InvoicesRepository extends Repository
      *
      * Warning: This is not full validation if payment is invoiceable. Use `isPaymentInvoiceable()`.
      */
-    final public static function paymentInInvoiceablePeriod(ActiveRow $payment, DateTime $now): bool
+    final public function paymentInInvoiceablePeriod(ActiveRow $payment, DateTime $now): bool
     {
-        $maxInvoiceableDate = $payment->paid_at->modifyClone('+' . self::PAYMENT_INVOICEABLE_PERIOD_DAYS . 'days 23:59:59');
+        $limitFrom = $this->applicationConfig->get(self::GENERATE_INVOICE_LIMIT_FROM);
+        $limitDays = $this->applicationConfig->get(self::GENERATE_INVOICE_LIMIT_FROM_DAYS);
+
+        /** @var DateTime $paidAt */
+        $paidAt = $payment->paid_at;
+        if ($limitFrom === self::GENERATE_INVOICE_LIMIT_FROM_END_OF_THE_MONTH) {
+            $maxInvoiceableDate = $paidAt->modifyClone('last day of this month')->modify('+' . $limitDays . 'days 23:59:59');
+        } elseif ($limitFrom === self::GENERATE_INVOICE_LIMIT_FROM_PAYMENT) {
+            $maxInvoiceableDate = $paidAt->modifyClone('+' . $limitDays . 'days 23:59:59');
+        } else {
+            $generateInvoiceLimitFromKey = self::GENERATE_INVOICE_LIMIT_FROM;
+            throw new \Exception("Invalid application configuration option for config: '{$generateInvoiceLimitFromKey}', value: '{$limitFrom}'");
+        }
         return $maxInvoiceableDate >= $now;
     }
 }

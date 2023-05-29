@@ -225,3 +225,16 @@ config:
         name: 'Vygenerovat a odeslat fakturu jako přílohu k notifikaci po platbě'
     generate_invoice_after_payment:
         name: 'Vygenerovat fakturu ihned po platbě'
+    generate_invoice_number_for_paid_payment:
+        name: 'Vygenerovat číslo faktury pro každou zaplacenou platbu'
+        description: "Číslo faktury bude vygenerováno pro každou zaplacenou platbu ignorující chybějící adresu, nastavení uživatele (nefakturovat) a `invoiceable` nastavení platby. Faktura bude vygenerována (a ke stažení) ihned jakmile uživatel přidá/opraví fakturační adresu nebo povolí fakturování pro svůj účet. Generování čísla faktury bez vygenerování faktury pomůže dodržet číselník faktur a usnadní přegenerování a stažení faktury po skončení fakturační doby (ale před účetním uzavřením měsíce)."
+        required_because_of_invoice_limit_from_days: "Toto pole je povinné, pokud je nastaven \"Počet dní na vygenerování faktury\" větší než %days%."
+    generate_invoice_limit_from:
+        name: Limit vygenerování faktury počítat od
+        description: Určuje od jakého bodu se počítá limit na vygenerování faktury.
+        options:
+            limit_from_end_of_the_month: Posledního dne v měsíci
+            limit_from_payment: Data platby
+    generate_invoice_limit_from_days:
+        name: Počet dní na vygenerování faktury
+        description: 'Limit počtu dní do kterého systém povolí vygenerování faktury (závisí na: "Limit vygenerování faktury počítat od")'

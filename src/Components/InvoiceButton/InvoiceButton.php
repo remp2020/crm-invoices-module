@@ -50,7 +50,7 @@ class InvoiceButton extends BaseLazyWidget
     {
         $this->template->payment = $payment;
         $this->template->paymentInvoicable = $this->invoicesRepository->isPaymentInvoiceable($payment);
-        $this->template->paidButNotInvoiceableAnymore = $payment->paid_at !== null && !InvoicesRepository::paymentInInvoiceablePeriod($payment, new DateTime());
+        $this->template->paidButNotInvoiceableAnymore = $payment->paid_at !== null && !$this->invoicesRepository->paymentInInvoiceablePeriod($payment, new DateTime());
         $this->template->admin = $this->admin;
         $this->template->setFile(__DIR__ . '/' . $this->templateName);
         $this->template->render();

@@ -8,6 +8,7 @@ use Crm\ApplicationModule\Config\Repository\ConfigCategoriesRepository;
 use Crm\ApplicationModule\Config\Repository\ConfigsRepository;
 use Crm\ApplicationModule\Seeders\ConfigsTrait;
 use Crm\ApplicationModule\Seeders\ISeeder;
+use Crm\InvoicesModule\Repository\InvoicesRepository;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ConfigsSeeder implements ISeeder
@@ -199,6 +200,32 @@ class ConfigsSeeder implements ISeeder
             'invoices.config.generate_invoice_number_for_paid_payment.description',
             false, // keeping compatible with previous state of invoice generation
             1400
+        );
+
+        $this->addConfig(
+            $output,
+            $category,
+            InvoicesRepository::GENERATE_INVOICE_LIMIT_FROM,
+            ApplicationConfig::TYPE_SELECT,
+            'invoices.config.generate_invoice_limit_from.name',
+            'invoices.config.generate_invoice_limit_from.description',
+            'limit_from_payment',
+            1500,
+            [
+                InvoicesRepository::GENERATE_INVOICE_LIMIT_FROM_PAYMENT => 'invoices.config.generate_invoice_limit_from.options.limit_from_payment',
+                InvoicesRepository::GENERATE_INVOICE_LIMIT_FROM_END_OF_THE_MONTH => 'invoices.config.generate_invoice_limit_from.options.limit_from_end_of_the_month',
+            ]
+        );
+
+        $this->addConfig(
+            $output,
+            $category,
+            InvoicesRepository::GENERATE_INVOICE_LIMIT_FROM_DAYS,
+            ApplicationConfig::TYPE_INT,
+            'invoices.config.generate_invoice_limit_from_days.name',
+            'invoices.config.generate_invoice_limit_from_days.description',
+            15, // default set to 15 days from payment paid_at to avoid breaking change
+            1505
         );
     }
 }

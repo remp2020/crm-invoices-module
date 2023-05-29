@@ -290,6 +290,90 @@ class InvoicesRepositoryTest extends DatabaseTestCase
         $this->assertEquals(0, $this->invoiceItemsRepository->totalCount());
     }
 
+    public function testPaymentIsInInvoiceablePeriodFromPayment()
+    {
+        $limitFromConfig = $this->configsRepository->loadByName(InvoicesRepository::GENERATE_INVOICE_LIMIT_FROM);
+        $this->configsRepository->update($limitFromConfig, [
+            'value' => InvoicesRepository::GENERATE_INVOICE_LIMIT_FROM_PAYMENT
+        ]);
+
+        $limitFromDaysConfig = $this->configsRepository->loadByName(InvoicesRepository::GENERATE_INVOICE_LIMIT_FROM_DAYS);
+        $this->configsRepository->update($limitFromDaysConfig, [
+            'value' => 15
+        ]);
+
+        $user = $this->getUser();
+        $now = new DateTime();
+        $in13Days = DateTime::from('+13 days 23:59:59');
+        $payment = $this->addPayment($user, $now, $now, $this->getSubscriptionType());
+
+        $isPaymentInvoiceable = $this->invoicesRepository->paymentInInvoiceablePeriod($payment, $in13Days);
+        $this->assertTrue($isPaymentInvoiceable);
+    }
+
+    public function testPaymentIsNotInInvoiceablePeriodFromPayment()
+    {
+        $limitFromConfig = $this->configsRepository->loadByName(InvoicesRepository::GENERATE_INVOICE_LIMIT_FROM);
+        $this->configsRepository->update($limitFromConfig, [
+            'value' => InvoicesRepository::GENERATE_INVOICE_LIMIT_FROM_PAYMENT
+        ]);
+
+        $limitFromDaysConfig = $this->configsRepository->loadByName(InvoicesRepository::GENERATE_INVOICE_LIMIT_FROM_DAYS);
+        $this->configsRepository->update($limitFromDaysConfig, [
+            'value' => 15
+        ]);
+
+        $user = $this->getUser();
+        $now = new DateTime();
+        $in16Days = DateTime::from('+16 days 23:59:59');
+        $payment = $this->addPayment($user, $now, $now, $this->getSubscriptionType());
+
+        $isPaymentInvoiceable = $this->invoicesRepository->paymentInInvoiceablePeriod($payment, $in16Days);
+        $this->assertFalse($isPaymentInvoiceable);
+    }
+
+    public function testPaymentIsInInvoiceablePeriodFromEndOfTheMonth()
+    {
+        $limitFromConfig = $this->configsRepository->loadByName(InvoicesRepository::GENERATE_INVOICE_LIMIT_FROM);
+        $this->configsRepository->update($limitFromConfig, [
+            'value' => InvoicesRepository::GENERATE_INVOICE_LIMIT_FROM_END_OF_THE_MONTH
+        ]);
+
+        $limitFromDaysConfig = $this->configsRepository->loadByName(InvoicesRepository::GENERATE_INVOICE_LIMIT_FROM_DAYS);
+        $this->configsRepository->update($limitFromDaysConfig, [
+            'value' => 15
+        ]);
+
+        $user = $this->getUser();
+        $now = new DateTime();
+        $in13DaysFromEndOfTheMonth = $now->modifyClone('last day of this month')->modify('+13 days');
+        $payment = $this->addPayment($user, $now, $now, $this->getSubscriptionType());
+
+        $isPaymentInvoiceable = $this->invoicesRepository->paymentInInvoiceablePeriod($payment, $in13DaysFromEndOfTheMonth);
+        $this->assertTrue($isPaymentInvoiceable);
+    }
+
+    public function testPaymentIsNotInInvoiceablePeriodFromEndOfTheMonth()
+    {
+        $limitFromConfig = $this->configsRepository->loadByName(InvoicesRepository::GENERATE_INVOICE_LIMIT_FROM);
+        $this->configsRepository->update($limitFromConfig, [
+            'value' => InvoicesRepository::GENERATE_INVOICE_LIMIT_FROM_END_OF_THE_MONTH
+        ]);
+
+        $limitFromDaysConfig = $this->configsRepository->loadByName(InvoicesRepository::GENERATE_INVOICE_LIMIT_FROM_DAYS);
+        $this->configsRepository->update($limitFromDaysConfig, [
+            'value' => 15
+        ]);
+
+        $user = $this->getUser();
+        $now = new DateTime();
+        $in16DaysFromEndOfTheMonth = $now->modifyClone('last day of this month')->modify('+16 days');
+        $payment = $this->addPayment($user, $now, $now, $this->getSubscriptionType());
+
+        $isPaymentInvoiceable = $this->invoicesRepository->paymentInInvoiceablePeriod($payment, $in16DaysFromEndOfTheMonth);
+        $this->assertFalse($isPaymentInvoiceable);
+    }
+
     /* *******************************************************************
      * Helper functions
      * ***************************************************************** */

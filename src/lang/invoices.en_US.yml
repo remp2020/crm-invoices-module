@@ -229,3 +229,13 @@ config:
     generate_invoice_number_for_paid_payment:
         name: 'Generate an invoice number for every paid payment'
         description: "An invoice number will be generated for each paid payment, ignoring missing user address, user settings (do not invoice) and `invoiceable` flag on payment. The invoice will be generated (and downloadable) as soon as the user adds / corrects the billing address or enables invoicing for their account. Generating an invoice number without generating an invoice will help to maintain the invoice number sequence and make it easier to generate and download the invoice after the end of the invoicing period (but before the accounting close of the month)."
+        required_because_of_invoice_limit_from_days: "This field is mandatory if \"Invoice generation - time restriction (in days)\" is set to more than %days% days."
+    generate_invoice_limit_from:
+        name: Invoice generation - time restriction related to
+        description: "It determines from which point the limit of days for invoice generation is calculated (eg. 15 days after purchase or 15 days after end of month)."
+        options:
+            limit_from_end_of_the_month: On the last day of the month
+            limit_from_payment: Date of payment
+    generate_invoice_limit_from_days:
+        name: Invoice generation - time restriction (in days)
+        description: 'Number of days after which system disables the generation of an invoice (depends on: "Invoice generation - time restriction related to")'
