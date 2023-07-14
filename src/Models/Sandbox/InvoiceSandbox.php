@@ -63,4 +63,9 @@ class InvoiceSandbox
     {
         // todo
     }
+
+    public function getFilePath(string $fileName)
+    {
+        return $this->folder . '/' . $fileName;
+    }
 }

@@ -53,7 +53,7 @@
           <td class="text-muted">{$createdAt|userDate}</td>
           <td>{$file->getBaseName()} <span class="label label-default">{$file->getSize()|bytes}</span></td>
           <td>
-            <a href="/inv/{$file->getBaseName()}" class="btn btn-sm btn-info" title="{_invoices.admin.default.download}"><i class="fa fa-download"></i></a>
+            <a n:href="downloadExport! $file->getBaseName()" class="btn btn-sm btn-info" title="{_invoices.admin.default.download}"><i class="fa fa-download"></i></a>
             <a n:href="delete! $file->getBaseName()" class="btn btn-sm btn-danger" title="{_invoices.admin.default.delete}"><i class="fa fa-trash"></i></a>
           </td>
         </tr>

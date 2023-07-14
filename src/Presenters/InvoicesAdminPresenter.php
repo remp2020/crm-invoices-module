@@ -14,6 +14,7 @@ use Crm\InvoicesModule\Sandbox\InvoiceZipGenerator;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
 use Crm\UsersModule\Repository\AddressesRepository;
 use Nette\Application\BadRequestException;
+use Nette\Application\Responses\FileResponse;
 use Nette\Application\Responses\TextResponse;
 use Nette\Application\UI\Form;
 use Nette\Utils\DateTime;
@@ -161,6 +162,16 @@ class InvoicesAdminPresenter extends AdminPresenter
             $this->redirect('default');
         };
         return $form;
+    }
+
+    /**
+     * @admin-access-level read
+     */
+    public function handleDownloadExport($fileName)
+    {
+        $response = new FileResponse($this->invoiceSandbox->getFilePath($fileName));
+        $response->resuming = false;
+        $this->sendResponse($response);
     }
 
     /**
