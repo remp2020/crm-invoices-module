@@ -16,7 +16,7 @@
 		{if $invoiceAddress}
 			<a href="{plink :Invoices:InvoicesAdmin:downloadInvoice $payment->id}" target="_bank" class="btn btn-primary btn-sm"><i class="fa fa-magic"></i> {_invoices.frontend.invoice_button.generate}</a>
 		{else}
-			<a href="{plink :Users:AddressAdmin:new userId => $payment->user->id}" class="btn btn-primary btn-sm"><i class="fa fa fa-star-half-o"></i> {_invoices.frontend.invoice_button.invoice_details}</a>
+			<a href="{plink :Users:AddressAdmin:new userId => $payment->user->id}" class="btn btn-primary btn-sm"><i class="fa fa-star-half-stroke"></i> {_invoices.frontend.invoice_button.invoice_details}</a>
 		{/if}
 	{elseif $paidButNotInvoiceableAnymore}
 		<span class="btn btn-sm btn-default disabled">
