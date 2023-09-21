@@ -57,10 +57,10 @@ class UserFormDataProvider implements UserFormDataProviderInterface
         $user = $this->usersRepository->findBy('email', $values->email);
 
         $changedInvoicing = [];
-        if ($user->invoice !== $values->invoices->invoice) {
+        if ((bool) $user->invoice !== (bool) $values->invoices->invoice) {
             $changedInvoicing['invoice'] = $values->invoices->invoice;
         }
-        if ($user->disable_auto_invoice !== $values->invoices->disable_auto_invoice) {
+        if ((bool) $user->disable_auto_invoice !== (bool) $values->invoices->disable_auto_invoice) {
             $changedInvoicing['disable_auto_invoice'] = $values->invoices->disable_auto_invoice;
         }
 
