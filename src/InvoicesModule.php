@@ -15,7 +15,6 @@ use Crm\InvoicesModule\Scenarios\HasInvoiceCriteria;
 use Crm\InvoicesModule\Seeders\AddressTypesSeeder;
 use Crm\InvoicesModule\Seeders\ConfigsSeeder;
 use Crm\InvoicesModule\Seeders\PaymentGatewaysSeeder;
-use League\Event\Emitter;
 use Tomaj\Hermes\Dispatcher;
 
 class InvoicesModule extends CrmModule
@@ -103,27 +102,27 @@ class InvoicesModule extends CrmModule
         $seederManager->addSeeder($this->getInstance(PaymentGatewaysSeeder::class));
     }
 
-    public function registerEventHandlers(Emitter $emitter)
+    public function registerLazyEventHandlers(\Crm\ApplicationModule\Event\LazyEventEmitter $emitter)
     {
         $emitter->addListener(
             \Crm\UsersModule\Events\AddressChangedEvent::class,
-            $this->getInstance(\Crm\InvoicesModule\Events\AddressChangedHandler::class)
+            \Crm\InvoicesModule\Events\AddressChangedHandler::class
         );
         $emitter->addListener(
             \Crm\UsersModule\Events\AddressRemovedEvent::class,
-            $this->getInstance(\Crm\InvoicesModule\Events\AddressRemovedHandler::class)
+            \Crm\InvoicesModule\Events\AddressRemovedHandler::class
         );
         $emitter->addListener(
             \Crm\UsersModule\Events\PreNotificationEvent::class,
-            $this->getInstance(\Crm\InvoicesModule\Events\PreNotificationEventHandler::class)
+            \Crm\InvoicesModule\Events\PreNotificationEventHandler::class
         );
         $emitter->addListener(
             \Crm\UsersModule\Events\NewAddressEvent::class,
-            $this->getInstance(\Crm\InvoicesModule\Events\NewAddressHandler::class)
+            \Crm\InvoicesModule\Events\NewAddressHandler::class
         );
         $emitter->addListener(
             \Crm\PaymentsModule\Events\PaymentChangeStatusEvent::class,
-            $this->getInstance(\Crm\InvoicesModule\Events\PaymentStatusChangeHandler::class)
+            \Crm\InvoicesModule\Events\PaymentStatusChangeHandler::class
         );
     }
 
