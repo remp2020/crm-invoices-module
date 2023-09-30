@@ -72,7 +72,7 @@ class ChangeInvoiceFormFactory
             ->setNullable()
             ->setHtmlAttribute('placeholder', $this->translator->translate('invoices.form.invoice.placeholder.company_vat_id'));
 
-        /** @var AddressFormDataProviderInterface $providers */
+        /** @var AddressFormDataProviderInterface[] $providers */
         $providers = $this->dataProviderManager->getProviders('invoices.dataprovider.invoice_form', AddressFormDataProviderInterface::class);
         foreach ($providers as $sorting => $provider) {
             $form = $provider->provide(['form' => $form, 'addressType' => 'invoice']);

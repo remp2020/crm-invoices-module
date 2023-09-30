@@ -121,7 +121,7 @@ class ChangeInvoiceDetailsFormFactory
                 $this->translator->translate('invoices.frontend.change_invoice_details.country_id.foreign_country', ['contactEmail' => $contactEmail])
             );
 
-        /** @var AddressFormDataProviderInterface $providers */
+        /** @var AddressFormDataProviderInterface[] $providers */
         $providers = $this->dataProviderManager->getProviders('invoices.dataprovider.invoice_address_form', AddressFormDataProviderInterface::class);
         foreach ($providers as $sorting => $provider) {
             $form = $provider->provide(['form' => $form, 'addressType' => 'invoice']);

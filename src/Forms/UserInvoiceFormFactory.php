@@ -118,7 +118,7 @@ class UserInvoiceFormFactory
 
         $form->addHidden('done', $invoiceAddress ? 1 : 0);
 
-        /** @var AddressFormDataProviderInterface $providers */
+        /** @var AddressFormDataProviderInterface[] $providers */
         $providers = $this->dataProviderManager->getProviders('invoices.dataprovider.invoice_address_form', AddressFormDataProviderInterface::class);
         foreach ($providers as $sorting => $provider) {
             $form = $provider->provide(['form' => $form, 'addressType' => 'invoice']);
