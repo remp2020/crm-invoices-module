@@ -5,7 +5,7 @@ namespace Crm\InvoicesModule;
 use Contributte\Translation\Translator;
 use Crm\ApplicationModule\Config\ApplicationConfig;
 use Crm\ApplicationModule\Helpers\PriceHelper;
-use Crm\PaymentsModule\Repository\PaymentsRepository;
+use Crm\ApplicationModule\Helpers\UserDateHelper;
 use Latte\Engine;
 use Latte\Essential\TranslatorExtension;
 use Nette\Database\Table\ActiveRow;
@@ -20,24 +20,12 @@ class ReceiptGenerator
     /** @var string */
     private $tempDir;
 
-    private $paymentsRepository;
-
-    private $translator;
-
-    private $priceHelper;
-
-    private $applicationConfig;
-
     public function __construct(
-        PaymentsRepository $paymentsRepository,
-        Translator $translator,
-        PriceHelper $priceHelper,
-        ApplicationConfig $applicationConfig
+        private Translator $translator,
+        private PriceHelper $priceHelper,
+        private UserDateHelper $userDateHelper,
+        private ApplicationConfig $applicationConfig
     ) {
-        $this->paymentsRepository = $paymentsRepository;
-        $this->translator = $translator;
-        $this->priceHelper = $priceHelper;
-        $this->applicationConfig = $applicationConfig;
     }
 
     public function setTempDir(string $tempDir)
@@ -81,6 +69,7 @@ class ReceiptGenerator
     {
         $engine = new Engine();
         $engine->addFilter('price', [$this->priceHelper, 'process']);
+        $engine->addFilter('date', [$this->userDateHelper, 'process']);
         $engine->addExtension(new TranslatorExtension($this->translator));
 
         $template = $engine->renderToString(
@@ -89,6 +78,8 @@ class ReceiptGenerator
                 'amount' => $payment->amount,
                 'project' => $payment->subscription_type->description,
                 'config' => $this->applicationConfig,
+                'user' => $payment->user,
+                'date' => $payment->paid_at,
             ]
         );
 
