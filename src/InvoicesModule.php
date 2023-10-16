@@ -6,11 +6,13 @@ use Crm\ApplicationModule\Commands\CommandsContainerInterface;
 use Crm\ApplicationModule\Criteria\ScenariosCriteriaStorage;
 use Crm\ApplicationModule\CrmModule;
 use Crm\ApplicationModule\DataProvider\DataProviderManager;
+use Crm\ApplicationModule\Event\EventsStorage;
 use Crm\ApplicationModule\Menu\MenuContainerInterface;
 use Crm\ApplicationModule\Menu\MenuItem;
 use Crm\ApplicationModule\SeederManager;
 use Crm\ApplicationModule\User\UserDataRegistrator;
 use Crm\ApplicationModule\Widget\LazyWidgetManagerInterface;
+use Crm\InvoicesModule\Events\NewInvoiceEvent;
 use Crm\InvoicesModule\Scenarios\HasInvoiceCriteria;
 use Crm\InvoicesModule\Seeders\AddressTypesSeeder;
 use Crm\InvoicesModule\Seeders\ConfigsSeeder;
@@ -152,5 +154,10 @@ class InvoicesModule extends CrmModule
     public function registerUserData(UserDataRegistrator $dataRegistrator)
     {
         $dataRegistrator->addUserDataProvider($this->getInstance(\Crm\InvoicesModule\User\InvoicesUserDataProvider::class));
+    }
+
+    public function registerEvents(EventsStorage $eventsStorage)
+    {
+        $eventsStorage->register('new_invoice', NewInvoiceEvent::class, true);
     }
 }

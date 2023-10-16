@@ -4,12 +4,15 @@ namespace Crm\InvoicesModule\Repository;
 
 use Crm\ApplicationModule\Config\ApplicationConfig;
 use Crm\ApplicationModule\Helpers\UserDateHelper;
+use Crm\ApplicationModule\Hermes\HermesMessage;
 use Crm\ApplicationModule\Repository;
 use Crm\ApplicationModule\Repository\AuditLogRepository;
+use Crm\InvoicesModule\Events\NewInvoiceEvent;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
 use Crm\SubscriptionsModule\PaymentItem\SubscriptionTypePaymentItem;
 use Crm\UsersModule\Repository\AddressesRepository;
 use IntlDateFormatter;
+use League\Event\Emitter;
 use Nette\Database\Explorer;
 use Nette\Database\Table\ActiveRow;
 use Nette\Utils\DateTime;
@@ -31,7 +34,9 @@ class InvoicesRepository extends Repository
         private AddressesRepository $addressesRepository,
         private InvoiceItemsRepository $invoiceItemsRepository,
         AuditLogRepository $auditLogRepository,
-        private UserDateHelper $userDateHelper
+        private UserDateHelper $userDateHelper,
+        private Emitter $emitter,
+        private \Tomaj\Hermes\Emitter $hermesEmitter,
     ) {
         parent::__construct($database);
 
@@ -134,6 +139,11 @@ class InvoicesRepository extends Repository
                 $postalFeeVat = $item->vat;
             }
         }
+
+        $this->emitter->emit(new NewInvoiceEvent($invoice));
+        $this->hermesEmitter->emit(new HermesMessage('new-invoice', [
+            'invoice_id' => $invoice->id
+        ]));
 
         return $invoice;
     }
