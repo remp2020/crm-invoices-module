@@ -118,10 +118,12 @@ class UserInvoiceFormFactory
 
         $form->addHidden('done', $invoiceAddress ? 1 : 0);
 
+        $form->onSuccess[] = [$this, 'formSucceeded'];
+
         /** @var AddressFormDataProviderInterface[] $providers */
         $providers = $this->dataProviderManager->getProviders('invoices.dataprovider.invoice_address_form', AddressFormDataProviderInterface::class);
         foreach ($providers as $sorting => $provider) {
-            $form = $provider->provide(['form' => $form, 'addressType' => 'invoice']);
+            $form = $provider->provide(['form' => $form, 'addressType' => 'invoice', 'payment' => $payment]);
         }
 
         $form->addSubmit('send', 'invoices.form.invoice.label.save')
@@ -148,7 +150,8 @@ class UserInvoiceFormFactory
 
         $form->setDefaults($defaults);
 
-        $form->onSuccess[] = [$this, 'formSucceeded'];
+        $form->onSuccess[] = [$this, 'formSucceededAfterProviders'];
+
         return $form;
     }
 
@@ -191,7 +194,10 @@ class UserInvoiceFormFactory
         if ($changeRequest) {
             $this->addressChangeRequestsRepository->acceptRequest($changeRequest);
         }
+    }
 
-        $this->onSave->__invoke($form, $user);
+    public function formSucceededAfterProviders(Form $form, $values): void
+    {
+        $this->onSave->__invoke($form, $this->payment->user);
     }
 }

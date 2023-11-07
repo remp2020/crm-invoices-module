@@ -121,17 +121,20 @@ class ChangeInvoiceDetailsFormFactory
                 $this->translator->translate('invoices.frontend.change_invoice_details.country_id.foreign_country', ['contactEmail' => $contactEmail])
             );
 
+        $form->onSuccess[] = [$this, 'formSucceeded'];
+
         /** @var AddressFormDataProviderInterface[] $providers */
         $providers = $this->dataProviderManager->getProviders('invoices.dataprovider.invoice_address_form', AddressFormDataProviderInterface::class);
         foreach ($providers as $sorting => $provider) {
-            $form = $provider->provide(['form' => $form, 'addressType' => 'invoice']);
+            $form = $provider->provide(['form' => $form, 'addressType' => 'invoice', 'user' => $row]);
         }
 
         $form->addSubmit('send', $this->translator->translate('invoices.frontend.change_invoice_details.submit'));
 
         $form->setDefaults($defaults);
 
-        $form->onSuccess[] = [$this, 'formSucceeded'];
+        $form->onSuccess[] = [$this, 'formSucceededAfterProviders'];
+
         return $form;
     }
 
@@ -191,7 +194,10 @@ class ChangeInvoiceDetailsFormFactory
                 }
             }
         }
+    }
 
-        $this->onSuccess->__invoke($form, $userRow);
+    public function formSucceededAfterProviders(Form $form, $values): void
+    {
+        $this->onSuccess->__invoke($form, $this->loadUserRow());
     }
 }
