@@ -3,6 +3,7 @@
 namespace Crm\InvoicesModule\Tests;
 
 use Crm\ApplicationModule\Config\Repository\ConfigsRepository;
+use Crm\ApplicationModule\Event\LazyEventEmitter;
 use Crm\InvoicesModule\Events\PreNotificationEventHandler;
 use Crm\PaymentsModule\Events\PaymentChangeStatusEvent;
 use Crm\PaymentsModule\Events\PaymentStatusChangeHandler;
@@ -18,12 +19,11 @@ use Crm\UsersModule\Events\PreNotificationEvent;
 use Crm\UsersModule\Repository\AddressesRepository;
 use Crm\UsersModule\Repository\CountriesRepository;
 use Crm\UsersModule\Repository\UsersRepository;
-use League\Event\Emitter;
 use Nette\Utils\DateTime;
 
 class PreNotificationHandlerTest extends BaseTestCase
 {
-    private Emitter $emitter;
+    private LazyEventEmitter $lazyEventEmitter;
 
     private UserManager $userManager;
 
@@ -49,7 +49,7 @@ class PreNotificationHandlerTest extends BaseTestCase
     {
         parent::setUp();
 
-        $this->emitter = $this->inject(Emitter::class);
+        $this->lazyEventEmitter = $this->inject(LazyEventEmitter::class);
         $this->userManager = $this->inject(UserManager::class);
         $this->usersRepository = $this->getRepository(UsersRepository::class);
         $this->subscriptionTypeBuilder = $this->inject(SubscriptionTypeBuilder::class);
@@ -63,15 +63,15 @@ class PreNotificationHandlerTest extends BaseTestCase
         $this->paymentGateway = $pgr->add('test', 'test', 10, true, true);
 
         // To create subscriptions from payments, register listener
-        $this->emitter->addListener(PaymentChangeStatusEvent::class, $this->inject(PaymentStatusChangeHandler::class));
+        $this->lazyEventEmitter->addListener(PaymentChangeStatusEvent::class, $this->inject(PaymentStatusChangeHandler::class));
         // For pre-notification processing
-        $this->emitter->addListener(PreNotificationEvent::class, $this->inject(PreNotificationEventHandler::class));
+        $this->lazyEventEmitter->addListener(PreNotificationEvent::class, $this->inject(PreNotificationEventHandler::class));
     }
 
     protected function tearDown(): void
     {
-        $this->emitter->removeListener(PaymentChangeStatusEvent::class, $this->inject(PaymentStatusChangeHandler::class));
-        $this->emitter->removeListener(PreNotificationEvent::class, $this->inject(PreNotificationEventHandler::class));
+        $this->lazyEventEmitter->removeAllListeners(PaymentChangeStatusEvent::class);
+        $this->lazyEventEmitter->removeAllListeners(PreNotificationEvent::class);
 
         parent::tearDown();
     }
@@ -98,7 +98,7 @@ class PreNotificationHandlerTest extends BaseTestCase
             'subscription' => $subscription->toArray(),
         ];
         /** @var NotificationEvent $event */
-        $event = $this->emitter->emit(new NotificationEvent($this->emitter, $user, 'template_example', $templateParams));
+        $event = $this->lazyEventEmitter->emit(new NotificationEvent($this->lazyEventEmitter, $user, 'template_example', $templateParams));
 
         $this->assertEmpty($event->getAttachments());
     }
@@ -130,9 +130,9 @@ class PreNotificationHandlerTest extends BaseTestCase
         $preNotificationHandler->enableForNotificationHermesTypes('foo');
 
         /** @var NotificationEvent $event */
-        $event = $this->emitter->emit(
+        $event = $this->lazyEventEmitter->emit(
             new NotificationEvent(
-                $this->emitter,
+                $this->lazyEventEmitter,
                 $user,
                 'template_example',
                 $templateParams,
