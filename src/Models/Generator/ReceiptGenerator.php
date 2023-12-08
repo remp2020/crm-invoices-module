@@ -4,6 +4,7 @@ namespace Crm\InvoicesModule;
 
 use Contributte\Translation\Translator;
 use Crm\ApplicationModule\Config\ApplicationConfig;
+use Crm\ApplicationModule\Helpers\LocalizedDateHelper;
 use Crm\ApplicationModule\Helpers\PriceHelper;
 use Crm\ApplicationModule\Helpers\UserDateHelper;
 use Latte\Engine;
@@ -24,7 +25,8 @@ class ReceiptGenerator
         private Translator $translator,
         private PriceHelper $priceHelper,
         private UserDateHelper $userDateHelper,
-        private ApplicationConfig $applicationConfig
+        private ApplicationConfig $applicationConfig,
+        private LocalizedDateHelper $localizedDateHelper,
     ) {
     }
 
@@ -69,7 +71,8 @@ class ReceiptGenerator
     {
         $engine = new Engine();
         $engine->addFilter('price', [$this->priceHelper, 'process']);
-        $engine->addFilter('date', [$this->userDateHelper, 'process']);
+        $engine->addFilter('userDate', [$this->userDateHelper, 'process']);
+        $engine->addFilter('localizedDate', [$this->localizedDateHelper, 'process']);
         $engine->addExtension(new TranslatorExtension($this->translator));
 
         $template = $engine->renderToString(
