@@ -16,6 +16,7 @@ use Crm\UsersModule\Repository\AddressTypesRepository;
 use Crm\UsersModule\Repository\AddressesRepository;
 use Crm\UsersModule\Repository\CountriesRepository;
 use Nette\Utils\DateTime;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class HasInvoiceCriteriaTest extends PaymentsTestCase
 {
@@ -38,7 +39,7 @@ class HasInvoiceCriteriaTest extends PaymentsTestCase
         ]);
     }
 
-    public function dataProviderForTestHasInvoiceCriteria(): array
+    public static function dataProviderForTestHasInvoiceCriteria(): array
     {
         return [
             [1, true, true],
@@ -50,8 +51,8 @@ class HasInvoiceCriteriaTest extends PaymentsTestCase
 
     /**
      * @group unreliable
-     * @dataProvider dataProviderForTestHasInvoiceCriteria
      */
+    #[DataProvider('dataProviderForTestHasInvoiceCriteria')]
     public function testHasInvoiceCriteria($hasInvoice, $shoudHaveInvoice, $expectedResult)
     {
         [$paymentSelection, $paymentRow] = $this->prepareData($hasInvoice);
