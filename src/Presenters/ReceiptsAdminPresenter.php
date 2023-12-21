@@ -6,14 +6,15 @@ use Crm\AdminModule\Presenters\AdminPresenter;
 use Crm\InvoicesModule\ReceiptGenerator;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
 use Nette\Application\BadRequestException;
+use Nette\DI\Attributes\Inject;
 
 class ReceiptsAdminPresenter extends AdminPresenter
 {
-    /** @var ReceiptGenerator @inject */
-    public $receiptGenerator;
+    #[Inject]
+    public ReceiptGenerator $receiptGenerator;
 
-    /** @var  PaymentsRepository @inject */
-    public $paymentsRepository;
+    #[Inject]
+    public PaymentsRepository $paymentsRepository;
 
     /**
      * @admin-access-level read

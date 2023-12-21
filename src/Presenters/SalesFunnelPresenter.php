@@ -7,20 +7,22 @@ use Crm\InvoicesModule\Events\ProformaInvoiceCreatedEvent;
 use Crm\InvoicesModule\Forms\UserInvoiceFormFactory;
 use Crm\PaymentsModule\Repository\PaymentLogsRepository;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
+use Nette\Application\Attributes\Persistent;
 use Nette\Application\UI\Form;
+use Nette\DI\Attributes\Inject;
 
 class SalesFunnelPresenter extends FrontendPresenter
 {
-    /** @var PaymentsRepository @inject */
-    public $paymentsRepository;
+    #[Inject]
+    public PaymentsRepository $paymentsRepository;
 
-    /** @var PaymentLogsRepository  @inject */
-    public $paymentLogsRepository;
+    #[Inject]
+    public PaymentLogsRepository $paymentLogsRepository;
 
-    /** @var UserInvoiceFormFactory @inject */
-    public $userInvoiceFormFactory;
+    #[Inject]
+    public UserInvoiceFormFactory $userInvoiceFormFactory;
 
-    /** @persistent */
+    #[Persistent]
     public $VS;
 
     public function renderReturnPaymentProformaInvoice()

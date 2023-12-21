@@ -17,41 +17,42 @@ use Nette\Application\BadRequestException;
 use Nette\Application\Responses\FileResponse;
 use Nette\Application\Responses\TextResponse;
 use Nette\Application\UI\Form;
+use Nette\DI\Attributes\Inject;
 use Nette\Utils\DateTime;
 use Tomaj\Form\Renderer\BootstrapInlineRenderer;
 use Tomaj\Hermes\Emitter;
 
 class InvoicesAdminPresenter extends AdminPresenter
 {
-    /** @var InvoiceGenerator @inject */
-    public $invoiceGenerator;
+    #[Inject]
+    public InvoiceGenerator $invoiceGenerator;
 
-    /** @var  PaymentsRepository @inject */
-    public $paymentsRepository;
+    #[Inject]
+    public PaymentsRepository $paymentsRepository;
 
-    /** @var  InvoiceNumbersRepository @inject */
-    public $invoiceNumbersRepository;
+    #[Inject]
+    public InvoiceNumbersRepository $invoiceNumbersRepository;
 
-    /** @var  InvoicesRepository @inject */
-    public $invoiceRepository;
+    #[Inject]
+    public InvoicesRepository $invoiceRepository;
 
-    /** @var  InvoiceZipGenerator @inject */
-    public $invoiceZipGenerator;
+    #[Inject]
+    public InvoiceZipGenerator $invoiceZipGenerator;
 
-    /** @var InvoiceSandbox @inject */
-    public $invoiceSandbox;
+    #[Inject]
+    public InvoiceSandbox $invoiceSandbox;
 
-    /** @var  Emitter @inject */
-    public $hermesEmitter;
+    #[Inject]
+    public Emitter $hermesEmitter;
 
-    /** @var  ChangeInvoiceFormFactory @inject */
-    public $changeInvoiceFormFactory;
+    #[Inject]
+    public ChangeInvoiceFormFactory $changeInvoiceFormFactory;
 
-    /** @var  ChangeInvoiceItemsFormFactory @inject */
-    public $changeInvoiceItemsFormFactory;
+    #[Inject]
+    public ChangeInvoiceItemsFormFactory $changeInvoiceItemsFormFactory;
 
-    /** @var  AddressesRepository @inject */
-    public $addressesRepository;
+    #[Inject]
+    public AddressesRepository $addressesRepository;
 
     /**
      * @admin-access-level read

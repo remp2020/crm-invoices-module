@@ -7,14 +7,15 @@ use Crm\InvoicesModule\ReceiptGenerator;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
 use Nette\Application\BadRequestException;
 use Nette\Application\ForbiddenRequestException;
+use Nette\DI\Attributes\Inject;
 
 class ReceiptsPresenter extends FrontendPresenter
 {
-    /** @var ReceiptGenerator @inject */
-    public $receiptGenerator;
+    #[Inject]
+    public ReceiptGenerator $receiptGenerator;
 
-    /** @var PaymentsRepository @inject */
-    public $paymentsRepository;
+    #[Inject]
+    public PaymentsRepository $paymentsRepository;
 
     public function actionDownloadReceipt($paymentId)
     {

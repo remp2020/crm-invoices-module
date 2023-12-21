@@ -8,20 +8,21 @@ use Crm\InvoicesModule\InvoiceGenerator;
 use Crm\InvoicesModule\Repository\InvoicesRepository;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
 use Nette\Application\BadRequestException;
+use Nette\DI\Attributes\Inject;
 
 class InvoicesPresenter extends FrontendPresenter
 {
-    /** @var InvoiceGenerator @inject */
-    public $invoiceGenerator;
+    #[Inject]
+    public InvoiceGenerator $invoiceGenerator;
 
-    /** @var InvoicesRepository @inject */
-    public $invoicesRepository;
+    #[Inject]
+    public InvoicesRepository $invoicesRepository;
 
-    /** @var PaymentsRepository @inject */
-    public $paymentsRepository;
+    #[Inject]
+    public PaymentsRepository $paymentsRepository;
 
-    /** @var ChangeInvoiceDetailsFormFactory @inject */
-    public $changeInvoiceDetailsFormFactory;
+    #[Inject]
+    public ChangeInvoiceDetailsFormFactory $changeInvoiceDetailsFormFactory;
 
     public function actionDownloadInvoice($id)
     {
