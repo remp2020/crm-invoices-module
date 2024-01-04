@@ -99,7 +99,7 @@ class ReceiptGenerator
         if ($supplier = $this->applicationConfig->get('supplier_name')) {
             $pdf->setDocumentAuthor($supplier);
         }
-        $pdf->getMPDF()->tempDir = $this->getTempDir();
+        $pdf->mpdfConfig['tempDir'] = $this->getTempDir();
 
         return $pdf;
     }
