@@ -6,8 +6,7 @@
   "license": "MIT",
   "require": {
     "php": "^8.0",
-    "mpdf/mpdf": "^8.0",
-    "jkuchar/pdfresponse": "^0.6"
+    "mpdf/mpdf": "^8.0"
   },
   "minimum-stability": "dev",
   "autoload": {
