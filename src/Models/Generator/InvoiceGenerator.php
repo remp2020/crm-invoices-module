@@ -2,6 +2,7 @@
 
 namespace Crm\InvoicesModule;
 
+use Contributte\PdfResponse\PdfResponse;
 use Contributte\Translation\Translator;
 use Crm\ApplicationModule\Config\ApplicationConfig;
 use Crm\ApplicationModule\Helpers\PriceHelper;
@@ -13,12 +14,7 @@ use Crm\PaymentsModule\Repository\PaymentsRepository;
 use Crm\UsersModule\Repository\AddressesRepository;
 use Latte\Engine;
 use Latte\Essential\TranslatorExtension;
-use Mpdf\Mpdf;
 use Nette\Database\Table\ActiveRow;
-use Nette\Http\Request;
-use Nette\Http\Response;
-use Nette\Http\UrlScript;
-use PdfResponse\PdfResponse;
 use Tracy\Debugger;
 use malkusch\lock\mutex\PredisMutex;
 
@@ -153,9 +149,7 @@ class InvoiceGenerator
     {
         if ($payment->user->id == $user->id) {
             $pdf = $this->renderInvoice($payment);
-            $pdf->outputDestination = PdfResponse::OUTPUT_FILE;
-            $pdf->outputName = $filePath;
-            $pdf->send(new Request(new UrlScript()), new Response());
+            file_put_contents($filePath, $pdf->toString());
             return $pdf;
         }
         return null;
@@ -188,26 +182,16 @@ class InvoiceGenerator
         }
 
         $pdf = new PdfResponse($template);
-        $mpdf = new Mpdf([
-            'mode' => 'utf-8',
-            'format' => 'A4',
-            'default_font_size' => '',
-            'default_font' => '',
-            'margin_left' => 10,
-            'margin_right' => 10,
-            'margin_top' => 10,
-            'margin_bottom' => 10,
-            'margin_header' => 2,
-            'margin_footer' => 6,
-            'orientation' => PdfResponse::ORIENTATION_PORTRAIT,
-            'tempDir' => $this->getTempDir(),
-        ]);
-        $pdf->createMPDF = function () use ($mpdf) {
-            return $mpdf;
-        };
-        $pdf->documentTitle = 'Invoice';
-        $pdf->documentAuthor = $this->applicationConfig->get('supplier_name');
-        $pdf->tempDir = $this->getTempDir();
+
+        $pdf->setPageMargins('10,10,10,10,2,6');
+        $pdf->setPageFormat('A4');
+        $pdf->setPageOrientation(PdfResponse::ORIENTATION_PORTRAIT);
+        $pdf->setDocumentTitle($payment->variable_symbol);
+        if ($supplier = $this->applicationConfig->get('supplier_name')) {
+            $pdf->setDocumentAuthor($supplier);
+        }
+        $pdf->getMPDF()->tempDir = $this->getTempDir();
+
         return $pdf;
     }
 
@@ -248,22 +232,7 @@ class InvoiceGenerator
             throw new InvoiceGenerationException("No linked invoice for payment VS {$payment->variable_symbol}. Cannot generate PDF attachment.");
         }
 
-        $invoicePdfFile = tmpfile();
-        $invoicePdfFilePath = stream_get_meta_data($invoicePdfFile)['uri'];
-
-        $this->renderInvoicePDFToFile(
-            $invoicePdfFilePath,
-            $payment->user,
-            $payment
-        );
-
-        if (!file_exists($invoicePdfFilePath)) {
-            throw new InvoiceGenerationException("Cannot generate invoice PDF for payment VS {$payment->variable_symbol}.");
-        }
-
-        $invoicePdfAsString = file_get_contents($invoicePdfFilePath);
-        fclose($invoicePdfFile);
-
-        return $invoicePdfAsString;
+        $pdfResponse = $this->renderInvoice($payment);
+        return $pdfResponse->toString();
     }
 }

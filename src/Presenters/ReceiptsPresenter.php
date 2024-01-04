@@ -2,6 +2,7 @@
 
 namespace Crm\InvoicesModule\Presenters;
 
+use Contributte\PdfResponse\PdfResponse;
 use Crm\ApplicationModule\Presenters\FrontendPresenter;
 use Crm\InvoicesModule\ReceiptGenerator;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
@@ -26,11 +27,11 @@ class ReceiptsPresenter extends FrontendPresenter
         }
 
         $pdf = $this->receiptGenerator->generate($payment);
+        $pdf->setSaveMode(PdfResponse::INLINE);
         if (!$pdf) {
             throw new BadRequestException();
         }
 
         $this->sendResponse($pdf);
-        $this->terminate();
     }
 }

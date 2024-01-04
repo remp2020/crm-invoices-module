@@ -2,6 +2,7 @@
 
 namespace Crm\InvoicesModule;
 
+use Contributte\PdfResponse\PdfResponse;
 use Contributte\Translation\Translator;
 use Crm\ApplicationModule\Config\ApplicationConfig;
 use Crm\ApplicationModule\Helpers\LocalizedDateHelper;
@@ -10,7 +11,6 @@ use Crm\ApplicationModule\Helpers\UserDateHelper;
 use Latte\Engine;
 use Latte\Essential\TranslatorExtension;
 use Nette\Database\Table\ActiveRow;
-use PdfResponse\PdfResponse;
 use Tracy\Debugger;
 
 class ReceiptGenerator
@@ -91,11 +91,16 @@ class ReceiptGenerator
         }
 
         $pdf = new PdfResponse($template);
-        $pdf->pageFormat = 'A4';
-        $pdf->pageMargins = '10,10,10,10,2,6';
-        $pdf->documentTitle = 'Receipt';
-        $pdf->documentAuthor = $this->applicationConfig->get('supplier_name');
-        $pdf->tempDir = $this->getTempDir();
+
+        $pdf->setPageMargins('10,10,10,10,2,6');
+        $pdf->setPageFormat('A4');
+        $pdf->setPageOrientation(PdfResponse::ORIENTATION_PORTRAIT);
+        $pdf->setDocumentTitle($payment->variable_symbol);
+        if ($supplier = $this->applicationConfig->get('supplier_name')) {
+            $pdf->setDocumentAuthor($supplier);
+        }
+        $pdf->getMPDF()->tempDir = $this->getTempDir();
+
         return $pdf;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Crm\InvoicesModule\Tests\Generator;
 
+use Contributte\PdfResponse\PdfResponse;
 use Crm\ApplicationModule\Config\Repository\ConfigsRepository;
 use Crm\ApplicationModule\Tests\DatabaseTestCase;
 use Crm\InvoicesModule\InvoiceGenerator;
@@ -23,7 +24,6 @@ use Crm\UsersModule\Repository\CountriesRepository;
 use Crm\UsersModule\Repository\UsersRepository;
 use Nette\Database\Table\ActiveRow;
 use Nette\Utils\DateTime;
-use PdfResponse\PdfResponse;
 
 /**
  * Testing only method InvoicesGenerator->generate().

@@ -2,6 +2,7 @@
 
 namespace Crm\InvoicesModule\Presenters;
 
+use Contributte\PdfResponse\PdfResponse;
 use Crm\ApplicationModule\Presenters\FrontendPresenter;
 use Crm\InvoicesModule\Forms\ChangeInvoiceDetailsFormFactory;
 use Crm\InvoicesModule\InvoiceGenerator;
@@ -31,6 +32,7 @@ class InvoicesPresenter extends FrontendPresenter
         $pdf = null;
         if ($payment->invoice) {
             $pdf = $this->invoiceGenerator->renderInvoicePDF($user, $payment);
+            $pdf->setSaveMode(PdfResponse::INLINE);
         } elseif ($this->invoicesRepository->isPaymentInvoiceable($payment)) {
             $pdf = $this->invoiceGenerator->generate($user, $payment);
         }
@@ -40,7 +42,6 @@ class InvoicesPresenter extends FrontendPresenter
         }
 
         $this->sendResponse($pdf);
-        $this->terminate();
     }
 
     private function getUserPayment($id)

@@ -2,6 +2,7 @@
 
 namespace Crm\InvoicesModule\Presenters;
 
+use Contributte\PdfResponse\PdfResponse;
 use Crm\AdminModule\Presenters\AdminPresenter;
 use Crm\ApplicationModule\Hermes\HermesMessage;
 use Crm\InvoicesModule\Forms\ChangeInvoiceFormFactory;
@@ -67,6 +68,7 @@ class InvoicesAdminPresenter extends AdminPresenter
         $pdf = null;
         if ($payment->invoice) {
             $pdf = $this->invoiceGenerator->renderInvoicePDF($payment->user, $payment);
+            $pdf->setSaveMode(PdfResponse::INLINE);
         } elseif ($this->invoiceRepository->isPaymentInvoiceable($payment)) {
             $pdf = $this->invoiceGenerator->generate($payment->user, $payment);
         }
@@ -76,7 +78,6 @@ class InvoicesAdminPresenter extends AdminPresenter
         }
 
         $this->sendResponse($pdf);
-        $this->terminate();
     }
 
     /**
@@ -92,7 +93,6 @@ class InvoicesAdminPresenter extends AdminPresenter
         }
 
         $this->sendResponse($pdf);
-        $this->terminate();
     }
 
     private function findPaymentFromInvoiceNumber($invoiceNumber)
