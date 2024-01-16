@@ -3,7 +3,7 @@
 namespace Crm\InvoicesModule\Presenters;
 
 use Crm\AdminModule\Presenters\AdminPresenter;
-use Crm\InvoicesModule\ReceiptGenerator;
+use Crm\InvoicesModule\Models\Generator\ReceiptGenerator;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
 use Nette\Application\BadRequestException;
 use Nette\DI\Attributes\Inject;

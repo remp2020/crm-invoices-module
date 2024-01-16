@@ -3,9 +3,9 @@
 namespace Crm\InvoicesModule\Events;
 
 use Crm\ApplicationModule\Config\ApplicationConfig;
-use Crm\InvoicesModule\InvoiceGenerationException;
-use Crm\InvoicesModule\InvoiceGenerator;
-use Crm\InvoicesModule\PaymentNotInvoiceableException;
+use Crm\InvoicesModule\Models\Generator\InvoiceGenerationException;
+use Crm\InvoicesModule\Models\Generator\InvoiceGenerator;
+use Crm\InvoicesModule\Models\Generator\PaymentNotInvoiceableException;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
 use Crm\UsersModule\Events\NotificationContext;
 use Crm\UsersModule\Events\PreNotificationEvent;

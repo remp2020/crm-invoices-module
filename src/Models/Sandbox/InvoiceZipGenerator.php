@@ -2,7 +2,7 @@
 
 namespace Crm\InvoicesModule\Models\Sandbox;
 
-use Crm\InvoicesModule\InvoiceGenerator;
+use Crm\InvoicesModule\Models\Generator\InvoiceGenerator;
 use ZipArchive;
 
 class InvoiceZipGenerator

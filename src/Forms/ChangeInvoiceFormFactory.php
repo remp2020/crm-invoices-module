@@ -3,7 +3,7 @@
 namespace Crm\InvoicesModule\Forms;
 
 use Crm\ApplicationModule\DataProvider\DataProviderManager;
-use Crm\InvoicesModule\Repository\InvoicesRepository;
+use Crm\InvoicesModule\Repositories\InvoicesRepository;
 use Crm\UsersModule\DataProvider\AddressFormDataProviderInterface;
 use Crm\UsersModule\Repository\CountriesRepository;
 use Nette\Application\UI\Form;

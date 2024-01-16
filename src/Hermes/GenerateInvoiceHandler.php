@@ -2,8 +2,8 @@
 
 namespace Crm\InvoicesModule\Hermes;
 
-use Crm\InvoicesModule\InvoiceGenerator;
-use Crm\InvoicesModule\PaymentNotInvoiceableException;
+use Crm\InvoicesModule\Models\Generator\InvoiceGenerator;
+use Crm\InvoicesModule\Models\Generator\PaymentNotInvoiceableException;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
 use Tomaj\Hermes\Handler\HandlerInterface;
 use Tomaj\Hermes\MessageInterface;

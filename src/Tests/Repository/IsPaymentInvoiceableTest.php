@@ -3,7 +3,7 @@
 namespace Crm\InvoicesModule\Tests\Repository;
 
 use Crm\ApplicationModule\Tests\DatabaseTestCase;
-use Crm\InvoicesModule\Repository\InvoicesRepository;
+use Crm\InvoicesModule\Repositories\InvoicesRepository;
 use Crm\InvoicesModule\Seeders\AddressTypesSeeder;
 use Crm\PaymentsModule\PaymentItem\PaymentItemContainer;
 use Crm\PaymentsModule\Repository\PaymentGatewaysRepository;

@@ -5,7 +5,7 @@ namespace Crm\InvoicesModule\Components\InvoiceButton;
 use Crm\ApplicationModule\Widget\LazyWidgetManager;
 use Crm\ApplicationModule\Widget\WidgetFactoryInterface;
 use Crm\ApplicationModule\Widget\WidgetInterface;
-use Crm\InvoicesModule\Repository\InvoicesRepository;
+use Crm\InvoicesModule\Repositories\InvoicesRepository;
 
 class InvoiceAdminButtonFactory implements WidgetFactoryInterface
 {

@@ -3,8 +3,8 @@
 namespace Crm\InvoicesModule\Tests;
 
 use Crm\ApplicationModule\Tests\DatabaseTestCase;
-use Crm\InvoicesModule\Repository\InvoiceNumber;
-use Crm\InvoicesModule\Repository\InvoiceNumbersRepository;
+use Crm\InvoicesModule\Models\InvoiceNumber\InvoiceNumber;
+use Crm\InvoicesModule\Repositories\InvoiceNumbersRepository;
 use Crm\PaymentsModule\Gateways\BankTransfer;
 use Crm\PaymentsModule\PaymentItem\DonationPaymentItem;
 use Crm\PaymentsModule\PaymentItem\PaymentItemContainer;

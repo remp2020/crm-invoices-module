@@ -2,7 +2,7 @@
 
 namespace Crm\InvoicesModule\Models\InvoiceNumber;
 
-use Crm\InvoicesModule\Model\InvoiceNumberInterface;
+use Crm\InvoicesModule\Repositories\InvoiceNumbersRepository;
 use Nette\Database\Table\ActiveRow;
 
 class InvoiceNumber implements InvoiceNumberInterface

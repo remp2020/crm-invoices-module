@@ -4,7 +4,7 @@ namespace Crm\InvoicesModule\Components\InvoiceButton;
 
 use Crm\ApplicationModule\Widget\BaseLazyWidget;
 use Crm\ApplicationModule\Widget\LazyWidgetManager;
-use Crm\InvoicesModule\Repository\InvoicesRepository;
+use Crm\InvoicesModule\Repositories\InvoicesRepository;
 use Nette\Utils\DateTime;
 
 /**

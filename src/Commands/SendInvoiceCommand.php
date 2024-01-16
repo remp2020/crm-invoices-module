@@ -2,7 +2,7 @@
 
 namespace Crm\InvoicesModule\Commands;
 
-use Crm\InvoicesModule\InvoiceGenerator;
+use Crm\InvoicesModule\Models\Generator\InvoiceGenerator;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
 use Crm\UsersModule\Events\NotificationEvent;
 use League\Event\Emitter;

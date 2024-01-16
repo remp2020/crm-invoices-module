@@ -3,8 +3,8 @@
 namespace Crm\InvoicesModule\Tests;
 
 use Crm\ApplicationModule\Seeders\CountriesSeeder;
-use Crm\InvoicesModule\Repository\InvoiceNumbersRepository;
-use Crm\InvoicesModule\Repository\InvoicesRepository;
+use Crm\InvoicesModule\Repositories\InvoiceNumbersRepository;
+use Crm\InvoicesModule\Repositories\InvoicesRepository;
 use Crm\InvoicesModule\Scenarios\HasInvoiceCriteria;
 use Crm\InvoicesModule\Seeders\AddressTypesSeeder;
 use Crm\PaymentsModule\PaymentItem\PaymentItemContainer;

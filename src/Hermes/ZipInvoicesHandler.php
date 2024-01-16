@@ -2,10 +2,10 @@
 
 namespace Crm\InvoicesModule\Hermes;
 
-use Crm\InvoicesModule\Repository\InvoiceNumbersRepository;
-use Crm\InvoicesModule\Repository\InvoicesRepository;
-use Crm\InvoicesModule\Sandbox\InvoiceSandbox;
-use Crm\InvoicesModule\Sandbox\InvoiceZipGenerator;
+use Crm\InvoicesModule\Models\Sandbox\InvoiceSandbox;
+use Crm\InvoicesModule\Models\Sandbox\InvoiceZipGenerator;
+use Crm\InvoicesModule\Repositories\InvoiceNumbersRepository;
+use Crm\InvoicesModule\Repositories\InvoicesRepository;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
 use Nette\Utils\DateTime;
 use Psr\Log\LoggerAwareTrait;

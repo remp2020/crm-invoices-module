@@ -4,33 +4,33 @@ services:
 			- addModule(Crm\InvoicesModule\InvoicesModule())
 
 	invoiceGenerator:
-		factory: Crm\InvoicesModule\InvoiceGenerator
+		factory: Crm\InvoicesModule\Models\Generator\InvoiceGenerator
 		setup:
 			- setTempDir('%tempRoot%/mpdf')
 	receiptGenerator:
-		factory: Crm\InvoicesModule\ReceiptGenerator
+		factory: Crm\InvoicesModule\Models\Generator\ReceiptGenerator
 		setup:
 			- setTempDir('%tempRoot%/mpdf')
 
-	invoiceNumber: Crm\InvoicesModule\Repository\InvoiceNumber
+	invoiceNumber: Crm\InvoicesModule\Models\InvoiceNumber\InvoiceNumber
 
-	invoicesRepository: Crm\InvoicesModule\Repository\InvoicesRepository
-	invoiceItemsRepository: Crm\InvoicesModule\Repository\InvoiceItemsRepository
-	invoiceNumbersRepository: Crm\InvoicesModule\Repository\InvoiceNumbersRepository
+	invoicesRepository: Crm\InvoicesModule\Repositories\InvoicesRepository
+	invoiceItemsRepository: Crm\InvoicesModule\Repositories\InvoiceItemsRepository
+	invoiceNumbersRepository: Crm\InvoicesModule\Repositories\InvoiceNumbersRepository
 
 	- Crm\InvoicesModule\Commands\SendInvoiceCommand
 
-	- Crm\InvoicesModule\Components\DownloadReceiptButton
-	- Crm\InvoicesModule\Components\DownloadReceiptButtonFactory
-	- Crm\InvoicesModule\Components\ReceiptAdminButtonFactory
-	- Crm\InvoicesModule\Components\InvoiceDetailsWidget
-	- Crm\InvoicesModule\Components\InvoiceLabel
-	- Crm\InvoicesModule\Components\InvoiceAdminButtonFactory
-	- Crm\InvoicesModule\Components\InvoiceFrontendButtonFactory
-	- Crm\InvoicesModule\Components\PaymentSuccessInvoiceWidget
+	- Crm\InvoicesModule\Components\DownloadReceiptButton\DownloadReceiptButton
+	- Crm\InvoicesModule\Components\DownloadReceiptButton\DownloadReceiptButtonFactory
+	- Crm\InvoicesModule\Components\DownloadReceiptButton\ReceiptAdminButtonFactory
+	- Crm\InvoicesModule\Components\InvoiceDetailsWidget\InvoiceDetailsWidget
+	- Crm\InvoicesModule\Components\InvoiceLabel\InvoiceLabel
+	- Crm\InvoicesModule\Components\InvoiceButton\InvoiceAdminButtonFactory
+	- Crm\InvoicesModule\Components\InvoiceButton\InvoiceFrontendButtonFactory
+	- Crm\InvoicesModule\Components\PaymentSuccessInvoiceWidget\PaymentSuccessInvoiceWidget
 
-	- Crm\InvoicesModule\DataProvider\UserFormDataProvider
-	- Crm\InvoicesModule\DataProvider\ConfigFormDataProvider
+	- Crm\InvoicesModule\DataProviders\UserFormDataProvider
+	- Crm\InvoicesModule\DataProviders\ConfigFormDataProvider
 	- Crm\InvoicesModule\Events\AddressChangedHandler
 	- Crm\InvoicesModule\Events\AddressRemovedHandler
 	- Crm\InvoicesModule\Events\NewAddressHandler
@@ -45,8 +45,8 @@ services:
 
 	- Crm\InvoicesModule\Scenarios\HasInvoiceCriteria
 
-	- Crm\InvoicesModule\Sandbox\InvoiceZipGenerator
-	invoiceSandbox: Crm\InvoicesModule\Sandbox\InvoiceSandbox('/tmp')
+	- Crm\InvoicesModule\Models\Sandbox\InvoiceZipGenerator
+	invoiceSandbox: Crm\InvoicesModule\Models\Sandbox\InvoiceSandbox('/tmp')
 
 	invoicesPreNotificationEventHandler:
 		factory: Crm\InvoicesModule\Events\PreNotificationEventHandler
@@ -57,8 +57,8 @@ services:
 	- Crm\InvoicesModule\Seeders\AddressTypesSeeder
 	- Crm\InvoicesModule\Seeders\PaymentGatewaysSeeder
 
-	- Crm\InvoicesModule\User\InvoicesUserDataProvider
+	- Crm\InvoicesModule\DataProviders\InvoicesUserDataProvider
 
 	paymentInvoiceProvider:
 		setup:
-			- register(Crm\InvoicesModule\DataProvider\PaymentInvoiceProvider())
+			- register(Crm\InvoicesModule\DataProviders\PaymentInvoiceProvider())
