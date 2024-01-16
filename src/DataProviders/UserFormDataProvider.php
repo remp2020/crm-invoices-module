@@ -1,6 +1,6 @@
 <?php
 
-namespace Crm\InvoicesModule\DataProvider;
+namespace Crm\InvoicesModule\DataProviders;
 
 use Crm\ApplicationModule\DataProvider\DataProviderException;
 use Crm\ApplicationModule\Hermes\HermesMessage;

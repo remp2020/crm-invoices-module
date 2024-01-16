@@ -1,6 +1,6 @@
 <?php
 
-namespace Crm\InvoicesModule\Components;
+namespace Crm\InvoicesModule\Components\DownloadReceiptButton;
 
 use Crm\ApplicationModule\Widget\LazyWidgetManager;
 use Crm\ApplicationModule\Widget\WidgetFactoryInterface;

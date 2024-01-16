@@ -1,6 +1,6 @@
 <?php
 
-namespace Crm\InvoicesModule\DataProvider;
+namespace Crm\InvoicesModule\DataProviders;
 
 use Crm\InvoicesModule\InvoiceGenerator;
 use Crm\PaymentsModule\DataProvider\PaymentInvoiceProviderInterface;

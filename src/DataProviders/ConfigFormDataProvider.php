@@ -1,6 +1,6 @@
 <?php
 
-namespace Crm\InvoicesModule\DataProvider;
+namespace Crm\InvoicesModule\DataProviders;
 
 use Contributte\Translation\Translator;
 use Crm\AdminModule\DataProviders\ConfigFormDataProviderInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Crm\InvoicesModule\Components;
+namespace Crm\InvoicesModule\Components\PaymentSuccessInvoiceWidget;
 
 use Crm\ApplicationModule\Widget\BaseLazyWidget;
 use Crm\ApplicationModule\Widget\LazyWidgetManager;

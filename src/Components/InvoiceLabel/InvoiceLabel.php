@@ -1,6 +1,6 @@
 <?php
 
-namespace Crm\InvoicesModule\Components;
+namespace Crm\InvoicesModule\Components\InvoiceLabel;
 
 use Crm\ApplicationModule\Widget\BaseLazyWidget;
 

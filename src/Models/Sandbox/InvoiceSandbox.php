@@ -1,6 +1,6 @@
 <?php
 
-namespace Crm\InvoicesModule\Sandbox;
+namespace Crm\InvoicesModule\Models\Sandbox;
 
 use Nette\InvalidArgumentException;
 use Nette\Utils\Finder;

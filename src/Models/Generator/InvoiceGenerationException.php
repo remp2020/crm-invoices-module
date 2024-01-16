@@ -1,6 +1,6 @@
 <?php
 
-namespace Crm\InvoicesModule;
+namespace Crm\InvoicesModule\Models\Generator;
 
 use Exception;
 

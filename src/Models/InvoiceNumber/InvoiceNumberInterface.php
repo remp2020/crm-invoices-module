@@ -1,6 +1,6 @@
 <?php
 
-namespace Crm\InvoicesModule\Model;
+namespace Crm\InvoicesModule\Models\InvoiceNumber;
 
 use Nette\Database\Table\ActiveRow;
 

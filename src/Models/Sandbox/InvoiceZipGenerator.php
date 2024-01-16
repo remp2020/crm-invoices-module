@@ -1,6 +1,6 @@
 <?php
 
-namespace Crm\InvoicesModule\Sandbox;
+namespace Crm\InvoicesModule\Models\Sandbox;
 
 use Crm\InvoicesModule\InvoiceGenerator;
 use ZipArchive;
