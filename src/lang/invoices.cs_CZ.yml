@@ -103,7 +103,7 @@ admin:
 component:
     payment_success_invoice_widget:
         require_invoice: Požaduji fakturu
-        require_invoice_info: "Pokud požadujete fakturu, nezapomeňte vyplnit Vaše fakturační údaje. Pokud je nevyplníte v tomto kroku, už to nebude možné."
+        require_invoice_info: "Pokud požadujete fakturu, nezapomeňte vyplnit Vaše fakturační údaje."
         fill_invoice_address: Vyplnit fakturační adresu
         saved: Všechny údaje jsou uložené
 
