@@ -8,6 +8,7 @@ use Crm\ApplicationModule\Config\ApplicationConfig;
 use Crm\ApplicationModule\Helpers\PriceHelper;
 use Crm\ApplicationModule\RedisClientFactory;
 use Crm\ApplicationModule\RedisClientTrait;
+use Crm\ApplicationModule\RedisClientTraitException;
 use Crm\InvoicesModule\Model\InvoiceNumberInterface;
 use Crm\InvoicesModule\Repository\InvoicesRepository;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
@@ -80,7 +81,7 @@ class InvoiceGenerator
     /**
      * @throws PaymentNotInvoiceableException
      * @throws InvoiceGenerationException
-     * @throws \Crm\ApplicationModule\RedisClientTraitException
+     * @throws RedisClientTraitException
      */
     public function generate(ActiveRow $user, ActiveRow $payment): ?PdfResponse
     {

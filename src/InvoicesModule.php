@@ -7,16 +7,40 @@ use Crm\ApplicationModule\Criteria\ScenariosCriteriaStorage;
 use Crm\ApplicationModule\CrmModule;
 use Crm\ApplicationModule\DataProvider\DataProviderManager;
 use Crm\ApplicationModule\Event\EventsStorage;
+use Crm\ApplicationModule\Event\LazyEventEmitter;
 use Crm\ApplicationModule\Menu\MenuContainerInterface;
 use Crm\ApplicationModule\Menu\MenuItem;
 use Crm\ApplicationModule\SeederManager;
 use Crm\ApplicationModule\User\UserDataRegistrator;
 use Crm\ApplicationModule\Widget\LazyWidgetManagerInterface;
+use Crm\InvoicesModule\Commands\SendInvoiceCommand;
+use Crm\InvoicesModule\Components\DownloadReceiptButtonFactory;
+use Crm\InvoicesModule\Components\InvoiceAdminButtonFactory;
+use Crm\InvoicesModule\Components\InvoiceDetailsWidget;
+use Crm\InvoicesModule\Components\InvoiceFrontendButtonFactory;
+use Crm\InvoicesModule\Components\InvoiceLabel;
+use Crm\InvoicesModule\Components\PaymentSuccessInvoiceWidget;
+use Crm\InvoicesModule\Components\ReceiptAdminButtonFactory;
+use Crm\InvoicesModule\DataProvider\ConfigFormDataProvider;
+use Crm\InvoicesModule\DataProvider\UserFormDataProvider;
+use Crm\InvoicesModule\Events\AddressChangedHandler;
+use Crm\InvoicesModule\Events\AddressRemovedHandler;
+use Crm\InvoicesModule\Events\NewAddressHandler;
 use Crm\InvoicesModule\Events\NewInvoiceEvent;
+use Crm\InvoicesModule\Events\PaymentStatusChangeHandler;
+use Crm\InvoicesModule\Events\PreNotificationEventHandler;
+use Crm\InvoicesModule\Hermes\GenerateInvoiceHandler;
+use Crm\InvoicesModule\Hermes\ZipInvoicesHandler;
 use Crm\InvoicesModule\Scenarios\HasInvoiceCriteria;
 use Crm\InvoicesModule\Seeders\AddressTypesSeeder;
 use Crm\InvoicesModule\Seeders\ConfigsSeeder;
 use Crm\InvoicesModule\Seeders\PaymentGatewaysSeeder;
+use Crm\InvoicesModule\User\InvoicesUserDataProvider;
+use Crm\PaymentsModule\Events\PaymentChangeStatusEvent;
+use Crm\UsersModule\Events\AddressChangedEvent;
+use Crm\UsersModule\Events\AddressRemovedEvent;
+use Crm\UsersModule\Events\NewAddressEvent;
+use Crm\UsersModule\Events\PreNotificationEvent;
 use Tomaj\Hermes\Dispatcher;
 
 class InvoicesModule extends CrmModule
@@ -44,44 +68,44 @@ class InvoicesModule extends CrmModule
     {
         $widgetManager->registerWidgetFactory(
             'admin.payments.listing.action.menu',
-            \Crm\InvoicesModule\Components\InvoiceAdminButtonFactory::class,
+            InvoiceAdminButtonFactory::class,
             400
         );
         $widgetManager->registerWidgetFactory(
             'frontend.payments.listing.receipts',
-            \Crm\InvoicesModule\Components\InvoiceFrontendButtonFactory::class,
+            InvoiceFrontendButtonFactory::class,
             400
         );
         $widgetManager->registerWidgetFactory(
             'frontend.payments.refund.receipts',
-            \Crm\InvoicesModule\Components\InvoiceFrontendButtonFactory::class,
+            InvoiceFrontendButtonFactory::class,
             400
         );
         $widgetManager->registerWidgetFactory(
             'frontend.payments.listing.receipts',
-            \Crm\InvoicesModule\Components\DownloadReceiptButtonFactory::class,
+            DownloadReceiptButtonFactory::class,
             500
         );
 
         $widgetManager->registerWidgetFactory(
             'admin.payments.listing.action.menu',
-            \Crm\InvoicesModule\Components\ReceiptAdminButtonFactory::class,
+            ReceiptAdminButtonFactory::class,
             500
         );
 
         $widgetManager->registerWidget(
             'payment.address',
-            \Crm\InvoicesModule\Components\PaymentSuccessInvoiceWidget::class
+            PaymentSuccessInvoiceWidget::class
         );
 
         $widgetManager->registerWidget(
             'admin.user.list.emailcolumn',
-            \Crm\InvoicesModule\Components\InvoiceLabel::class
+            InvoiceLabel::class
         );
 
         $widgetManager->registerWidget(
             'invoices.frontend.invoice_details',
-            \Crm\InvoicesModule\Components\InvoiceDetailsWidget::class
+            InvoiceDetailsWidget::class
         );
     }
 
@@ -89,11 +113,11 @@ class InvoicesModule extends CrmModule
     {
         $dispatcher->registerHandler(
             'invoice_zip',
-            $this->getInstance(\Crm\InvoicesModule\Hermes\ZipInvoicesHandler::class)
+            $this->getInstance(ZipInvoicesHandler::class)
         );
         $dispatcher->registerHandler(
             'generate_invoice',
-            $this->getInstance(\Crm\InvoicesModule\Hermes\GenerateInvoiceHandler::class)
+            $this->getInstance(GenerateInvoiceHandler::class)
         );
     }
 
@@ -104,27 +128,27 @@ class InvoicesModule extends CrmModule
         $seederManager->addSeeder($this->getInstance(PaymentGatewaysSeeder::class));
     }
 
-    public function registerLazyEventHandlers(\Crm\ApplicationModule\Event\LazyEventEmitter $emitter)
+    public function registerLazyEventHandlers(LazyEventEmitter $emitter)
     {
         $emitter->addListener(
-            \Crm\UsersModule\Events\AddressChangedEvent::class,
-            \Crm\InvoicesModule\Events\AddressChangedHandler::class
+            AddressChangedEvent::class,
+            AddressChangedHandler::class
         );
         $emitter->addListener(
-            \Crm\UsersModule\Events\AddressRemovedEvent::class,
-            \Crm\InvoicesModule\Events\AddressRemovedHandler::class
+            AddressRemovedEvent::class,
+            AddressRemovedHandler::class
         );
         $emitter->addListener(
-            \Crm\UsersModule\Events\PreNotificationEvent::class,
-            \Crm\InvoicesModule\Events\PreNotificationEventHandler::class
+            PreNotificationEvent::class,
+            PreNotificationEventHandler::class
         );
         $emitter->addListener(
-            \Crm\UsersModule\Events\NewAddressEvent::class,
-            \Crm\InvoicesModule\Events\NewAddressHandler::class
+            NewAddressEvent::class,
+            NewAddressHandler::class
         );
         $emitter->addListener(
-            \Crm\PaymentsModule\Events\PaymentChangeStatusEvent::class,
-            \Crm\InvoicesModule\Events\PaymentStatusChangeHandler::class
+            PaymentChangeStatusEvent::class,
+            PaymentStatusChangeHandler::class
         );
     }
 
@@ -135,25 +159,25 @@ class InvoicesModule extends CrmModule
 
     public function registerCommands(CommandsContainerInterface $commandsContainer)
     {
-        $commandsContainer->registerCommand($this->getInstance(\Crm\InvoicesModule\Commands\SendInvoiceCommand::class));
+        $commandsContainer->registerCommand($this->getInstance(SendInvoiceCommand::class));
     }
 
     public function registerDataProviders(DataProviderManager $dataProviderManager)
     {
         $dataProviderManager->registerDataProvider(
             'users.dataprovider.user_form',
-            $this->getInstance(\Crm\InvoicesModule\DataProvider\UserFormDataProvider::class)
+            $this->getInstance(UserFormDataProvider::class)
         );
 
         $dataProviderManager->registerDataProvider(
             'admin.dataprovider.config_form',
-            $this->getInstance(\Crm\InvoicesModule\DataProvider\ConfigFormDataProvider::class)
+            $this->getInstance(ConfigFormDataProvider::class)
         );
     }
 
     public function registerUserData(UserDataRegistrator $dataRegistrator)
     {
-        $dataRegistrator->addUserDataProvider($this->getInstance(\Crm\InvoicesModule\User\InvoicesUserDataProvider::class));
+        $dataRegistrator->addUserDataProvider($this->getInstance(InvoicesUserDataProvider::class));
     }
 
     public function registerEvents(EventsStorage $eventsStorage)
