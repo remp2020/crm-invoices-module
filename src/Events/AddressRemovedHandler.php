@@ -3,7 +3,7 @@
 namespace Crm\InvoicesModule\Events;
 
 use Crm\UsersModule\Events\IAddressEvent;
-use Crm\UsersModule\Repository\UsersRepository;
+use Crm\UsersModule\Repositories\UsersRepository;
 use League\Event\AbstractListener;
 use League\Event\EventInterface;
 

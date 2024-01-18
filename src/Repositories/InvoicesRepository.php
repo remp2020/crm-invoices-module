@@ -10,7 +10,7 @@ use Crm\ApplicationModule\Repository\AuditLogRepository;
 use Crm\InvoicesModule\Events\NewInvoiceEvent;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
 use Crm\SubscriptionsModule\Models\PaymentItem\SubscriptionTypePaymentItem;
-use Crm\UsersModule\Repository\AddressesRepository;
+use Crm\UsersModule\Repositories\AddressesRepository;
 use IntlDateFormatter;
 use League\Event\Emitter;
 use Nette\Database\Explorer;

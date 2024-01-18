@@ -5,7 +5,7 @@ namespace Crm\InvoicesModule\Events;
 use Crm\ApplicationModule\Hermes\HermesMessage;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
 use Crm\UsersModule\Events\NewAddressEvent;
-use Crm\UsersModule\Repository\UsersRepository;
+use Crm\UsersModule\Repositories\UsersRepository;
 use League\Event\AbstractListener;
 use League\Event\EventInterface;
 use Tomaj\Hermes\Emitter as HermesEmitter;

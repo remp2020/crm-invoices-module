@@ -12,7 +12,7 @@ use Crm\ApplicationModule\RedisClientTraitException;
 use Crm\InvoicesModule\Models\InvoiceNumber\InvoiceNumberInterface;
 use Crm\InvoicesModule\Repositories\InvoicesRepository;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
-use Crm\UsersModule\Repository\AddressesRepository;
+use Crm\UsersModule\Repositories\AddressesRepository;
 use Latte\Engine;
 use Latte\Essential\TranslatorExtension;
 use Nette\Database\Table\ActiveRow;

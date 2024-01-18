@@ -11,7 +11,7 @@ use Crm\PaymentsModule\PaymentItem\PaymentItemContainer;
 use Crm\PaymentsModule\Repository\PaymentGatewaysRepository;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
 use Crm\PaymentsModule\Seeders\PaymentGatewaysSeeder;
-use Crm\UsersModule\Repository\UsersRepository;
+use Crm\UsersModule\Repositories\UsersRepository;
 use DateTime;
 
 class InvoiceNumbersTest extends DatabaseTestCase

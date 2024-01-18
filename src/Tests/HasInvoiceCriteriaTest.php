@@ -11,10 +11,10 @@ use Crm\PaymentsModule\PaymentItem\PaymentItemContainer;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
 use Crm\PaymentsModule\Tests\PaymentsTestCase;
 use Crm\SubscriptionsModule\Models\Builder\SubscriptionTypeBuilder;
-use Crm\UsersModule\Auth\UserManager;
-use Crm\UsersModule\Repository\AddressTypesRepository;
-use Crm\UsersModule\Repository\AddressesRepository;
-use Crm\UsersModule\Repository\CountriesRepository;
+use Crm\UsersModule\Models\Auth\UserManager;
+use Crm\UsersModule\Repositories\AddressTypesRepository;
+use Crm\UsersModule\Repositories\AddressesRepository;
+use Crm\UsersModule\Repositories\CountriesRepository;
 use Nette\Utils\DateTime;
 use PHPUnit\Framework\Attributes\DataProvider;
 

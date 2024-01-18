@@ -4,8 +4,8 @@ namespace Crm\InvoicesModule\Forms;
 
 use Crm\ApplicationModule\DataProvider\DataProviderManager;
 use Crm\InvoicesModule\Repositories\InvoicesRepository;
-use Crm\UsersModule\DataProvider\AddressFormDataProviderInterface;
-use Crm\UsersModule\Repository\CountriesRepository;
+use Crm\UsersModule\DataProviders\AddressFormDataProviderInterface;
+use Crm\UsersModule\Repositories\CountriesRepository;
 use Nette\Application\UI\Form;
 use Nette\Localization\Translator;
 use Tomaj\Form\Renderer\BootstrapRenderer;

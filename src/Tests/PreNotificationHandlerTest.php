@@ -12,13 +12,13 @@ use Crm\PaymentsModule\Repository\PaymentGatewaysRepository;
 use Crm\PaymentsModule\Repository\PaymentMetaRepository;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
 use Crm\SubscriptionsModule\Models\Builder\SubscriptionTypeBuilder;
-use Crm\UsersModule\Auth\UserManager;
 use Crm\UsersModule\Events\NotificationContext;
 use Crm\UsersModule\Events\NotificationEvent;
 use Crm\UsersModule\Events\PreNotificationEvent;
-use Crm\UsersModule\Repository\AddressesRepository;
-use Crm\UsersModule\Repository\CountriesRepository;
-use Crm\UsersModule\Repository\UsersRepository;
+use Crm\UsersModule\Models\Auth\UserManager;
+use Crm\UsersModule\Repositories\AddressesRepository;
+use Crm\UsersModule\Repositories\CountriesRepository;
+use Crm\UsersModule\Repositories\UsersRepository;
 use Nette\Utils\DateTime;
 
 class PreNotificationHandlerTest extends BaseTestCase

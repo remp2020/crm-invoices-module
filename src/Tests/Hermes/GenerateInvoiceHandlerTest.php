@@ -27,12 +27,12 @@ use Crm\SubscriptionsModule\Repositories\SubscriptionTypeItemsRepository;
 use Crm\SubscriptionsModule\Repositories\SubscriptionTypesRepository;
 use Crm\SubscriptionsModule\Seeders\SubscriptionExtensionMethodsSeeder;
 use Crm\SubscriptionsModule\Seeders\SubscriptionLengthMethodSeeder;
-use Crm\UsersModule\Auth\UserManager;
-use Crm\UsersModule\Repository\AccessTokensRepository;
-use Crm\UsersModule\Repository\AddressTypesRepository;
-use Crm\UsersModule\Repository\AddressesRepository;
-use Crm\UsersModule\Repository\CountriesRepository;
-use Crm\UsersModule\Repository\UsersRepository;
+use Crm\UsersModule\Models\Auth\UserManager;
+use Crm\UsersModule\Repositories\AccessTokensRepository;
+use Crm\UsersModule\Repositories\AddressTypesRepository;
+use Crm\UsersModule\Repositories\AddressesRepository;
+use Crm\UsersModule\Repositories\CountriesRepository;
+use Crm\UsersModule\Repositories\UsersRepository;
 use Nette\Database\Table\ActiveRow;
 use Nette\Utils\DateTime;
 

@@ -5,8 +5,8 @@ namespace Crm\InvoicesModule\DataProviders;
 use Crm\ApplicationModule\DataProvider\DataProviderException;
 use Crm\ApplicationModule\Hermes\HermesMessage;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
-use Crm\UsersModule\DataProvider\UserFormDataProviderInterface;
-use Crm\UsersModule\Repository\UsersRepository;
+use Crm\UsersModule\DataProviders\UserFormDataProviderInterface;
+use Crm\UsersModule\Repositories\UsersRepository;
 use Nette\Application\UI\Form;
 use Tomaj\Hermes\Emitter;
 

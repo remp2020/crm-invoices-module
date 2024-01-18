@@ -1,7 +1,7 @@
 <?php
 
+use Crm\UsersModule\Repositories\CountriesRepository;
 use Crm\ApplicationModule\Core;
-use Crm\UsersModule\Repository\CountriesRepository;
 use Phinx\Migration\AbstractMigration;
 
 class InvoicesCountryIdNullable extends AbstractMigration
