@@ -10,7 +10,7 @@ use Crm\InvoicesModule\Seeders\AddressTypesSeeder;
 use Crm\PaymentsModule\PaymentItem\PaymentItemContainer;
 use Crm\PaymentsModule\Repository\PaymentsRepository;
 use Crm\PaymentsModule\Tests\PaymentsTestCase;
-use Crm\SubscriptionsModule\Builder\SubscriptionTypeBuilder;
+use Crm\SubscriptionsModule\Models\Builder\SubscriptionTypeBuilder;
 use Crm\UsersModule\Auth\UserManager;
 use Crm\UsersModule\Repository\AddressTypesRepository;
 use Crm\UsersModule\Repository\AddressesRepository;
