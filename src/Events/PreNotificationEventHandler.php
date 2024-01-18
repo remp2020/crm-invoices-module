@@ -6,7 +6,7 @@ use Crm\ApplicationModule\Config\ApplicationConfig;
 use Crm\InvoicesModule\Models\Generator\InvoiceGenerationException;
 use Crm\InvoicesModule\Models\Generator\InvoiceGenerator;
 use Crm\InvoicesModule\Models\Generator\PaymentNotInvoiceableException;
-use Crm\PaymentsModule\Repository\PaymentsRepository;
+use Crm\PaymentsModule\Repositories\PaymentsRepository;
 use Crm\UsersModule\Events\NotificationContext;
 use Crm\UsersModule\Events\PreNotificationEvent;
 use League\Event\AbstractListener;

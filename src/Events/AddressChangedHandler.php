@@ -3,7 +3,7 @@
 namespace Crm\InvoicesModule\Events;
 
 use Crm\ApplicationModule\Hermes\HermesMessage;
-use Crm\PaymentsModule\Repository\PaymentsRepository;
+use Crm\PaymentsModule\Repositories\PaymentsRepository;
 use Crm\UsersModule\Events\AddressChangedEvent;
 use Crm\UsersModule\Repositories\UsersRepository;
 use League\Event\AbstractListener;

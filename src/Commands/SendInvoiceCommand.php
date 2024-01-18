@@ -3,7 +3,7 @@
 namespace Crm\InvoicesModule\Commands;
 
 use Crm\InvoicesModule\Models\Generator\InvoiceGenerator;
-use Crm\PaymentsModule\Repository\PaymentsRepository;
+use Crm\PaymentsModule\Repositories\PaymentsRepository;
 use Crm\UsersModule\Events\NotificationEvent;
 use League\Event\Emitter;
 use Symfony\Component\Console\Command\Command;

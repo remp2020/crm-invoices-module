@@ -3,7 +3,7 @@
 namespace Crm\InvoicesModule\DataProviders;
 
 use Crm\InvoicesModule\Models\Generator\InvoiceGenerator;
-use Crm\PaymentsModule\DataProvider\PaymentInvoiceProviderInterface;
+use Crm\PaymentsModule\DataProviders\PaymentInvoiceProviderInterface;
 use Nette\Database\Table\ActiveRow;
 
 class PaymentInvoiceProvider implements PaymentInvoiceProviderInterface

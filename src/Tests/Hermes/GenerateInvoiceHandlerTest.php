@@ -13,12 +13,12 @@ use Crm\InvoicesModule\Repositories\InvoiceItemsRepository;
 use Crm\InvoicesModule\Repositories\InvoiceNumbersRepository;
 use Crm\InvoicesModule\Repositories\InvoicesRepository;
 use Crm\InvoicesModule\Seeders\AddressTypesSeeder;
-use Crm\PaymentsModule\PaymentItem\PaymentItemContainer;
-use Crm\PaymentsModule\Repository\PaymentGatewaysRepository;
-use Crm\PaymentsModule\Repository\PaymentItemMetaRepository;
-use Crm\PaymentsModule\Repository\PaymentItemsRepository;
-use Crm\PaymentsModule\Repository\PaymentsRepository;
-use Crm\PaymentsModule\Repository\VariableSymbol;
+use Crm\PaymentsModule\Models\PaymentItem\PaymentItemContainer;
+use Crm\PaymentsModule\Repositories\PaymentGatewaysRepository;
+use Crm\PaymentsModule\Repositories\PaymentItemMetaRepository;
+use Crm\PaymentsModule\Repositories\PaymentItemsRepository;
+use Crm\PaymentsModule\Repositories\PaymentsRepository;
+use Crm\PaymentsModule\Repositories\VariableSymbolRepository;
 use Crm\SubscriptionsModule\Models\Builder\SubscriptionTypeBuilder;
 use Crm\SubscriptionsModule\Models\PaymentItem\SubscriptionTypePaymentItem;
 use Crm\SubscriptionsModule\Repositories\SubscriptionExtensionMethodsRepository;
@@ -69,7 +69,7 @@ class GenerateInvoiceHandlerTest extends DatabaseTestCase
             SubscriptionTypesRepository::class,
             SubscriptionTypeItemsRepository::class,
             UsersRepository::class,
-            VariableSymbol::class,
+            VariableSymbolRepository::class,
         ];
     }
 

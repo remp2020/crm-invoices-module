@@ -11,7 +11,7 @@ use Crm\ApplicationModule\RedisClientTrait;
 use Crm\ApplicationModule\RedisClientTraitException;
 use Crm\InvoicesModule\Models\InvoiceNumber\InvoiceNumberInterface;
 use Crm\InvoicesModule\Repositories\InvoicesRepository;
-use Crm\PaymentsModule\Repository\PaymentsRepository;
+use Crm\PaymentsModule\Repositories\PaymentsRepository;
 use Crm\UsersModule\Repositories\AddressesRepository;
 use Latte\Engine;
 use Latte\Essential\TranslatorExtension;

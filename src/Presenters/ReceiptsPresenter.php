@@ -5,7 +5,7 @@ namespace Crm\InvoicesModule\Presenters;
 use Contributte\PdfResponse\PdfResponse;
 use Crm\ApplicationModule\Presenters\FrontendPresenter;
 use Crm\InvoicesModule\Models\Generator\ReceiptGenerator;
-use Crm\PaymentsModule\Repository\PaymentsRepository;
+use Crm\PaymentsModule\Repositories\PaymentsRepository;
 use Nette\Application\BadRequestException;
 use Nette\Application\ForbiddenRequestException;
 use Nette\DI\Attributes\Inject;

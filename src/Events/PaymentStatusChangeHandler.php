@@ -5,7 +5,7 @@ namespace Crm\InvoicesModule\Events;
 use Crm\ApplicationModule\Config\ApplicationConfig;
 use Crm\ApplicationModule\Hermes\HermesMessage;
 use Crm\PaymentsModule\Events\PaymentChangeStatusEvent;
-use Crm\PaymentsModule\Repository\PaymentsRepository;
+use Crm\PaymentsModule\Repositories\PaymentsRepository;
 use League\Event\AbstractListener;
 use League\Event\EventInterface;
 use Tomaj\Hermes\Emitter as HermesEmitter;

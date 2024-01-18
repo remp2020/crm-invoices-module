@@ -6,9 +6,9 @@ use Crm\ApplicationModule\Widget\BaseLazyWidget;
 use Crm\ApplicationModule\Widget\LazyWidgetManager;
 use Crm\InvoicesModule\Forms\UserInvoiceFormFactory;
 use Crm\InvoicesModule\Repositories\InvoicesRepository;
-use Crm\PaymentsModule\Gateways\BankTransfer;
-use Crm\PaymentsModule\PaymentAwareInterface;
-use Crm\PaymentsModule\Repository\PaymentsRepository;
+use Crm\PaymentsModule\Models\Gateways\BankTransfer;
+use Crm\PaymentsModule\Models\PaymentAwareInterface;
+use Crm\PaymentsModule\Repositories\PaymentsRepository;
 use Nette\Application\UI\Form;
 use Nette\Database\Table\ActiveRow;
 

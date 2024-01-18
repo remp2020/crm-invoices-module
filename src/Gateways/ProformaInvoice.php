@@ -1,7 +1,7 @@
 <?php
 namespace Crm\InvoicesModule\Gateways;
 
-use Crm\PaymentsModule\Gateways\GatewayAbstract;
+use Crm\PaymentsModule\Models\Gateways\GatewayAbstract;
 
 class ProformaInvoice extends GatewayAbstract
 {

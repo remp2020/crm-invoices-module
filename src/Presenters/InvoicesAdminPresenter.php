@@ -12,7 +12,7 @@ use Crm\InvoicesModule\Models\Sandbox\InvoiceSandbox;
 use Crm\InvoicesModule\Models\Sandbox\InvoiceZipGenerator;
 use Crm\InvoicesModule\Repositories\InvoiceNumbersRepository;
 use Crm\InvoicesModule\Repositories\InvoicesRepository;
-use Crm\PaymentsModule\Repository\PaymentsRepository;
+use Crm\PaymentsModule\Repositories\PaymentsRepository;
 use Crm\UsersModule\Repositories\AddressesRepository;
 use Nette\Application\BadRequestException;
 use Nette\Application\Responses\FileResponse;

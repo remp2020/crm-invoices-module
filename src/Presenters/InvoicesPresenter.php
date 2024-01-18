@@ -7,7 +7,7 @@ use Crm\ApplicationModule\Presenters\FrontendPresenter;
 use Crm\InvoicesModule\Forms\ChangeInvoiceDetailsFormFactory;
 use Crm\InvoicesModule\Models\Generator\InvoiceGenerator;
 use Crm\InvoicesModule\Repositories\InvoicesRepository;
-use Crm\PaymentsModule\Repository\PaymentsRepository;
+use Crm\PaymentsModule\Repositories\PaymentsRepository;
 use Nette\Application\BadRequestException;
 use Nette\DI\Attributes\Inject;
 
