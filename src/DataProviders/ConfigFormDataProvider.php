@@ -4,7 +4,7 @@ namespace Crm\InvoicesModule\DataProviders;
 
 use Contributte\Translation\Translator;
 use Crm\AdminModule\DataProviders\ConfigFormDataProviderInterface;
-use Crm\ApplicationModule\DataProvider\DataProviderException;
+use Crm\ApplicationModule\Models\DataProvider\DataProviderException;
 use Crm\InvoicesModule\Repositories\InvoicesRepository;
 use Nette\Application\UI\Form;
 

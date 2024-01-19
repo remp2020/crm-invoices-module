@@ -2,11 +2,11 @@
 
 namespace Crm\InvoicesModule\Repositories;
 
-use Crm\ApplicationModule\Config\ApplicationConfig;
 use Crm\ApplicationModule\Helpers\UserDateHelper;
 use Crm\ApplicationModule\Hermes\HermesMessage;
-use Crm\ApplicationModule\Repository;
-use Crm\ApplicationModule\Repository\AuditLogRepository;
+use Crm\ApplicationModule\Models\Config\ApplicationConfig;
+use Crm\ApplicationModule\Models\Database\Repository;
+use Crm\ApplicationModule\Repositories\AuditLogRepository;
 use Crm\InvoicesModule\Events\NewInvoiceEvent;
 use Crm\PaymentsModule\Repositories\PaymentsRepository;
 use Crm\SubscriptionsModule\Models\PaymentItem\SubscriptionTypePaymentItem;

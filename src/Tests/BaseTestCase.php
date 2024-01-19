@@ -2,7 +2,7 @@
 
 namespace Crm\InvoicesModule\Tests;
 
-use Crm\ApplicationModule\Config\Repository\ConfigsRepository;
+use Crm\ApplicationModule\Repositories\ConfigsRepository;
 use Crm\ApplicationModule\Seeders\CountriesSeeder;
 use Crm\ApplicationModule\Tests\DatabaseTestCase;
 use Crm\InvoicesModule\Repositories\InvoiceNumbersRepository;

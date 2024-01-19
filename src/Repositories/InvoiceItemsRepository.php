@@ -2,7 +2,7 @@
 
 namespace Crm\InvoicesModule\Repositories;
 
-use Crm\ApplicationModule\Repository;
+use Crm\ApplicationModule\Models\Database\Repository;
 
 class InvoiceItemsRepository extends Repository
 {

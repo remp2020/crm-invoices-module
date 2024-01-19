@@ -3,7 +3,7 @@
 namespace Crm\InvoicesModule\Tests\Generator;
 
 use Contributte\PdfResponse\PdfResponse;
-use Crm\ApplicationModule\Config\Repository\ConfigsRepository;
+use Crm\ApplicationModule\Repositories\ConfigsRepository;
 use Crm\ApplicationModule\Tests\DatabaseTestCase;
 use Crm\InvoicesModule\Models\Generator\InvoiceGenerator;
 use Crm\InvoicesModule\Models\Generator\PaymentNotInvoiceableException;

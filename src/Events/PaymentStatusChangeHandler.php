@@ -2,8 +2,8 @@
 
 namespace Crm\InvoicesModule\Events;
 
-use Crm\ApplicationModule\Config\ApplicationConfig;
 use Crm\ApplicationModule\Hermes\HermesMessage;
+use Crm\ApplicationModule\Models\Config\ApplicationConfig;
 use Crm\PaymentsModule\Events\PaymentChangeStatusEvent;
 use Crm\PaymentsModule\Repositories\PaymentsRepository;
 use League\Event\AbstractListener;

@@ -2,9 +2,9 @@
 
 namespace Crm\InvoicesModule\Tests\Hermes;
 
-use Crm\ApplicationModule\Config\Repository\ConfigCategoriesRepository;
-use Crm\ApplicationModule\Config\Repository\ConfigsRepository;
 use Crm\ApplicationModule\Hermes\HermesMessage;
+use Crm\ApplicationModule\Repositories\ConfigCategoriesRepository;
+use Crm\ApplicationModule\Repositories\ConfigsRepository;
 use Crm\ApplicationModule\Seeders\ConfigsSeeder;
 use Crm\ApplicationModule\Tests\DatabaseTestCase;
 use Crm\InvoicesModule\Hermes\GenerateInvoiceHandler;

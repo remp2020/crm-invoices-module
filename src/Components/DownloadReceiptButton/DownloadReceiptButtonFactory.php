@@ -2,9 +2,9 @@
 
 namespace Crm\InvoicesModule\Components\DownloadReceiptButton;
 
-use Crm\ApplicationModule\Widget\LazyWidgetManager;
-use Crm\ApplicationModule\Widget\WidgetFactoryInterface;
-use Crm\ApplicationModule\Widget\WidgetInterface;
+use Crm\ApplicationModule\Models\Widget\LazyWidgetManager;
+use Crm\ApplicationModule\Models\Widget\WidgetFactoryInterface;
+use Crm\ApplicationModule\Models\Widget\WidgetInterface;
 
 class DownloadReceiptButtonFactory implements WidgetFactoryInterface
 {

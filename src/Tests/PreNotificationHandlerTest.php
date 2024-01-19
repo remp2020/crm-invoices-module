@@ -2,8 +2,8 @@
 
 namespace Crm\InvoicesModule\Tests;
 
-use Crm\ApplicationModule\Config\Repository\ConfigsRepository;
-use Crm\ApplicationModule\Event\LazyEventEmitter;
+use Crm\ApplicationModule\Models\Event\LazyEventEmitter;
+use Crm\ApplicationModule\Repositories\ConfigsRepository;
 use Crm\InvoicesModule\Events\PreNotificationEventHandler;
 use Crm\PaymentsModule\Events\PaymentChangeStatusEvent;
 use Crm\PaymentsModule\Events\PaymentStatusChangeHandler;

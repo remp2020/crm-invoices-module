@@ -2,8 +2,8 @@
 
 namespace Crm\InvoicesModule\Components\PaymentSuccessInvoiceWidget;
 
-use Crm\ApplicationModule\Widget\BaseLazyWidget;
-use Crm\ApplicationModule\Widget\LazyWidgetManager;
+use Crm\ApplicationModule\Models\Widget\BaseLazyWidget;
+use Crm\ApplicationModule\Models\Widget\LazyWidgetManager;
 use Crm\InvoicesModule\Forms\UserInvoiceFormFactory;
 use Crm\InvoicesModule\Repositories\InvoicesRepository;
 use Crm\PaymentsModule\Models\Gateways\BankTransfer;

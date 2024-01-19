@@ -2,7 +2,7 @@
 
 namespace Crm\InvoicesModule\Components\InvoiceLabel;
 
-use Crm\ApplicationModule\Widget\BaseLazyWidget;
+use Crm\ApplicationModule\Models\Widget\BaseLazyWidget;
 
 /**
  * Simple invoice badge component.

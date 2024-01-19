@@ -4,11 +4,11 @@ namespace Crm\InvoicesModule\Models\Generator;
 
 use Contributte\PdfResponse\PdfResponse;
 use Contributte\Translation\Translator;
-use Crm\ApplicationModule\Config\ApplicationConfig;
 use Crm\ApplicationModule\Helpers\PriceHelper;
-use Crm\ApplicationModule\RedisClientFactory;
-use Crm\ApplicationModule\RedisClientTrait;
-use Crm\ApplicationModule\RedisClientTraitException;
+use Crm\ApplicationModule\Models\Config\ApplicationConfig;
+use Crm\ApplicationModule\Models\Redis\RedisClientFactory;
+use Crm\ApplicationModule\Models\Redis\RedisClientTrait;
+use Crm\ApplicationModule\Models\Redis\RedisClientTraitException;
 use Crm\InvoicesModule\Models\InvoiceNumber\InvoiceNumberInterface;
 use Crm\InvoicesModule\Repositories\InvoicesRepository;
 use Crm\PaymentsModule\Repositories\PaymentsRepository;

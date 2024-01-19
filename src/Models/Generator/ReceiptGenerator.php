@@ -4,10 +4,10 @@ namespace Crm\InvoicesModule\Models\Generator;
 
 use Contributte\PdfResponse\PdfResponse;
 use Contributte\Translation\Translator;
-use Crm\ApplicationModule\Config\ApplicationConfig;
 use Crm\ApplicationModule\Helpers\LocalizedDateHelper;
 use Crm\ApplicationModule\Helpers\PriceHelper;
 use Crm\ApplicationModule\Helpers\UserDateHelper;
+use Crm\ApplicationModule\Models\Config\ApplicationConfig;
 use Latte\Engine;
 use Latte\Essential\TranslatorExtension;
 use Nette\Database\Table\ActiveRow;

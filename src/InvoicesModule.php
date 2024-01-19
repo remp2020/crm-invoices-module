@@ -2,17 +2,17 @@
 
 namespace Crm\InvoicesModule;
 
-use Crm\ApplicationModule\Commands\CommandsContainerInterface;
-use Crm\ApplicationModule\Criteria\ScenariosCriteriaStorage;
+use Crm\ApplicationModule\Application\CommandsContainerInterface;
+use Crm\ApplicationModule\Application\Managers\SeederManager;
 use Crm\ApplicationModule\CrmModule;
-use Crm\ApplicationModule\DataProvider\DataProviderManager;
-use Crm\ApplicationModule\Event\EventsStorage;
-use Crm\ApplicationModule\Event\LazyEventEmitter;
-use Crm\ApplicationModule\Menu\MenuContainerInterface;
-use Crm\ApplicationModule\Menu\MenuItem;
-use Crm\ApplicationModule\SeederManager;
-use Crm\ApplicationModule\User\UserDataRegistrator;
-use Crm\ApplicationModule\Widget\LazyWidgetManagerInterface;
+use Crm\ApplicationModule\Models\Criteria\ScenariosCriteriaStorage;
+use Crm\ApplicationModule\Models\DataProvider\DataProviderManager;
+use Crm\ApplicationModule\Models\Event\EventsStorage;
+use Crm\ApplicationModule\Models\Event\LazyEventEmitter;
+use Crm\ApplicationModule\Models\Menu\MenuContainerInterface;
+use Crm\ApplicationModule\Models\Menu\MenuItem;
+use Crm\ApplicationModule\Models\User\UserDataRegistrator;
+use Crm\ApplicationModule\Models\Widget\LazyWidgetManagerInterface;
 use Crm\InvoicesModule\Commands\SendInvoiceCommand;
 use Crm\InvoicesModule\Components\DownloadReceiptButton\DownloadReceiptButtonFactory;
 use Crm\InvoicesModule\Components\DownloadReceiptButton\ReceiptAdminButtonFactory;

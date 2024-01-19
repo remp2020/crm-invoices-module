@@ -2,7 +2,7 @@
 
 namespace Crm\InvoicesModule\Events;
 
-use Crm\ApplicationModule\Config\ApplicationConfig;
+use Crm\ApplicationModule\Models\Config\ApplicationConfig;
 use Crm\InvoicesModule\Models\Generator\InvoiceGenerationException;
 use Crm\InvoicesModule\Models\Generator\InvoiceGenerator;
 use Crm\InvoicesModule\Models\Generator\PaymentNotInvoiceableException;

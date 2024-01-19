@@ -2,9 +2,9 @@
 
 namespace Crm\InvoicesModule\Forms;
 
-use Crm\ApplicationModule\Config\ApplicationConfig;
-use Crm\ApplicationModule\DataProvider\DataProviderManager;
 use Crm\ApplicationModule\Hermes\HermesMessage;
+use Crm\ApplicationModule\Models\Config\ApplicationConfig;
+use Crm\ApplicationModule\Models\DataProvider\DataProviderManager;
 use Crm\PaymentsModule\Repositories\PaymentsRepository;
 use Crm\UsersModule\DataProviders\AddressFormDataProviderInterface;
 use Crm\UsersModule\Repositories\AddressChangeRequestsRepository;

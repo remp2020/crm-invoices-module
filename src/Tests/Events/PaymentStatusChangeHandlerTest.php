@@ -2,9 +2,9 @@
 
 namespace Crm\InvoicesModule\Tests\Events;
 
-use Crm\ApplicationModule\Config\ApplicationConfig;
-use Crm\ApplicationModule\Config\Repository\ConfigCategoriesRepository;
-use Crm\ApplicationModule\Config\Repository\ConfigsRepository;
+use Crm\ApplicationModule\Models\Config\ApplicationConfig;
+use Crm\ApplicationModule\Repositories\ConfigCategoriesRepository;
+use Crm\ApplicationModule\Repositories\ConfigsRepository;
 use Crm\ApplicationModule\Tests\DatabaseTestCase;
 use Crm\InvoicesModule\Events\PaymentStatusChangeHandler;
 use Crm\InvoicesModule\Hermes\GenerateInvoiceHandler;

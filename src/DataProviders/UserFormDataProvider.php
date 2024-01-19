@@ -2,8 +2,8 @@
 
 namespace Crm\InvoicesModule\DataProviders;
 
-use Crm\ApplicationModule\DataProvider\DataProviderException;
 use Crm\ApplicationModule\Hermes\HermesMessage;
+use Crm\ApplicationModule\Models\DataProvider\DataProviderException;
 use Crm\PaymentsModule\Repositories\PaymentsRepository;
 use Crm\UsersModule\DataProviders\UserFormDataProviderInterface;
 use Crm\UsersModule\Repositories\UsersRepository;

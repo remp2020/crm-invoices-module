@@ -2,7 +2,7 @@
 
 namespace Crm\InvoicesModule\DataProviders;
 
-use Crm\ApplicationModule\User\UserDataProviderInterface;
+use Crm\ApplicationModule\Models\User\UserDataProviderInterface;
 use Crm\InvoicesModule\Models\Generator\InvoiceGenerator;
 use Crm\PaymentsModule\Repositories\PaymentsRepository;
 

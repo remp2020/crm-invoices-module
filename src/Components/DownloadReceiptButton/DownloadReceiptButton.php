@@ -2,7 +2,7 @@
 
 namespace Crm\InvoicesModule\Components\DownloadReceiptButton;
 
-use Crm\ApplicationModule\Widget\BaseLazyWidget;
+use Crm\ApplicationModule\Models\Widget\BaseLazyWidget;
 
 /**
  * Download receipt button widget.

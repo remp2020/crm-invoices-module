@@ -2,7 +2,7 @@
 
 namespace Crm\InvoicesModule\Forms;
 
-use Crm\ApplicationModule\DataProvider\DataProviderManager;
+use Crm\ApplicationModule\Models\DataProvider\DataProviderManager;
 use Crm\InvoicesModule\Repositories\InvoicesRepository;
 use Crm\UsersModule\DataProviders\AddressFormDataProviderInterface;
 use Crm\UsersModule\Repositories\CountriesRepository;
