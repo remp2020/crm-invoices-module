@@ -1,6 +1,6 @@
 <?php
 
-namespace Crm\InvoicesModule\Tests\Repository;
+namespace Crm\InvoicesModule\Tests\Repositories;
 
 use Crm\ApplicationModule\Tests\DatabaseTestCase;
 use Crm\InvoicesModule\Repositories\InvoicesRepository;
