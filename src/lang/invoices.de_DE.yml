@@ -215,3 +215,9 @@ config:
         name: Erzeuge und sende eine Rechnung als Anhang zur Benachrichtigung nach der Zahlung
 menu:
     invoice_details: Rechnungsdetails
+
+data_provider:
+    universal_search:
+        invoice_group: Rechnungen
+        payment_group: Zahlungen
+        user_group: Nutzer

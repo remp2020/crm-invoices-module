@@ -245,3 +245,9 @@ config:
     generate_invoice_limit_from_days:
         name: Počet dní na vygenerovanie faktúry
         description: 'Limit počtu dní do ktorého systém povolí vygenerovanie faktúry (závisí na: "Limit vygenerovania faktúry počítať od")'
+
+data_provider:
+    universal_search:
+        invoice_group: Faktúry
+        payment_group: Platby
+        user_group: Používatelia

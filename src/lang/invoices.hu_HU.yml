@@ -222,3 +222,9 @@ config:
     supplier_zip:
         name: Irányítószám
         description: A vállalkozó irányítószáma (pl. 841 07)
+
+data_provider:
+    universal_search:
+        invoice_group: Számlák
+        payment_group: Fizetések
+        user_group: Felhasználók

@@ -242,3 +242,9 @@ config:
     generate_invoice_limit_from_days:
         name: Invoice generation - time restriction (in days)
         description: 'Number of days after which system disables the generation of an invoice (depends on: "Invoice generation - time restriction related to")'
+
+data_provider:
+    universal_search:
+        invoice_group: Invoices
+        payment_group: Payments
+        user_group: Users
