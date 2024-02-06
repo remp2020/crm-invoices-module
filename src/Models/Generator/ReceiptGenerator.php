@@ -79,7 +79,7 @@ class ReceiptGenerator
             $this->getTemplateFile(),
             [
                 'amount' => $payment->amount,
-                'project' => $payment->subscription_type->description,
+                'project' => $payment->subscription_type->user_label,
                 'config' => $this->applicationConfig,
                 'user' => $payment->user,
                 'date' => $payment->paid_at,
