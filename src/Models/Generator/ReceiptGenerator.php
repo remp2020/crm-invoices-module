@@ -66,8 +66,7 @@ class ReceiptGenerator
         return $this->templateFile;
     }
 
-
-    public function generate(ActiveRow $payment)
+    public function generate(ActiveRow $payment): PdfResponse
     {
         $engine = new Engine();
         $engine->addFilter('price', [$this->priceHelper, 'process']);
@@ -87,7 +86,7 @@ class ReceiptGenerator
         );
 
         if (!$template) {
-            throw new \Exception("Error in rendering receipt template for payment #{$payment->id}", 100);
+            throw new ReceiptGenerationException("Error in rendering receipt template for payment #{$payment->id}", 100);
         }
 
         $pdf = new PdfResponse($template);
@@ -102,5 +101,15 @@ class ReceiptGenerator
         $pdf->mpdfConfig['tempDir'] = $this->getTempDir();
 
         return $pdf;
+    }
+
+    public function renderReceiptMailAttachment(ActiveRow $payment) : array
+    {
+        $receiptPdfResponse = $this->generate($payment);
+        return [
+            'file' => 'receipt-' . $payment->variable_symbol . '.pdf',
+            'content' => $receiptPdfResponse->toString(),
+            'mime_type' => 'application/pdf',
+        ];
     }
 }

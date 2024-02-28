@@ -30,6 +30,7 @@ use Crm\InvoicesModule\Events\NewAddressHandler;
 use Crm\InvoicesModule\Events\NewInvoiceEvent;
 use Crm\InvoicesModule\Events\PaymentStatusChangeHandler;
 use Crm\InvoicesModule\Events\PreNotificationEventHandler;
+use Crm\InvoicesModule\Events\ReceiptPreNotificationEventHandler;
 use Crm\InvoicesModule\Hermes\GenerateInvoiceHandler;
 use Crm\InvoicesModule\Hermes\ZipInvoicesHandler;
 use Crm\InvoicesModule\Scenarios\HasInvoiceCriteria;
@@ -141,6 +142,10 @@ class InvoicesModule extends CrmModule
         $emitter->addListener(
             PreNotificationEvent::class,
             PreNotificationEventHandler::class
+        );
+        $emitter->addListener(
+            PreNotificationEvent::class,
+            ReceiptPreNotificationEventHandler::class
         );
         $emitter->addListener(
             NewAddressEvent::class,
