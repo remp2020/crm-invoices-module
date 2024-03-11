@@ -1,6 +1,8 @@
 {if $showButton}
     {if $admin}
-        <li class="menuitem-header">{_invoices.frontend.download_receipt.header}</li>
+        <li class="menuitem-header" data-dropdown-section="{_invoices.frontend.download_receipt.header}">
+            {_invoices.frontend.download_receipt.header}
+        </li>
         <li role="menuitem">
           <a href="{plink :Invoices:ReceiptsAdmin:downloadReceipt $paymentId}">
               <i class="fa fa-download"></i> {_invoices.frontend.download_receipt.download}

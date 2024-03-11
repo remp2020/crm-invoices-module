@@ -1,5 +1,7 @@
 {if $admin}
-  <li class="menuitem-header">{_invoices.frontend.invoice_button.header}</li>
+    <li class="menuitem-header" data-dropdown-section="{_invoices.frontend.invoice_button.header}">
+        {_invoices.frontend.invoice_button.header}
+    </li>
 	{if $payment->invoice}
     <li>
       <a href="{plink :Invoices:InvoicesAdmin:downloadInvoice $payment->id}">
