@@ -208,7 +208,7 @@ class InvoicesAdminPresenter extends AdminPresenter
 
         $this->template->pdf = $pdf;
         $this->template->paymentId = $payment->id;
-        $this->template->user = $payment->user;
+        $this->template->dbUser = $payment->user;
         $this->template->invoice = $invoice;
     }
 
