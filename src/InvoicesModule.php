@@ -21,6 +21,7 @@ use Crm\InvoicesModule\Components\InvoiceButton\InvoiceFrontendButtonFactory;
 use Crm\InvoicesModule\Components\InvoiceDetailsWidget\InvoiceDetailsWidget;
 use Crm\InvoicesModule\Components\InvoiceLabel\InvoiceLabel;
 use Crm\InvoicesModule\Components\PaymentSuccessInvoiceWidget\PaymentSuccessInvoiceWidget;
+use Crm\InvoicesModule\DataProviders\AddressFormDataProvider;
 use Crm\InvoicesModule\DataProviders\ConfigFormDataProvider;
 use Crm\InvoicesModule\DataProviders\InvoicesUserDataProvider;
 use Crm\InvoicesModule\DataProviders\UserFormDataProvider;
@@ -177,6 +178,16 @@ class InvoicesModule extends CrmModule
         $dataProviderManager->registerDataProvider(
             'admin.dataprovider.config_form',
             $this->getInstance(ConfigFormDataProvider::class)
+        );
+
+        $dataProviderManager->registerDataProvider(
+            'users.dataprovider.address_form',
+            $this->getInstance(AddressFormDataProvider::class)
+        );
+
+        $dataProviderManager->registerDataProvider(
+            'invoices.dataprovider.invoice_address_form',
+            $this->getInstance(AddressFormDataProvider::class)
         );
     }
 
