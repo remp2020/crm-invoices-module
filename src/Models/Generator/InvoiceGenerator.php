@@ -23,29 +23,29 @@ class InvoiceGenerator
 {
     use RedisClientTrait;
 
-    /** @var string */
-    private $templateFile;
+    private string $templateFile;
 
-    /** @var string */
-    private $tempDir;
+    private array $templateParams = [];
+
+    private string $tempDir;
 
     public function __construct(
-        private InvoicesRepository $invoicesRepository,
-        private PaymentsRepository $paymentsRepository,
-        private ApplicationConfig $applicationConfig,
-        private PriceHelper $priceHelper,
-        private Translator $translator,
-        private InvoiceNumberInterface $invoiceNumber,
+        private readonly InvoicesRepository $invoicesRepository,
+        private readonly PaymentsRepository $paymentsRepository,
+        private readonly ApplicationConfig $applicationConfig,
+        private readonly PriceHelper $priceHelper,
+        private readonly Translator $translator,
+        private readonly InvoiceNumberInterface $invoiceNumber,
         RedisClientFactory $redisClientFactory,
-        private AddressesRepository $addressesRepository
+        private readonly AddressesRepository $addressesRepository
     ) {
         $this->redisClientFactory = $redisClientFactory;
     }
 
-    public function setTempDir(string $tempDir)
+    public function setTempDir(string $tempDir): void
     {
         if (!is_dir($tempDir)) {
-            Debugger::log("Providid temp dir {$tempDir} is not directory. System temp directory will be used.", Debugger::ERROR);
+            Debugger::log("Provided temp dir {$tempDir} is not directory. System temp directory will be used.", Debugger::ERROR);
             return;
         }
         $this->tempDir = $tempDir;
@@ -60,7 +60,7 @@ class InvoiceGenerator
         return $this->tempDir;
     }
 
-    public function setTemplateFile(string $templateFile)
+    public function setTemplateFile(string $templateFile): void
     {
         if (!file_exists($templateFile)) {
             Debugger::log("Unable to find provided invoice template file {$templateFile}. Default template will be used.", Debugger::ERROR);
@@ -76,6 +76,11 @@ class InvoiceGenerator
             $this->templateFile = __DIR__ . "/templates/invoice/default.latte";
         }
         return $this->templateFile;
+    }
+
+    public function setTemplateParams(array $params): void
+    {
+        $this->templateParams = $params;
     }
 
     /**
@@ -138,17 +143,26 @@ class InvoiceGenerator
         return $this->renderInvoicePDF($user, $payment);
     }
 
-    public function renderInvoicePDF($user, $payment)
+    /**
+     * @param $user
+     * @param $payment
+     * @return PdfResponse|null
+     * @throws InvoiceGenerationException
+     */
+    public function renderInvoicePDF($user, $payment): ?PdfResponse
     {
-        if ($payment->user->id == $user->id) {
+        if ($payment->user->id === $user->id) {
             return $this->renderInvoice($payment);
         }
         return null;
     }
 
-    public function renderInvoicePDFToFile($filePath, $user, $payment)
+    /**
+     * @throws InvoiceGenerationException|\Mpdf\MpdfException
+     */
+    public function renderInvoicePDFToFile($filePath, $user, $payment): ?PdfResponse
     {
-        if ($payment->user->id == $user->id) {
+        if ($payment->user->id === $user->id) {
             $pdf = $this->renderInvoice($payment);
             file_put_contents($filePath, $pdf->toString());
             return $pdf;
@@ -158,12 +172,9 @@ class InvoiceGenerator
 
 
     /**
-     * @param ActiveRow $payment
-     *
-     * @return PdfResponse
      * @throws InvoiceGenerationException
      */
-    private function renderInvoice(ActiveRow $payment)
+    private function renderInvoice(ActiveRow $payment): PdfResponse
     {
         $invoice = $this->invoicesRepository->find($payment->invoice_id);
         $engine = new Engine();
@@ -175,6 +186,7 @@ class InvoiceGenerator
             [
                 'invoice' => $invoice,
                 'config' => $this->applicationConfig,
+                'params' => $this->templateParams,
             ]
         );
 
@@ -196,7 +208,6 @@ class InvoiceGenerator
         return $pdf;
     }
 
-
     /**
      * Generates invoice PDF file as attachment.
      *
@@ -204,28 +215,29 @@ class InvoiceGenerator
      *
      * @param ActiveRow $payment
      *
-     * @return array|bool Returns false if user disabled invoicing.
+     * @return array
      * @throws PaymentNotInvoiceableException
-     * @throws InvoiceGenerationException
+     * @throws InvoiceGenerationException|RedisClientTraitException|\Mpdf\MpdfException
      */
-    public function renderInvoiceMailAttachment(ActiveRow $payment)
+    public function renderInvoiceMailAttachment(ActiveRow $payment): array
     {
         if (!$payment->invoice_id) {
             $this->generate($payment->user, $payment);
             $payment = $this->paymentsRepository->find($payment->id); // refresh the instance to get invoice ID
         }
 
-        $attachment = [
+        return [
             'file' => $payment->variable_symbol . '.pdf',
             'content' => $this->generateInvoiceAsString($payment),
             'mime_type' => 'application/pdf',
         ];
-
-        return $attachment;
     }
 
     /**
      * Generates invoice PDF file and returns contents as string. Invoice must be already generated and linked to payment.
+     *
+     * @throws InvoiceGenerationException
+     * @throws \Mpdf\MpdfException
      */
     public function generateInvoiceAsString(ActiveRow $payment): string
     {
@@ -233,7 +245,6 @@ class InvoiceGenerator
             throw new InvoiceGenerationException("No linked invoice for payment VS {$payment->variable_symbol}. Cannot generate PDF attachment.");
         }
 
-        $pdfResponse = $this->renderInvoice($payment);
-        return $pdfResponse->toString();
+        return $this->renderInvoice($payment)->toString();
     }
 }
