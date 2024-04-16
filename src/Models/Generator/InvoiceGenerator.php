@@ -23,11 +23,11 @@ class InvoiceGenerator
 {
     use RedisClientTrait;
 
-    private string $templateFile;
+    private ?string $templateFile = null;
 
     private array $templateParams = [];
 
-    private string $tempDir;
+    private ?string $tempDir = null;
 
     public function __construct(
         private readonly InvoicesRepository $invoicesRepository,
