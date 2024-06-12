@@ -64,9 +64,12 @@ frontend:
         header: Receipt
         download: Download receipt
     proforma_invoice:
-        title: Proforma invoice payment
-        form_title: 'Please fill up your invoice details to complete the order'
-        thank_you: 'Thank you for the order, the invoice will be sent to your email within 3 working days.'
+        address_form:
+            title: Proforma invoice payment
+            form_title: Please fill up your invoice details to complete the order
+        success:
+            title: Proforma invoice payment
+            thank_you: Thank you for the order, the invoice will be sent to your email within 3 working days.
 
 admin:
     menu:

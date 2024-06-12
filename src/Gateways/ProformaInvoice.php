@@ -22,7 +22,7 @@ class ProformaInvoice extends GatewayAbstract
 
     public function begin($payment)
     {
-        $url = $this->linkGenerator->link('Invoices:SalesFunnel:ReturnPaymentProformaInvoice', ['VS' => $payment->variable_symbol]);
+        $url = $this->linkGenerator->link('Invoices:SalesFunnel:proforma', ['variableSymbol' => $payment->variable_symbol]);
         $this->httpResponse->redirect($url);
         exit();
     }

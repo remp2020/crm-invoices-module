@@ -9,36 +9,38 @@ use Crm\PaymentsModule\Repositories\PaymentLogsRepository;
 use Crm\PaymentsModule\Repositories\PaymentsRepository;
 use Nette\Application\Attributes\Persistent;
 use Nette\Application\UI\Form;
-use Nette\DI\Attributes\Inject;
+use Nette\Database\Table\ActiveRow;
 
 class SalesFunnelPresenter extends FrontendPresenter
 {
-    #[Inject]
-    public PaymentsRepository $paymentsRepository;
-
-    #[Inject]
-    public PaymentLogsRepository $paymentLogsRepository;
-
-    #[Inject]
-    public UserInvoiceFormFactory $userInvoiceFormFactory;
-
     #[Persistent]
-    public $VS;
+    public ?string $variableSymbol;
 
-    public function renderReturnPaymentProformaInvoice()
-    {
-        $payment = $this->getPayment();
-        $this->template->payment = $payment;
-        $this->template->note = 'VS' . $payment->variable_symbol;
+    public function __construct(
+        private readonly PaymentsRepository $paymentsRepository,
+        private readonly PaymentLogsRepository $paymentLogsRepository,
+        private readonly UserInvoiceFormFactory $userInvoiceFormFactory,
+    ) {
+        parent::__construct();
     }
 
-    public function createComponentProformaInvoiceForm()
+    public function renderProforma(): void
     {
-        $payment = $this->getPayment();
+        $this->getPayment($this->variableSymbol); // just check existence of payment
+    }
+
+    public function renderProformaSuccess(): void
+    {
+        $this->template->payment = $this->getPayment($this->variableSymbol);
+    }
+
+    public function createComponentProformaInvoiceAddressForm(): Form
+    {
+        $payment = $this->getPayment($this->variableSymbol);
         if ($payment->status != PaymentsRepository::STATUS_FORM) {
             $this->paymentLogsRepository->add(
                 'ERROR',
-                "Payment is not in FORM state when finishing proforma invoice payment - '{$this->VS}'",
+                "Payment is not in FORM state when finishing proforma invoice payment - '{$this->variableSymbol}'",
                 $this->request->getUrl(),
                 $payment->id
             );
@@ -47,25 +49,23 @@ class SalesFunnelPresenter extends FrontendPresenter
 
         $form = $this->userInvoiceFormFactory->create($payment);
 
-        $form['done']->setValue(0);
-
-        $presenter = $this;
-        $this->userInvoiceFormFactory->onSave = function (Form $form, $user) use ($presenter, $payment) {
-            $form['done']->setValue(1);
-            $presenter->redrawControl('invoiceFormSnippet');
+        $this->userInvoiceFormFactory->onSave = function (Form $form, ActiveRow $user) use ($payment) {
             $this->emitter->emit(new ProformaInvoiceCreatedEvent($payment));
+            $this->redirect('proformaSuccess');
         };
 
-        $form->onError[] = function (Form $form) use ($presenter) {
-            $presenter->redrawControl('invoiceFormSnippet');
+        $form->onError[] = function (Form $form) {
+            $this->redrawControl('invoiceFormSnippet');
         };
+
         return $form;
     }
 
-    public function getPayment()
+    private function getPayment(?string $variableSymbol): ActiveRow
     {
-        if (isset($this->VS)) {
-            $payment = $this->paymentsRepository->findByVs($this->VS);
+        if ($variableSymbol !== null) {
+            $payment = $this->paymentsRepository->findByVs($variableSymbol);
+
             if ($payment) {
                 return $payment;
             }
@@ -73,7 +73,7 @@ class SalesFunnelPresenter extends FrontendPresenter
 
         $this->paymentLogsRepository->add(
             'ERROR',
-            "Cannot load payment with VS '{$this->VS}'",
+            "Cannot load payment with VS '{$variableSymbol}'",
             $this->request->getUrl()
         );
         $this->redirect(':SalesFunnel:SalesFunnel:Error');

@@ -16,37 +16,19 @@ use Tomaj\Form\Renderer\BootstrapRenderer;
 
 class UserInvoiceFormFactory
 {
-    private $usersRepository;
-    private $addressesRepository;
-    private $countriesRepository;
-    private $applicationConfig;
-    private $addressChangeRequestsRepository;
-
     public $onSave;
 
-    /** @var ActiveRow */
-    private $payment;
-
-    private $translator;
-
-    private $dataProviderManager;
+    private ?ActiveRow $payment;
 
     public function __construct(
-        Translator $translator,
-        UsersRepository $usersRepository,
-        ApplicationConfig $applicationConfig,
-        CountriesRepository $countriesRepository,
-        AddressesRepository $addressesRepository,
-        AddressChangeRequestsRepository $addressChangeRequestsRepository,
-        DataProviderManager $dataProviderManager
+        private readonly Translator $translator,
+        private readonly UsersRepository $usersRepository,
+        private readonly ApplicationConfig $applicationConfig,
+        private readonly CountriesRepository $countriesRepository,
+        private readonly AddressesRepository $addressesRepository,
+        private readonly AddressChangeRequestsRepository $addressChangeRequestsRepository,
+        private readonly DataProviderManager $dataProviderManager,
     ) {
-        $this->translator = $translator;
-        $this->usersRepository = $usersRepository;
-        $this->applicationConfig = $applicationConfig;
-        $this->countriesRepository = $countriesRepository;
-        $this->addressesRepository = $addressesRepository;
-        $this->addressChangeRequestsRepository = $addressChangeRequestsRepository;
-        $this->dataProviderManager = $dataProviderManager;
     }
 
     public function create(ActiveRow $payment): Form

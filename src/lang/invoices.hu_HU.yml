@@ -58,9 +58,12 @@ frontend:
     download_receipt:
         download: Igazolás letöltése
     proforma_invoice:
-        title: Fizetés előlegszámlával
-        form_title: 'A megrendelés véglegesítéséhez, kérjük, töltse ki a számlázási adatokat'
-        thank_you: 'Köszönjük rendelését, az előlegszámlát 3 munkanapon belül e-mailben küldjük.'
+        address_form:
+            title: Fizetés előlegszámlával
+            form_title: A megrendelés véglegesítéséhez, kérjük, töltse ki a számlázási adatokat
+        success:
+            title: Fizetés előlegszámlával
+            thank_you: Köszönjük rendelését, az előlegszámlát 3 munkanapon belül e-mailben küldjük.
 
 admin:
     menu:

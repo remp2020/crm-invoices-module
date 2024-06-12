@@ -63,9 +63,12 @@ frontend:
         header: Potvrzení
         download: Stáhnout potvrzení
     proforma_invoice:
-        title: Platba předfakturou
-        form_title: 'Pro dokončení objednávky prosím vyplňte fakturační údaje'
-        thank_you: 'Děkujeme za vaši objednávku, předfakturu Vám zašleme do 3 pracovních dnů e-mailem.'
+        address_form:
+            title: Platba předfakturou
+            form_title: Pro dokončení objednávky prosím vyplňte fakturační údaje
+        success:
+            title: Platba předfakturou
+            thank_you: Děkujeme za vaši objednávku, předfakturu Vám zašleme do 3 pracovních dnů e-mailem.
 
 admin:
     menu:

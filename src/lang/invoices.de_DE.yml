@@ -51,9 +51,12 @@ frontend:
         success: Ihre Adresse wurde erfolgreich geändert.
         warning: "Sie können eine Rechnung nur innerhalb von1 4 Tagen nach Zahlung erzeugen. Klicken Sie <a href='%link%' style='text-decoration: underline;'>hier</a>, um eine Rechnung zu erzeugen."
     proforma_invoice:
-        title: Zahlung per Vorkasse
-        form_title: Bitte füllen Sie die Rechnungsdaten aus, um die Bestellung abzuschließen
-        thank_you: Vielen Dank für Ihre Bestellung, die Rechnung wird Ihnen innerhalb von 3 Werktagen per E-Mail zugestellt.
+        address_form:
+            title: Zahlung per Vorkasse
+            form_title: Bitte füllen Sie die Rechnungsdaten aus, um die Bestellung abzuschließen
+        success:
+            title: Zahlung per Vorkasse
+            thank_you: Vielen Dank für Ihre Bestellung, die Rechnung wird Ihnen innerhalb von 3 Werktagen per E-Mail zugestellt.
     download_receipt:
         download: Rechnungsbeleg herunterladen
 admin:
