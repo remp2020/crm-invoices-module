@@ -13,5 +13,32 @@
         </div>
     </div>
 
-    {control simpleWidget 'invoices.frontend.proforma_invoice.success.content', $payment}
+    <div class="row">
+        <div class="col-md-8">
+            <blockquote>
+                <p class="lead">
+                    {_invoices.frontend.proforma_invoice.success.account_number}: {$bankNumber} {if !empty($bankIban)}
+                        (IBAN: {$bankIban}{if $bankSwift} SWIFT: {$bankSwift}{/if})
+                    {/if}<br>
+                    <br>
+                    {_invoices.frontend.proforma_invoice.success.amount}: <strong>{$payment->amount|price}</strong><br>
+                    {_invoices.frontend.proforma_invoice.success.variable_symbol}: <strong>{$payment->variable_symbol}</strong><br>
+                    {_invoices.frontend.proforma_invoice.success.recipient_message}: <strong>{$note}</strong><br>
+                </p>
+
+                {control simpleWidget 'invoices.frontend.proforma_invoice.success.payment_details_content', $payment}
+            </blockquote>
+
+            <p class="text-muted">
+                {_invoices.frontend.proforma_invoice.success.delay_info}
+            </p>
+        </div>
+
+        <div class="col-md-4" style="max-height: 240px;">
+            {control simpleWidget 'payments.banktransfer.right', [
+                'payment' => $payment,
+                'note' => $note,
+            ]}
+        </div>
+    </div>
 {/block}

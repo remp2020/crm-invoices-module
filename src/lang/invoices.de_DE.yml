@@ -57,6 +57,11 @@ frontend:
         success:
             title: Zahlung per Vorkasse
             thank_you: Vielen Dank für Ihre Bestellung, die Rechnung wird Ihnen innerhalb von 3 Werktagen per E-Mail zugestellt.
+            amount: Summe
+            account_number: Kontonummer
+            variable_symbol: Transaktions-ID
+            recipient_message: Verwendungszweck
+            delay_info: Es kann 2 bis 3 Werktage dauern, bis der Betrag gutgeschrieben wird. Das Abonnement wird erst nach Gutschrift der Zahlung auf unserem Konto aktiviert.
     download_receipt:
         download: Rechnungsbeleg herunterladen
 admin:

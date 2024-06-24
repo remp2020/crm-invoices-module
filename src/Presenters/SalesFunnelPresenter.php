@@ -8,8 +8,10 @@ use Crm\InvoicesModule\Forms\UserInvoiceFormFactory;
 use Crm\PaymentsModule\Repositories\PaymentLogsRepository;
 use Crm\PaymentsModule\Repositories\PaymentsRepository;
 use Nette\Application\Attributes\Persistent;
+use Nette\Application\BadRequestException;
 use Nette\Application\UI\Form;
 use Nette\Database\Table\ActiveRow;
+use Nette\Http\IResponse;
 
 class SalesFunnelPresenter extends FrontendPresenter
 {
@@ -31,7 +33,13 @@ class SalesFunnelPresenter extends FrontendPresenter
 
     public function renderProformaSuccess(): void
     {
-        $this->template->payment = $this->getPayment($this->variableSymbol);
+        $payment = $this->getPayment($this->variableSymbol);
+
+        $this->template->payment = $payment;
+        $this->template->bankNumber = $this->applicationConfig->get('supplier_bank_account_number');
+        $this->template->bankIban = $this->applicationConfig->get('supplier_iban');
+        $this->template->bankSwift = $this->applicationConfig->get('supplier_swift');
+        $this->template->note = sprintf('VS%s', $payment->variable_symbol);
     }
 
     public function createComponentProformaInvoiceAddressForm(): Form
@@ -63,8 +71,18 @@ class SalesFunnelPresenter extends FrontendPresenter
 
     private function getPayment(?string $variableSymbol): ActiveRow
     {
+        $user = $this->getUser();
+
+        if (!$user->isLoggedIn()) {
+            throw new BadRequestException('User is not logged in.', httpCode: IResponse::S403_Forbidden);
+        }
+
         if ($variableSymbol !== null) {
             $payment = $this->paymentsRepository->findByVs($variableSymbol);
+
+            if ($payment->user_id !== $user->getId()) {
+                throw new BadRequestException("User hasn't access to the payment.", httpCode: IResponse::S403_Forbidden);
+            }
 
             if ($payment) {
                 return $payment;

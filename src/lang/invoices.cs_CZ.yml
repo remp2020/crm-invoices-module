@@ -69,6 +69,11 @@ frontend:
         success:
             title: Platba předfakturou
             thank_you: Děkujeme za vaši objednávku, předfakturu Vám zašleme do 3 pracovních dnů e-mailem.
+            amount: Částka
+            account_number: Číslo účtu
+            variable_symbol: Variabilní symbol
+            recipient_message: Zpráva pro příjemce
+            delay_info: Připsání platby na účet může trvat 1 až 2 pracovní dny. Nákup vám bude potvrzen po připsání platby na náš účet.
 
 admin:
     menu:

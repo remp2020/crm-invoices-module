@@ -70,6 +70,11 @@ frontend:
         success:
             title: Proforma invoice payment
             thank_you: Thank you for the order, the invoice will be sent to your email within 3 working days.
+            amount: Amount
+            account_number: Account number
+            variable_symbol: Variable symbol
+            recipient_message: Message for recipient
+            delay_info: Payment settlement can take up to 2 business days. Subscription will be started after the payment is settled on our account.
 
 admin:
     menu:

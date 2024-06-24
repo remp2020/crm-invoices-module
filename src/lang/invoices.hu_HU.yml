@@ -64,6 +64,11 @@ frontend:
         success:
             title: Fizetés előlegszámlával
             thank_you: Köszönjük rendelését, az előlegszámlát 3 munkanapon belül e-mailben küldjük.
+            amount: Összeg
+            account_number: Bankszámlaszám
+            variable_symbol: Az átutalás egyedi azonosítója (variabilný symbol)
+            recipient_message: Üzenet a címzettnek
+            delay_info: Az összeg jóváírása egy vagy két munkanapig tarthat. Az előfizetés az összeg jóváírása után aktiválódik.
 
 admin:
     menu:

@@ -2,9 +2,11 @@
 
 namespace Crm\InvoicesModule\Events;
 
+use Crm\PaymentsModule\Events\PaymentEventInterface;
 use League\Event\AbstractEvent;
+use Nette\Database\Table\ActiveRow;
 
-class ProformaInvoiceCreatedEvent extends AbstractEvent
+class ProformaInvoiceCreatedEvent extends AbstractEvent implements PaymentEventInterface
 {
     private $payment;
 
@@ -13,7 +15,7 @@ class ProformaInvoiceCreatedEvent extends AbstractEvent
         $this->payment = $payment;
     }
 
-    public function getPayment()
+    public function getPayment(): ActiveRow
     {
         return $this->payment;
     }
