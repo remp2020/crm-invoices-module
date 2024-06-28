@@ -192,7 +192,7 @@ class InvoicesRepository extends Repository
             return false;
         }
 
-        if ($invoiceAddress && $payment->payment_country_id !== $invoiceAddress->country_id) {
+        if ($invoiceAddress && $payment->payment_country_id && $payment->payment_country_id !== $invoiceAddress->country_id) {
             return false;
         }
 
