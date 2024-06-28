@@ -24,6 +24,7 @@ use Crm\InvoicesModule\Components\PaymentSuccessInvoiceWidget\PaymentSuccessInvo
 use Crm\InvoicesModule\DataProviders\AddressFormDataProvider;
 use Crm\InvoicesModule\DataProviders\ConfigFormDataProvider;
 use Crm\InvoicesModule\DataProviders\InvoicesUserDataProvider;
+use Crm\InvoicesModule\DataProviders\OneStopShopCountryResolutionDataProvider;
 use Crm\InvoicesModule\DataProviders\UserFormDataProvider;
 use Crm\InvoicesModule\Events\AddressChangedHandler;
 use Crm\InvoicesModule\Events\AddressRemovedHandler;
@@ -38,6 +39,7 @@ use Crm\InvoicesModule\Scenarios\HasInvoiceCriteria;
 use Crm\InvoicesModule\Seeders\AddressTypesSeeder;
 use Crm\InvoicesModule\Seeders\ConfigsSeeder;
 use Crm\InvoicesModule\Seeders\PaymentGatewaysSeeder;
+use Crm\PaymentsModule\DataProviders\OneStopShopCountryResolutionDataProviderInterface;
 use Crm\PaymentsModule\Events\PaymentChangeStatusEvent;
 use Crm\UsersModule\Events\AddressChangedEvent;
 use Crm\UsersModule\Events\AddressRemovedEvent;
@@ -188,6 +190,12 @@ class InvoicesModule extends CrmModule
         $dataProviderManager->registerDataProvider(
             'invoices.dataprovider.invoice_address_form',
             $this->getInstance(AddressFormDataProvider::class)
+        );
+
+        $dataProviderManager->registerDataProvider(
+            OneStopShopCountryResolutionDataProviderInterface::PATH,
+            $this->getInstance(OneStopShopCountryResolutionDataProvider::class),
+            50
         );
     }
 

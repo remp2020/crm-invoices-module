@@ -115,6 +115,7 @@ component:
         require_invoice_info: "Ak požadujete faktúru, nezabudnite vyplniť Vaše fakturačné údaje. Ak ich nevyplníte v tomto kroku, už to nebude možné."
         fill_invoice_address: Vyplniť fakturačnú adresu
         saved: Všetky údaje uložené
+        unable_to_create_invoice_address: Pre platbu nie je možné zadať fakturačnú adresu. Ak si prajete vystaviť faktúru, kontaktujte prosím podporu.
 
     invoice_label:
         invoice: Faktúra

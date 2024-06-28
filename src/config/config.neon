@@ -33,6 +33,7 @@ services:
 	- Crm\InvoicesModule\DataProviders\ConfigFormDataProvider
 	- Crm\InvoicesModule\DataProviders\UniversalSearchDataProvider
 	- Crm\InvoicesModule\DataProviders\AddressFormDataProvider
+	- Crm\InvoicesModule\DataProviders\OneStopShopCountryResolutionDataProvider
 
 	- Crm\InvoicesModule\Events\AddressChangedHandler
 	- Crm\InvoicesModule\Events\AddressRemovedHandler

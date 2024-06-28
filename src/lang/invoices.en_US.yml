@@ -115,6 +115,7 @@ component:
         require_invoice_info: "If you need invoice, please don't forget to fill your billing details. If you don't fill it in this step, it will not be possible in the future."
         fill_invoice_address: Fill in the invoice address
         saved: Saved
+        unable_to_create_invoice_address: It is not possible to enter invoice address for the payment. If you wish to issue an invoice, please contact support.
 
     invoice_label:
         invoice: Invoice

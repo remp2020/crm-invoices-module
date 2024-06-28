@@ -187,7 +187,12 @@ class InvoicesRepository extends Repository
             return false;
         }
 
-        if ($checkUserAddress && ($this->addressesRepository->address($payment->user, 'invoice') === null)) {
+        $invoiceAddress = $this->addressesRepository->address($payment->user, 'invoice');
+        if ($checkUserAddress && $invoiceAddress === null) {
+            return false;
+        }
+
+        if ($invoiceAddress && $payment->payment_country_id !== $invoiceAddress->country_id) {
             return false;
         }
 

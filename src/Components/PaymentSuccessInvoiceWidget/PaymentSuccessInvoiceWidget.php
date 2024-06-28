@@ -7,8 +7,10 @@ use Crm\ApplicationModule\Models\Widget\LazyWidgetManager;
 use Crm\InvoicesModule\Forms\UserInvoiceFormFactory;
 use Crm\InvoicesModule\Repositories\InvoicesRepository;
 use Crm\PaymentsModule\Models\Gateways\BankTransfer;
+use Crm\PaymentsModule\Models\OneStopShop\OneStopShop;
 use Crm\PaymentsModule\Models\PaymentAwareInterface;
 use Crm\PaymentsModule\Repositories\PaymentsRepository;
+use Crm\UsersModule\Repositories\CountriesRepository;
 use Nette\Application\UI\Form;
 use Nette\Database\Table\ActiveRow;
 
@@ -23,14 +25,13 @@ class PaymentSuccessInvoiceWidget extends BaseLazyWidget
 {
     protected $templatePath = __DIR__ . DIRECTORY_SEPARATOR . 'payment_success_invoice_widget.latte';
 
-    private $invoicesRepository;
-
     public function __construct(
         LazyWidgetManager $lazyWidgetManager,
-        InvoicesRepository $invoicesRepository
+        private InvoicesRepository $invoicesRepository,
+        private CountriesRepository $countriesRepository,
+        private OneStopShop $oneStopShop,
     ) {
         parent::__construct($lazyWidgetManager);
-        $this->invoicesRepository = $invoicesRepository;
     }
 
     public function identifier()
@@ -47,6 +48,14 @@ class PaymentSuccessInvoiceWidget extends BaseLazyWidget
         }
         if (!$this->invoicesRepository->isPaymentInvoiceable($payment, true) && $payment->payment_gateway->code !== BankTransfer::GATEWAY_CODE) {
             return;
+        }
+
+        if ($this->oneStopShop->isEnabled() &&
+            $payment->payment_country &&
+            $payment->payment_country?->id !== $this->countriesRepository->defaultCountry()->id) {
+            $this->template->oneStopShopDisabledEditing = true;
+        } else {
+            $this->template->oneStopShopDisabledEditing = false;
         }
 
         $this->template->payment = $payment;
