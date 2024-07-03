@@ -49,7 +49,11 @@ frontend:
             placeholder: z.B. DE012345678
             required: Umsatzsteuer-ID ist erforderlich
         success: Ihre Adresse wurde erfolgreich geändert.
-        warning: "Sie können eine Rechnung nur innerhalb von1 4 Tagen nach Zahlung erzeugen. Klicken Sie <a href='%link%' style='text-decoration: underline;'>hier</a>, um eine Rechnung zu erzeugen."
+        warning: "Sie können eine Rechnung nur innerhalb von 14 Tagen nach Zahlung erzeugen. Klicken Sie <a href='%link%' style='text-decoration: underline;'>hier</a>, um eine Rechnung zu erzeugen."
+        country_id:
+            label: Land
+            required: Land ist erforderlich
+            foreign_country: Für Lieferungen ins Ausland kontaktieren Sie uns bitte unter %contactEmail%
     proforma_invoice:
         address_form:
             title: Zahlung per Vorkasse
@@ -126,15 +130,15 @@ form:
             company_tax_id: z.B. 0123456789
             company_vat_id: z.B. DE012345678
         required:
-            company_name: Firmenname ist erforderlich
-            address: Straße ist erforderlich
-            number: Hausnummer ist erforderlich
-            city: Stadt ist erforderlich
-            zip: PLZ ist erforderlich
-            country_id: Land ist erforderlich
-            company_vat_id: Umsatzsteuer-ID ist erforderlich
-            company_id: Handelsregisternummer ist erforderlich
-            company_tax_id: Steuernummer ist erforderlich
+            company_name: Firmenname ist ein Pflichtfeld
+            address: Straße ist ein Pflichtfeld
+            number: Hausnummer ist ein Pflichtfeld
+            city: Stadt ist ein Pflichtfeld
+            zip: PLZ ist ein Pflichtfeld
+            country_id: Land ist ein Pflichtfeld
+            company_vat_id: Umsatzsteuer-ID ist ein Pflichtfeld
+            company_id: Handelsregisternummer ist ein Pflichtfeld
+            company_tax_id: Steuernummer ist ein Pflichtfeld
         options:
             foreign_country: Für Lieferungen ins Ausland kontaktieren Sie uns bitte über %contactEmail%
     change_invoice_items:
@@ -156,10 +160,10 @@ invoice_template:
     item_name: Artikelname
     item_count: Anzahl
     unit_price: Preis pro Einheit
-    vat: MwSt
-    unit_price_with_vat: Preis pro Einheit (mit MwSt)
-    vat_amount_per_item: MwSt (Betrag)
-    item_sum_with_vat: Summe mit MwSt
+    vat: MwSt.
+    unit_price_with_vat: Preis pro Einheit (mit MwSt.)
+    vat_amount_per_item: MwSt. (Betrag)
+    item_sum_with_vat: Bruttobetrag
     deposit: Vorauszahlung
     note:
         title: Anmerkung
@@ -169,7 +173,7 @@ invoice_template:
     item_sum: Insgesamt
     sum: Gesamtsumme
     sum_deposit: Gezahlte Vorauszahlung
-    sum_remains_to_pay: Bleibt zu zahlen
+    sum_remains_to_pay: Restbetrag
     summary: Zusammenfassung
     bank_account: Bankkonto
     bank: Bank

@@ -19,6 +19,7 @@ frontend:
         invoices_link: Moje platby
         invoices_link_suffix: Na tomto místě prosím uložte vaše fakturační údaje.
 
+        invoices_link_suffix: Na tomto místě prosím uložte vaše fakturační údaje.
     change_invoice_details:
         submit: Uložit
         invoice: Chci fakturu
