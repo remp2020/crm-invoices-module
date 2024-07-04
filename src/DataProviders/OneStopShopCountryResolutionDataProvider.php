@@ -6,11 +6,13 @@ namespace Crm\InvoicesModule\DataProviders;
 use Crm\PaymentsModule\DataProviders\OneStopShopCountryResolutionDataProviderInterface;
 use Crm\PaymentsModule\Models\OneStopShop\CountryResolution;
 use Crm\PaymentsModule\Models\OneStopShop\CountryResolutionType;
-use Crm\PaymentsModule\Models\OneStopShop\OneStopShopCountryConflictException;
+use Crm\PaymentsModule\Models\OneStopShop\OneStopShopAddressCheckTrait;
 use Crm\UsersModule\Repositories\AddressesRepository;
 
 final class OneStopShopCountryResolutionDataProvider implements OneStopShopCountryResolutionDataProviderInterface
 {
+    use OneStopShopAddressCheckTrait;
+
     public function __construct(
         private readonly AddressesRepository $addressesRepository,
     ) {
@@ -25,13 +27,12 @@ final class OneStopShopCountryResolutionDataProvider implements OneStopShopCount
         $invoiceAddress = $user ? $this->addressesRepository->address($user, 'invoice') : null;
 
         if ($invoiceAddress) {
-            if ($paymentAddress !== null && $paymentAddress->country?->iso_code !== $invoiceAddress->country->iso_code) {
-                throw new OneStopShopCountryConflictException("Conflicting paymentAddress country [{$paymentAddress->country->iso_code}] and invoice country [{$invoiceAddress->country->iso_code}]");
-            }
+            $countryCodesToCheck = array_filter([
+                'selectedCountryCode' => $selectedCountryCode,
+                'paymentAddressCountryCode' => $paymentAddress?->country?->iso_code,
+            ]);
 
-            if ($selectedCountryCode !== null && $selectedCountryCode !== $invoiceAddress->country?->iso_code) {
-                throw new OneStopShopCountryConflictException("Conflicting selectedCountryCode [{$selectedCountryCode}] and invoice country [{$invoiceAddress->country->iso_code}]");
-            }
+            $this->checkAddresses($countryCodesToCheck, [$invoiceAddress->country->iso_code], 'invoice');
 
             return new CountryResolution($invoiceAddress->country->iso_code, CountryResolutionType::INVOICE_ADDRESS);
         }
