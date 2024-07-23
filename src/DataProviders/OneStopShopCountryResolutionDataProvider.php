@@ -26,7 +26,7 @@ final class OneStopShopCountryResolutionDataProvider implements OneStopShopCount
 
         $invoiceAddress = $user ? $this->addressesRepository->address($user, 'invoice') : null;
 
-        if ($invoiceAddress) {
+        if ($invoiceAddress && $invoiceAddress->country) {
             $countryCodesToCheck = array_filter([
                 'selectedCountryCode' => $selectedCountryCode,
                 'paymentAddressCountryCode' => $paymentAddress?->country?->iso_code,
@@ -34,7 +34,7 @@ final class OneStopShopCountryResolutionDataProvider implements OneStopShopCount
 
             $this->checkAddresses($countryCodesToCheck, [$invoiceAddress->country->iso_code], 'invoice');
 
-            return new CountryResolution($invoiceAddress->country->iso_code, CountryResolutionType::INVOICE_ADDRESS);
+            return new CountryResolution($invoiceAddress->country, CountryResolutionType::INVOICE_ADDRESS);
         }
         return null;
     }
