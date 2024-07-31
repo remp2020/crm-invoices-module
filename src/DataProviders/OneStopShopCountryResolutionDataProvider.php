@@ -5,7 +5,7 @@ namespace Crm\InvoicesModule\DataProviders;
 
 use Crm\PaymentsModule\DataProviders\OneStopShopCountryResolutionDataProviderInterface;
 use Crm\PaymentsModule\Models\OneStopShop\CountryResolution;
-use Crm\PaymentsModule\Models\OneStopShop\CountryResolutionType;
+use Crm\PaymentsModule\Models\OneStopShop\CountryResolutionTypeEnum;
 use Crm\PaymentsModule\Models\OneStopShop\OneStopShopAddressCheckTrait;
 use Crm\UsersModule\Repositories\AddressesRepository;
 
@@ -34,7 +34,7 @@ final class OneStopShopCountryResolutionDataProvider implements OneStopShopCount
 
             $this->checkAddresses($countryCodesToCheck, [$invoiceAddress->country->iso_code], 'invoice');
 
-            return new CountryResolution($invoiceAddress->country, CountryResolutionType::INVOICE_ADDRESS);
+            return new CountryResolution($invoiceAddress->country, CountryResolutionTypeEnum::InvoiceAddress);
         }
         return null;
     }
