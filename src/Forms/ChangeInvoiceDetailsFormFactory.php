@@ -2,6 +2,7 @@
 
 namespace Crm\InvoicesModule\Forms;
 
+use Crm\ApplicationModule\Forms\Controls\CountriesSelectItemsBuilder;
 use Crm\ApplicationModule\Hermes\HermesMessage;
 use Crm\ApplicationModule\Models\Config\ApplicationConfig;
 use Crm\ApplicationModule\Models\DataProvider\DataProviderManager;
@@ -26,15 +27,16 @@ class ChangeInvoiceDetailsFormFactory
     private User $user;
 
     public function __construct(
-        private UsersRepository $usersRepository,
-        private AddressesRepository $addressesRepository,
-        private CountriesRepository $countriesRepository,
-        private AddressChangeRequestsRepository $addressChangeRequestsRepository,
-        private Translator $translator,
-        private DataProviderManager $dataProviderManager,
-        private ApplicationConfig $applicationConfig,
-        private PaymentsRepository $paymentsRepository,
-        private Emitter $hermesEmitter,
+        private readonly UsersRepository $usersRepository,
+        private readonly AddressesRepository $addressesRepository,
+        private readonly CountriesRepository $countriesRepository,
+        private readonly AddressChangeRequestsRepository $addressChangeRequestsRepository,
+        private readonly Translator $translator,
+        private readonly DataProviderManager $dataProviderManager,
+        private readonly ApplicationConfig $applicationConfig,
+        private readonly PaymentsRepository $paymentsRepository,
+        private readonly Emitter $hermesEmitter,
+        private readonly CountriesSelectItemsBuilder $countriesSelectItemsBuilder,
     ) {
     }
 
@@ -114,7 +116,7 @@ class ChangeInvoiceDetailsFormFactory
             ->setNullable();
 
         $contactEmail = $this->applicationConfig->get('contact_email');
-        $form->addSelect('country_id', 'invoices.frontend.change_invoice_details.country_id.label', $this->countriesRepository->getDefaultCountryPair())
+        $form->addSelect('country_id', 'invoices.frontend.change_invoice_details.country_id.label', $this->countriesSelectItemsBuilder->getDefaultCountryPair())
             ->setOption('id', 'invoice-country')
             ->setOption(
                 'description',

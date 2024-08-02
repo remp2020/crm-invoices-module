@@ -2,10 +2,10 @@
 
 namespace Crm\InvoicesModule\Forms;
 
+use Crm\ApplicationModule\Forms\Controls\CountriesSelectItemsBuilder;
 use Crm\ApplicationModule\Models\DataProvider\DataProviderManager;
 use Crm\InvoicesModule\Repositories\InvoicesRepository;
 use Crm\UsersModule\DataProviders\AddressFormDataProviderInterface;
-use Crm\UsersModule\Repositories\CountriesRepository;
 use Nette\Application\UI\Form;
 use Nette\Localization\Translator;
 use Tomaj\Form\Renderer\BootstrapRenderer;
@@ -14,24 +14,12 @@ class ChangeInvoiceFormFactory
 {
     public $onSuccess;
 
-    private $translator;
-
-    private $invoicesRepository;
-
-    private $dataProviderManager;
-
-    private $countriesRepository;
-
     public function __construct(
-        Translator $translator,
-        InvoicesRepository $invoicesRepository,
-        DataProviderManager $dataProviderManager,
-        CountriesRepository $countriesRepository
+        private readonly Translator $translator,
+        private readonly InvoicesRepository $invoicesRepository,
+        private readonly DataProviderManager $dataProviderManager,
+        private readonly CountriesSelectItemsBuilder $countriesSelectItemsBuilder,
     ) {
-        $this->translator = $translator;
-        $this->invoicesRepository = $invoicesRepository;
-        $this->dataProviderManager = $dataProviderManager;
-        $this->countriesRepository = $countriesRepository;
     }
 
     /**
@@ -58,7 +46,7 @@ class ChangeInvoiceFormFactory
         $form->addText('buyer_zip', $this->translator->translate('invoices.form.invoice.label.zip'))
             ->setHtmlAttribute('placeholder', $this->translator->translate('invoices.form.invoice.placeholder.zip'));
 
-        $form->addSelect('country_id', $this->translator->translate('invoices.form.invoice.label.country_id'), $this->countriesRepository->getAllPairs());
+        $form->addSelect('country_id', $this->translator->translate('invoices.form.invoice.label.country_id'), $this->countriesSelectItemsBuilder->getAllPairs());
 
         $form->addText('company_id', $this->translator->translate('invoices.form.invoice.label.company_id'))
             ->setNullable()

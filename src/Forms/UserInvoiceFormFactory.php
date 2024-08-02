@@ -3,6 +3,7 @@
 namespace Crm\InvoicesModule\Forms;
 
 use Contributte\Translation\Translator;
+use Crm\ApplicationModule\Forms\Controls\CountriesSelectItemsBuilder;
 use Crm\ApplicationModule\Models\Config\ApplicationConfig;
 use Crm\ApplicationModule\Models\DataProvider\DataProviderManager;
 use Crm\UsersModule\DataProviders\AddressFormDataProviderInterface;
@@ -28,6 +29,7 @@ class UserInvoiceFormFactory
         private readonly AddressesRepository $addressesRepository,
         private readonly AddressChangeRequestsRepository $addressChangeRequestsRepository,
         private readonly DataProviderManager $dataProviderManager,
+        private readonly CountriesSelectItemsBuilder $countriesSelectItemsBuilder,
     ) {
     }
 
@@ -71,7 +73,7 @@ class UserInvoiceFormFactory
             ->setNullable()
             ->setHtmlAttribute('placeholder', 'invoices.form.invoice.placeholder.company_vat_id');
 
-        $countrySelect = $form->addSelect('country_id', 'invoices.form.invoice.label.country_id', $this->countriesRepository->getDefaultCountryPair())
+        $countrySelect = $form->addSelect('country_id', 'invoices.form.invoice.label.country_id', $this->countriesSelectItemsBuilder->getDefaultCountryPair())
             ->setOption('id', 'invoice-country')
             ->setOption(
                 'description',
