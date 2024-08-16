@@ -16,6 +16,7 @@ use Crm\ApplicationModule\Models\Widget\LazyWidgetManagerInterface;
 use Crm\InvoicesModule\Commands\SendInvoiceCommand;
 use Crm\InvoicesModule\Components\DownloadReceiptButton\DownloadReceiptButtonFactory;
 use Crm\InvoicesModule\Components\DownloadReceiptButton\ReceiptAdminButtonFactory;
+use Crm\InvoicesModule\Components\InvoiceAddressTransferSummaryWidget\InvoiceAddressTransferSummaryWidget;
 use Crm\InvoicesModule\Components\InvoiceButton\InvoiceAdminButtonFactory;
 use Crm\InvoicesModule\Components\InvoiceButton\InvoiceFrontendButtonFactory;
 use Crm\InvoicesModule\Components\InvoiceDetailsWidget\InvoiceDetailsWidget;
@@ -25,6 +26,7 @@ use Crm\InvoicesModule\DataProviders\AddressFormDataProvider;
 use Crm\InvoicesModule\DataProviders\ConfigFormDataProvider;
 use Crm\InvoicesModule\DataProviders\InvoicesUserDataProvider;
 use Crm\InvoicesModule\DataProviders\OneStopShopCountryResolutionDataProvider;
+use Crm\InvoicesModule\DataProviders\SubscriptionTransferFormDataProvider;
 use Crm\InvoicesModule\DataProviders\UserFormDataProvider;
 use Crm\InvoicesModule\Events\AddressChangedHandler;
 use Crm\InvoicesModule\Events\AddressRemovedHandler;
@@ -111,6 +113,11 @@ class InvoicesModule extends CrmModule
             'invoices.frontend.invoice_details',
             InvoiceDetailsWidget::class
         );
+
+        $widgetManager->registerWidget(
+            'admin.subscriptions.transfer.summary.content',
+            InvoiceAddressTransferSummaryWidget::class
+        );
     }
 
     public function registerHermesHandlers(Dispatcher $dispatcher)
@@ -196,6 +203,11 @@ class InvoicesModule extends CrmModule
             OneStopShopCountryResolutionDataProviderInterface::PATH,
             $this->getInstance(OneStopShopCountryResolutionDataProvider::class),
             50
+        );
+
+        $dataProviderManager->registerDataProvider(
+            'subscriptions.dataprovider.transfer',
+            $this->getInstance(SubscriptionTransferFormDataProvider::class),
         );
     }
 

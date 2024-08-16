@@ -108,6 +108,8 @@ admin:
     scenarios:
         has_invoice:
             label: Payment has generated invoice
+    subscription_transfer:
+        copy_address: Copy invoice address
 
 component:
     payment_success_invoice_widget:
@@ -119,6 +121,15 @@ component:
 
     invoice_label:
         invoice: Invoice
+
+    invoice_address_transfer_summary_widget:
+        header: Invoice address
+        address_to_copy: Address to copy
+        target_account_actual_address: Current address on the target account
+        replace_address_notice: If you decide to copy the address, the current address on the target account will be overwritten.
+        company_id: Businness ID
+        company_tax_id: Tax ID
+        company_vat_id: VAT number
 
 form:
     invoice:

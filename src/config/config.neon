@@ -23,6 +23,7 @@ services:
 	- Crm\InvoicesModule\Components\DownloadReceiptButton\DownloadReceiptButton
 	- Crm\InvoicesModule\Components\DownloadReceiptButton\DownloadReceiptButtonFactory
 	- Crm\InvoicesModule\Components\DownloadReceiptButton\ReceiptAdminButtonFactory
+	- Crm\InvoicesModule\Components\InvoiceAddressTransferSummaryWidget\InvoiceAddressTransferSummaryWidget
 	- Crm\InvoicesModule\Components\InvoiceDetailsWidget\InvoiceDetailsWidget
 	- Crm\InvoicesModule\Components\InvoiceLabel\InvoiceLabel
 	- Crm\InvoicesModule\Components\InvoiceButton\InvoiceAdminButtonFactory
@@ -34,6 +35,8 @@ services:
 	- Crm\InvoicesModule\DataProviders\UniversalSearchDataProvider
 	- Crm\InvoicesModule\DataProviders\AddressFormDataProvider
 	- Crm\InvoicesModule\DataProviders\OneStopShopCountryResolutionDataProvider
+	- Crm\InvoicesModule\DataProviders\SubscriptionTransfer\AddressToTransferRetriever
+	- Crm\InvoicesModule\DataProviders\SubscriptionTransferFormDataProvider
 
 	- Crm\InvoicesModule\Events\AddressChangedHandler
 	- Crm\InvoicesModule\Events\AddressRemovedHandler

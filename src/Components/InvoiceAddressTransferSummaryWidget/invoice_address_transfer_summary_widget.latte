@@ -1,0 +1,55 @@
+{define addressInfo, $address}
+  {if $address}
+    {if $address->companyName}
+      <strong>{$address->companyName}</strong><br>
+    {/if}
+    {if $address->firstName || $address->lastName}
+      <strong>{=($address->firstName . ' ' . $address->lastName)|trim}</strong><br>
+    {/if}
+    {if $address->address}
+      {$address->address}<br>
+    {/if}
+    {if $address->zip || $address->city}
+      {=$address->zip . ' ' . $address->city|trim}<br>
+    {/if}
+    {if $address->country}
+      {$address->country->name}<br>
+    {/if}
+    {if $address->phoneNumber}
+      {$address->phoneNumber}<br>
+    {/if}
+    {if $address->companyId || $address->companyTaxId || $address->companyVatId}
+      {_invoices.component.invoice_address_transfer_summary_widget.company_id}:&nbsp;{$address->companyId ?: '-'},
+      {_invoices.component.invoice_address_transfer_summary_widget.company_tax_id}:&nbsp;{$address->companyTaxId ?: '-'},
+      {_invoices.component.invoice_address_transfer_summary_widget.company_vat_id}:&nbsp;{$address->companyVatId ?: '-'}
+    {/if}
+  {else}
+    -
+  {/if}
+{/define}
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        {_invoices.component.invoice_address_transfer_summary_widget.header}
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-xs-12 col-lg-6">
+            <h4>{_invoices.component.invoice_address_transfer_summary_widget.address_to_copy}:</h4>
+            {include addressInfo, $addressToCopy}
+          </div>
+          <div class="col-xs-12 col-lg-6">
+            <h4>{_invoices.component.invoice_address_transfer_summary_widget.target_account_actual_address}:</h4>
+            {include addressInfo, $targetAccountActualAddress}
+
+            <p n:if="$targetAccountActualAddress !== null" class="text-danger">
+              <i class="fa fa-warning"></i> <strong>{_invoices.component.invoice_address_transfer_summary_widget.replace_address_notice}</strong>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

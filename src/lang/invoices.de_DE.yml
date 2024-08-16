@@ -98,6 +98,8 @@ admin:
         disable_autoinvoice: Automatische Rechnungserzeugung deaktivieren
     menu:
         export: Rechnungsexport
+    subscription_transfer:
+        copy_address: Rechnungsadresse kopieren
 component:
     payment_success_invoice_widget:
         require_invoice: Ich benötige eine Rechnung
@@ -106,6 +108,14 @@ component:
         fill_invoice_address: Rechnungsadresse ausfüllen
     invoice_label:
         invoice: Rechnung
+    invoice_address_transfer_summary_widget:
+        header: Rechnungsadresse
+        address_to_copy: Zu kopierende Adresse
+        target_account_actual_address: Aktuelle Adresse auf dem Zielkonto
+        replace_address_notice: Wenn Sie sich entscheiden, die Rechnungsadresse zu kopieren, wird die aktuelle Adresse auf dem Zielkonto überschrieben.
+        company_id: Handelsregisternummer
+        company_tax_id: Steuernummer
+        company_vat_id: Umsatzsteuer-ID
 form:
     invoice:
         label:

@@ -101,6 +101,8 @@ admin:
     scenarios:
         has_invoice:
             label: A fizetéshez létrejött számla
+    subscription_transfer:
+        copy_address: Másolja a számla címét
 component:
     payment_success_invoice_widget:
         require_invoice: "Számlát kérek"
@@ -110,6 +112,15 @@ component:
 
     invoice_label:
         invoice: Számla
+
+    invoice_address_transfer_summary_widget:
+        header: Számla címe
+        address_to_copy: A célfiók jelenlegi címe
+        target_account_actual_address: A célfiók jelenlegi címe
+        replace_address_notice: Ha úgy dönt, hogy másolja a számlázási címet, akkor a célfiók jelenlegi címe felülíródik.
+        company_id: "IČO (statisztikai számjel)"
+        company_tax_id: "DIČ (adószám)"
+        company_vat_id: "IČDPH (áfás adószám)"
 
 form:
     invoice:

@@ -107,6 +107,8 @@ admin:
     scenarios:
         has_invoice:
             label: Platba má vygenerovanou fakturu
+    subscription_transfer:
+        copy_address: Zkopírovat fakturační adresu
 
 component:
     payment_success_invoice_widget:
@@ -118,6 +120,15 @@ component:
 
     invoice_label:
         invoice: Faktura
+
+    invoice_address_transfer_summary_widget:
+        header: Fakturační adresa
+        address_to_copy: Adresa pro zkopírování
+        target_account_actual_address: Aktuální adresa na cílovém kontě
+        replace_address_notice: V případě, že se rozhodnete fakturační adresu zkopírovat, aktuální adresa na cílovém kontě bude přepsána.
+        company_id: IČO
+        company_tax_id: DIČ
+        company_vat_id: Registrační číslo DPH
 
 form:
     invoice:
