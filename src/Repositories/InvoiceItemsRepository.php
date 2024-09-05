@@ -8,7 +8,7 @@ class InvoiceItemsRepository extends Repository
 {
     protected $tableName = 'invoice_items';
 
-    final public function add(int $invoiceId, string $text, int $count, float $price, float $priceWithoutVat, int $vat, string $currency)
+    final public function add(int $invoiceId, string $text, int $count, float $price, float $priceWithoutVat, float $vat, string $currency)
     {
         return $this->insert([
             'invoice_id' => $invoiceId,
