@@ -15,6 +15,7 @@ use Crm\PaymentsModule\Repositories\PaymentsRepository;
 use Crm\UsersModule\Repositories\AddressesRepository;
 use Latte\Engine;
 use Latte\Essential\TranslatorExtension;
+use Locale;
 use Nette\Database\Table\ActiveRow;
 use Tracy\Debugger;
 use malkusch\lock\mutex\PredisMutex;
@@ -176,8 +177,10 @@ class InvoiceGenerator
      */
     private function renderInvoice(ActiveRow $payment): PdfResponse
     {
+        $locale = Locale::getPrimaryLanguage($this->translator->getLocale());
         $invoice = $this->invoicesRepository->find($payment->invoice_id);
         $engine = new Engine();
+        $engine->setLocale($locale);
         $engine->addFilter('price', [$this->priceHelper, 'process']);
         $engine->addExtension(new TranslatorExtension($this->translator));
 
