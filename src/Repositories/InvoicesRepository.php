@@ -109,36 +109,7 @@ class InvoicesRepository extends Repository
             return $invoice;
         }
 
-        // subscription date in invoices depends on fact that each payment has single subscription
-        $dateText = "";
-        if ($payment->subscription) {
-            $dateText = "<br><small>{$this->userDateHelper->process($payment->subscription->start_time)} - {$this->userDateHelper->process($payment->subscription->end_time)}</small>";
-        }
-
-        $paymentItems = $payment->related('payment_items');
-        $postalFeeVat = null;
-
-        /** @var ActiveRow $item */
-        foreach ($paymentItems as $item) {
-            $text = $item->name;
-            if ($item->type === SubscriptionTypePaymentItem::TYPE) {
-                $text .= $dateText;
-            }
-
-            $this->invoiceItemsRepository->add(
-                $invoice->id,
-                $text,
-                $item->count,
-                $item->amount,
-                $item->amount_without_vat,
-                $item->vat,
-                $this->applicationConfig->get('currency')
-            );
-
-            if ($postalFeeVat === null || $item->vat > $postalFeeVat) {
-                $postalFeeVat = $item->vat;
-            }
-        }
+        $this->createInvoiceItems($invoice, $payment);
 
         $this->emitter->emit(new NewInvoiceEvent($invoice));
         $this->hermesEmitter->emit(new HermesMessage('new-invoice', [
@@ -146,6 +117,19 @@ class InvoicesRepository extends Repository
         ]));
 
         return $invoice;
+    }
+
+    final public function updateItems(ActiveRow $invoice): void
+    {
+        $payment = $invoice->related('payments')->fetch();
+
+        $this->getDatabase()->transaction(function () use ($invoice, $payment) {
+            $this->invoiceItemsRepository->getTable()->where([
+                'invoice_id' => $invoice->id,
+            ])->delete();
+
+            $this->createInvoiceItems($invoice, $payment);
+        });
     }
 
     final public function update(ActiveRow &$invoice, $data): bool
@@ -241,5 +225,39 @@ class InvoicesRepository extends Repository
             throw new \Exception("Invalid application configuration option for config: '{$generateInvoiceLimitFromKey}', value: '{$limitFrom}'");
         }
         return $maxInvoiceableDate >= $now;
+    }
+
+    private function createInvoiceItems(ActiveRow $invoice, ActiveRow $payment): void
+    {
+        // subscription date in invoices depends on fact that each payment has single subscription
+        $dateText = "";
+        if ($payment->subscription) {
+            $dateText = "<br><small>{$this->userDateHelper->process($payment->subscription->start_time)} - {$this->userDateHelper->process($payment->subscription->end_time)}</small>";
+        }
+
+        $paymentItems = $payment->related('payment_items');
+        $postalFeeVat = null;
+
+        /** @var ActiveRow $item */
+        foreach ($paymentItems as $item) {
+            $text = $item->name;
+            if ($item->type === SubscriptionTypePaymentItem::TYPE) {
+                $text .= $dateText;
+            }
+
+            $this->invoiceItemsRepository->add(
+                $invoice->id,
+                $text,
+                $item->count,
+                $item->amount,
+                $item->amount_without_vat,
+                $item->vat,
+                $this->applicationConfig->get('currency')
+            );
+
+            if ($postalFeeVat === null || $item->vat > $postalFeeVat) {
+                $postalFeeVat = $item->vat;
+            }
+        }
     }
 }
