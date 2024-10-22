@@ -220,7 +220,7 @@ class AddressChangedHandlerTest extends DatabaseTestCase
     public function testIncorrectEventType()
     {
         $user = $this->getUser();
-        $event = new UserMetaEvent($user->id, 'foo', 'bar'); // just random event which doesn't need special entity to mock
+        $event = new UserMetaEvent($user, 'foo', 'bar'); // just random event which doesn't need special entity to mock
 
         $this->expectExceptionObject(new \Exception(
             'Invalid type of event. Expected: [Crm\UsersModule\Events\AddressChangedEvent]. Received: [Crm\UsersModule\Events\UserMetaEvent].'
