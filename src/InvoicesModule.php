@@ -26,8 +26,10 @@ use Crm\InvoicesModule\DataProviders\AddressFormDataProvider;
 use Crm\InvoicesModule\DataProviders\ConfigFormDataProvider;
 use Crm\InvoicesModule\DataProviders\InvoicesUserDataProvider;
 use Crm\InvoicesModule\DataProviders\OneStopShopCountryResolutionDataProvider;
+use Crm\InvoicesModule\DataProviders\RecurrentPaymentPaymentItemContainerDataProvider;
 use Crm\InvoicesModule\DataProviders\SubscriptionTransferFormDataProvider;
 use Crm\InvoicesModule\DataProviders\UserFormDataProvider;
+use Crm\InvoicesModule\DataProviders\VatModeDataProvider;
 use Crm\InvoicesModule\Events\AddressChangedHandler;
 use Crm\InvoicesModule\Events\AddressRemovedHandler;
 use Crm\InvoicesModule\Events\NewAddressHandler;
@@ -42,6 +44,7 @@ use Crm\InvoicesModule\Seeders\AddressTypesSeeder;
 use Crm\InvoicesModule\Seeders\ConfigsSeeder;
 use Crm\InvoicesModule\Seeders\PaymentGatewaysSeeder;
 use Crm\PaymentsModule\DataProviders\OneStopShopCountryResolutionDataProviderInterface;
+use Crm\PaymentsModule\DataProviders\VatModeDataProviderInterface;
 use Crm\PaymentsModule\Events\PaymentChangeStatusEvent;
 use Crm\UsersModule\Events\AddressChangedEvent;
 use Crm\UsersModule\Events\AddressRemovedEvent;
@@ -180,6 +183,11 @@ class InvoicesModule extends CrmModule
     public function registerDataProviders(DataProviderManager $dataProviderManager)
     {
         $dataProviderManager->registerDataProvider(
+            RecurrentPaymentPaymentItemContainerDataProvider::PATH,
+            $this->getInstance(RecurrentPaymentPaymentItemContainerDataProvider::class),
+            200,
+        );
+        $dataProviderManager->registerDataProvider(
             'users.dataprovider.user_form',
             $this->getInstance(UserFormDataProvider::class)
         );
@@ -203,6 +211,11 @@ class InvoicesModule extends CrmModule
             OneStopShopCountryResolutionDataProviderInterface::PATH,
             $this->getInstance(OneStopShopCountryResolutionDataProvider::class),
             50
+        );
+
+        $dataProviderManager->registerDataProvider(
+            VatModeDataProviderInterface::class::PATH,
+            $this->getInstance(VatModeDataProvider::class),
         );
 
         $dataProviderManager->registerDataProvider(
