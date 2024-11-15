@@ -123,7 +123,7 @@ class InvoicesRepository extends Repository
     {
         $payment = $invoice->related('payments')->fetch();
 
-        $this->getDatabase()->transaction(function () use ($invoice, $payment) {
+        $this->getTransaction()->wrap(function () use ($invoice, $payment) {
             $this->invoiceItemsRepository->getTable()->where([
                 'invoice_id' => $invoice->id,
             ])->delete();
