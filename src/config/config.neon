@@ -74,7 +74,7 @@ services:
 	recepitsPreNotificationEventHandler:
 		factory: Crm\InvoicesModule\Events\ReceiptPreNotificationEventHandler
 		setup:
-		    - enableForNotificationHermesTypes('payment-status-change', 'recurrent-payment-renewed')
+			- enableForNotificationHermesTypes('payment-status-change', 'recurrent-payment-renewed')
 
 	- Crm\InvoicesModule\Seeders\ConfigsSeeder
 	- Crm\InvoicesModule\Seeders\AddressTypesSeeder
