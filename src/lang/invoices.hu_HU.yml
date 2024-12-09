@@ -122,6 +122,9 @@ component:
         company_tax_id: "DIČ (adószám)"
         company_vat_id: "IČDPH (áfás adószám)"
 
+    change_payment_country_warning_widget:
+        changing_invoice_warning_message: A fizetéshez tartozik egy számla is, melynek tételei újragenerálásra kerülnek, majd azt el kell küldeni a vevőnek.
+
 form:
     invoice:
         label:

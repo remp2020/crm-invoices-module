@@ -14,6 +14,7 @@ use Crm\ApplicationModule\Models\Menu\MenuItem;
 use Crm\ApplicationModule\Models\User\UserDataRegistrator;
 use Crm\ApplicationModule\Models\Widget\LazyWidgetManagerInterface;
 use Crm\InvoicesModule\Commands\SendInvoiceCommand;
+use Crm\InvoicesModule\Components\ChangePaymentCountryWarningWidget\ChangePaymentCountryWarningWidget;
 use Crm\InvoicesModule\Components\DownloadReceiptButton\DownloadReceiptButtonFactory;
 use Crm\InvoicesModule\Components\DownloadReceiptButton\ReceiptAdminButtonFactory;
 use Crm\InvoicesModule\Components\InvoiceAddressTransferSummaryWidget\InvoiceAddressTransferSummaryWidget;
@@ -23,6 +24,7 @@ use Crm\InvoicesModule\Components\InvoiceDetailsWidget\InvoiceDetailsWidget;
 use Crm\InvoicesModule\Components\InvoiceLabel\InvoiceLabel;
 use Crm\InvoicesModule\Components\PaymentSuccessInvoiceWidget\PaymentSuccessInvoiceWidget;
 use Crm\InvoicesModule\DataProviders\AddressFormDataProvider;
+use Crm\InvoicesModule\DataProviders\ChangePaymentCountryDataProvider;
 use Crm\InvoicesModule\DataProviders\ConfigFormDataProvider;
 use Crm\InvoicesModule\DataProviders\InvoicesUserDataProvider;
 use Crm\InvoicesModule\DataProviders\OneStopShopCountryResolutionDataProvider;
@@ -120,6 +122,11 @@ class InvoicesModule extends CrmModule
         $widgetManager->registerWidget(
             'admin.subscriptions.transfer.summary.content',
             InvoiceAddressTransferSummaryWidget::class
+        );
+
+        $widgetManager->registerWidget(
+            'admin.payment.payment_country_change.content',
+            ChangePaymentCountryWarningWidget::class
         );
     }
 
@@ -221,6 +228,12 @@ class InvoicesModule extends CrmModule
         $dataProviderManager->registerDataProvider(
             'subscriptions.dataprovider.transfer',
             $this->getInstance(SubscriptionTransferFormDataProvider::class),
+        );
+
+        $dataProviderManager->registerDataProvider(
+            'payments.dataprovider.change_payment_country',
+            $this->getInstance(ChangePaymentCountryDataProvider::class),
+            priority: 200,
         );
     }
 

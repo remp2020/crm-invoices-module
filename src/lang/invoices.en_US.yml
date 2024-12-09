@@ -131,6 +131,9 @@ component:
         company_tax_id: Tax ID
         company_vat_id: VAT number
 
+    change_payment_country_warning_widget:
+        changing_invoice_warning_message: The payment also includes an invoice, the items of which will be regenerated and it will then be necessary to send it to the customer.
+
 form:
     invoice:
         label:

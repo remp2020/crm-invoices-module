@@ -130,6 +130,9 @@ component:
         company_tax_id: DIČ
         company_vat_id: Registrační číslo DPH
 
+    change_payment_country_warning_widget:
+        changing_invoice_warning_message: K platbě přísluší i faktura, které položky budou přegenerovány a bude ji následně třeba zaslat zákazníkovi.
+
 form:
     invoice:
         label:

@@ -21,6 +21,7 @@ services:
 
 	- Crm\InvoicesModule\Commands\SendInvoiceCommand
 
+	- Crm\InvoicesModule\Components\ChangePaymentCountryWarningWidget\ChangePaymentCountryWarningWidget
 	- Crm\InvoicesModule\Components\DownloadReceiptButton\DownloadReceiptButton
 	- Crm\InvoicesModule\Components\DownloadReceiptButton\DownloadReceiptButtonFactory
 	- Crm\InvoicesModule\Components\DownloadReceiptButton\ReceiptAdminButtonFactory
@@ -35,6 +36,7 @@ services:
 	- Crm\InvoicesModule\DataProviders\ConfigFormDataProvider
 	- Crm\InvoicesModule\DataProviders\UniversalSearchDataProvider
 	- Crm\InvoicesModule\DataProviders\AddressFormDataProvider
+	- Crm\InvoicesModule\DataProviders\ChangePaymentCountryDataProvider
 	- Crm\InvoicesModule\DataProviders\OneStopShopCountryResolutionDataProvider
 	- Crm\InvoicesModule\DataProviders\SubscriptionTransfer\AddressToTransferRetriever
 	- Crm\InvoicesModule\DataProviders\SubscriptionTransferFormDataProvider

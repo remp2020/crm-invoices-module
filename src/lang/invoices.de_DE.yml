@@ -116,6 +116,8 @@ component:
         company_id: Handelsregisternummer
         company_tax_id: Steuernummer
         company_vat_id: Umsatzsteuer-ID
+    change_payment_country_warning_widget:
+        changing_invoice_warning_message: Zur Zahlung gehört auch eine Rechnung, deren Posten neu erstellt werden und die dann an den Kunden gesendet werden muss.
 form:
     invoice:
         label:

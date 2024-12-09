@@ -131,6 +131,9 @@ component:
         company_tax_id: DIČ
         company_vat_id: IČDPH
 
+    change_payment_country_warning_widget:
+        changing_invoice_warning_message: K platbe prislúcha aj faktúra ktorej položky budú pregenerované a bude ju následne potrebné zaslať zákazníkovi.
+
 form:
     invoice:
         label:
