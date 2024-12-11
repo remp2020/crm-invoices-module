@@ -29,6 +29,7 @@ use Crm\InvoicesModule\DataProviders\ConfigFormDataProvider;
 use Crm\InvoicesModule\DataProviders\InvoicesUserDataProvider;
 use Crm\InvoicesModule\DataProviders\OneStopShopCountryResolutionDataProvider;
 use Crm\InvoicesModule\DataProviders\RecurrentPaymentPaymentItemContainerDataProvider;
+use Crm\InvoicesModule\DataProviders\SalesFunnelTwigVariablesDataProvider;
 use Crm\InvoicesModule\DataProviders\SubscriptionTransferFormDataProvider;
 use Crm\InvoicesModule\DataProviders\UserFormDataProvider;
 use Crm\InvoicesModule\DataProviders\VatModeDataProvider;
@@ -234,6 +235,11 @@ class InvoicesModule extends CrmModule
             'payments.dataprovider.change_payment_country',
             $this->getInstance(ChangePaymentCountryDataProvider::class),
             priority: 200,
+        );
+
+        $dataProviderManager->registerDataProvider(
+            'sales_funnel.dataprovider.twig_variables',
+            $this->getInstance(SalesFunnelTwigVariablesDataProvider::class),
         );
     }
 
