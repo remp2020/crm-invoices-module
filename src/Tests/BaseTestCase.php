@@ -13,6 +13,7 @@ use Crm\PaymentsModule\Repositories\PaymentGatewaysRepository;
 use Crm\PaymentsModule\Repositories\PaymentItemsRepository;
 use Crm\PaymentsModule\Repositories\PaymentMetaRepository;
 use Crm\PaymentsModule\Repositories\PaymentsRepository;
+use Crm\PaymentsModule\Seeders\TestPaymentGatewaysSeeder;
 use Crm\SubscriptionsModule\Repositories\SubscriptionExtensionMethodsRepository;
 use Crm\SubscriptionsModule\Repositories\SubscriptionLengthMethodsRepository;
 use Crm\SubscriptionsModule\Repositories\SubscriptionTypesRepository;
@@ -65,6 +66,7 @@ abstract class BaseTestCase extends DatabaseTestCase
             CountriesSeeder::class,
             AddressTypesSeeder::class,
             ConfigsSeeder::class,
+            TestPaymentGatewaysSeeder::class,
         ];
     }
 }

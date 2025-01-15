@@ -11,6 +11,7 @@ use Crm\PaymentsModule\Models\PaymentItem\PaymentItemContainer;
 use Crm\PaymentsModule\Repositories\PaymentGatewaysRepository;
 use Crm\PaymentsModule\Repositories\PaymentMetaRepository;
 use Crm\PaymentsModule\Repositories\PaymentsRepository;
+use Crm\PaymentsModule\Tests\Gateways\TestRecurrentGateway;
 use Crm\SubscriptionsModule\Models\Builder\SubscriptionTypeBuilder;
 use Crm\UsersModule\Events\NotificationContext;
 use Crm\UsersModule\Events\NotificationEvent;
@@ -59,8 +60,9 @@ class PreNotificationHandlerTest extends BaseTestCase
         $this->configsRepository = $this->getRepository(ConfigsRepository::class);
         $this->countriesRepository = $this->getRepository(CountriesRepository::class);
 
+        /** @var PaymentGatewaysRepository $pgr */
         $pgr = $this->getRepository(PaymentGatewaysRepository::class);
-        $this->paymentGateway = $pgr->add('test', 'test', 10, true, true);
+        $this->paymentGateway = $pgr->findByCode(TestRecurrentGateway::GATEWAY_CODE);
 
         // To create subscriptions from payments, register listener
         $this->lazyEventEmitter->addListener(PaymentChangeStatusEvent::class, $this->inject(PaymentStatusChangeHandler::class));
