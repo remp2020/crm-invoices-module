@@ -2,9 +2,9 @@
 
 namespace Crm\InvoicesModule\Forms;
 
+use Crm\ApplicationModule\UI\Form;
 use Crm\InvoicesModule\Repositories\InvoiceItemsRepository;
 use Crm\InvoicesModule\Repositories\InvoicesRepository;
-use Nette\Application\UI\Form;
 use Nette\Localization\Translator;
 use Tomaj\Form\Renderer\BootstrapRenderer;
 

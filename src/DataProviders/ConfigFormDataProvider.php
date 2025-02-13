@@ -5,8 +5,8 @@ namespace Crm\InvoicesModule\DataProviders;
 use Contributte\Translation\Translator;
 use Crm\AdminModule\DataProviders\ConfigFormDataProviderInterface;
 use Crm\ApplicationModule\Models\DataProvider\DataProviderException;
+use Crm\ApplicationModule\UI\Form;
 use Crm\InvoicesModule\Repositories\InvoicesRepository;
-use Nette\Application\UI\Form;
 
 class ConfigFormDataProvider implements ConfigFormDataProviderInterface
 {

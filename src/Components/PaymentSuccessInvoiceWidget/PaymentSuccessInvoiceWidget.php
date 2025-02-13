@@ -4,6 +4,7 @@ namespace Crm\InvoicesModule\Components\PaymentSuccessInvoiceWidget;
 
 use Crm\ApplicationModule\Models\Widget\BaseLazyWidget;
 use Crm\ApplicationModule\Models\Widget\LazyWidgetManager;
+use Crm\ApplicationModule\UI\Form;
 use Crm\InvoicesModule\Forms\UserInvoiceFormFactory;
 use Crm\InvoicesModule\Repositories\InvoicesRepository;
 use Crm\PaymentsModule\Models\Gateways\BankTransfer;
@@ -11,7 +12,6 @@ use Crm\PaymentsModule\Models\OneStopShop\OneStopShop;
 use Crm\PaymentsModule\Models\PaymentAwareInterface;
 use Crm\PaymentsModule\Repositories\PaymentsRepository;
 use Crm\UsersModule\Repositories\CountriesRepository;
-use Nette\Application\UI\Form;
 use Nette\Database\Table\ActiveRow;
 
 /**

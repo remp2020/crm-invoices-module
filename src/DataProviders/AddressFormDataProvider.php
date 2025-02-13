@@ -3,8 +3,8 @@
 namespace Crm\InvoicesModule\DataProviders;
 
 use Crm\ApplicationModule\Models\DataProvider\DataProviderException;
+use Crm\ApplicationModule\UI\Form;
 use Crm\UsersModule\DataProviders\AddressFormDataProviderInterface;
-use Nette\Application\UI\Form;
 use Nette\Forms\Controls\SelectBox;
 use Nette\Forms\Controls\TextInput;
 
