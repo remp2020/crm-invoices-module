@@ -16,9 +16,9 @@ use Crm\UsersModule\Repositories\AddressesRepository;
 use Latte\Engine;
 use Latte\Essential\TranslatorExtension;
 use Locale;
+use Malkusch\Lock\Mutex\RedisMutex;
 use Nette\Database\Table\ActiveRow;
 use Tracy\Debugger;
-use malkusch\lock\mutex\PredisMutex;
 
 class InvoiceGenerator
 {
@@ -94,7 +94,7 @@ class InvoiceGenerator
         // load before mutex in case config is not in cache (do not want to slow down mutex)
         $generateInvoiceNumberForPaidPayment = filter_var($this->applicationConfig->get('generate_invoice_number_for_paid_payment'), FILTER_VALIDATE_BOOLEAN);
 
-        $mutex = new PredisMutex([$this->redis()], 'invoice_generator_' . $payment->id);
+        $mutex = new RedisMutex($this->redis(), 'invoice_generator_' . $payment->id);
         $mutex->synchronized(function () use ($user, $payment, $generateInvoiceNumberForPaidPayment) {
             // refresh to have current data
             $payment = $this->paymentsRepository->find($payment->id);
