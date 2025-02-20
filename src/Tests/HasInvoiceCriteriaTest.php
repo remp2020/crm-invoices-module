@@ -49,9 +49,6 @@ class HasInvoiceCriteriaTest extends PaymentsTestCase
         ];
     }
 
-    /**
-     * @group unreliable
-     */
     #[DataProvider('dataProviderForTestHasInvoiceCriteria')]
     public function testHasInvoiceCriteria($hasInvoice, $shoudHaveInvoice, $expectedResult)
     {
