@@ -222,7 +222,7 @@ class InvoicesModule extends CrmModule
         );
 
         $dataProviderManager->registerDataProvider(
-            VatModeDataProviderInterface::class::PATH,
+            VatModeDataProviderInterface::PATH,
             $this->getInstance(VatModeDataProvider::class),
         );
 

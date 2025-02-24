@@ -105,7 +105,7 @@ final class RecurrentPaymentPaymentItemContainerDataProviderTest extends BaseTes
             50
         );
         $dataProviderManager->registerDataProvider(
-            VatModeDataProviderInterface::class::PATH,
+            VatModeDataProviderInterface::PATH,
             $this->inject(VatModeDataProvider::class),
         );
         $dataProviderManager->registerDataProvider(

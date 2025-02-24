@@ -31,7 +31,7 @@ final class VatModeDetector
     public function userVatMode(ActiveRow $user): VatMode
     {
         $invoiceAddress = $this->addressesRepository->address($user, 'invoice');
-        if (!$invoiceAddress || !($invoiceAddress->company_vat_id || $invoiceAddress->company_id)) {
+        if (!$invoiceAddress || (!$invoiceAddress->company_vat_id && !$invoiceAddress->company_id)) {
             return VatMode::B2C;
         }
 
