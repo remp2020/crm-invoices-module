@@ -16,7 +16,7 @@ frontend:
     change_invoice_details:
         submit: Speichern
         invoice: Ich benötige eine Rechnung
-        address:
+        street:
             required: Straße ist erforderlich
             placeholder: Straße ausfüllen
             label: Straße
@@ -121,11 +121,12 @@ component:
 form:
     invoice:
         label:
-            number: Hausnummer
             save: Speichern
             company_tax_id: Steuernummer
             company_name: Firmenname
-            address: Straße
+            street: Straße
+            number: Hausnummer
+            street_and_number: Straße und Hausnummer
             city: Stadt
             zip: PLZ
             country_id: Land
@@ -134,8 +135,9 @@ form:
             company_vat_id: Umsatzsteuer-ID
         placeholder:
             company_name: Firmenname wie er auf der Rechnung erscheinen soll
-            address: Straße der Rechnungsadresse
+            street: Straße der Rechnungsadresse
             number: Hausnummer
+            street_and_number: Straße und Hausnummer der Rechnungsadresse
             city: Stadt ausfüllen
             zip: PLZ ausfüllen
             company_id: z.B. HRB 012345B
@@ -143,8 +145,9 @@ form:
             company_vat_id: z.B. DE012345678
         required:
             company_name: Firmenname ist ein Pflichtfeld
-            address: Straße ist ein Pflichtfeld
+            street: Straße ist ein Pflichtfeld
             number: Hausnummer ist ein Pflichtfeld
+            street_and_number: Straße und Hausnummer sind erforderlich
             city: Stadt ist ein Pflichtfeld
             zip: PLZ ist ein Pflichtfeld
             country_id: Land ist ein Pflichtfeld

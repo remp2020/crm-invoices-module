@@ -82,7 +82,7 @@ class SubscriptionTransferFormDataProvider implements SubscriptionTransferDataPr
             firstName: $address->first_name,
             lastName: $address->last_name,
             companyName: $address->company_name,
-            address: $address->address,
+            street: $address->street,
             number: $address->number,
             city: $address->city,
             zip: $address->zip,

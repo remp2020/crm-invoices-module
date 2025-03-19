@@ -140,7 +140,7 @@ class VatModeDetectorTest extends DatabaseTestCase
             type: 'invoice',
             firstName: $user->email,
             lastName: $user->email,
-            address: 'Sample street',
+            street: 'Sample street',
             number: '123',
             city: 'Sample city',
             zip: '12345',

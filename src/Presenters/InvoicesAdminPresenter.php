@@ -255,7 +255,7 @@ class InvoicesAdminPresenter extends AdminPresenter
                 if ($address) {
                     $defaults = [
                         'buyer_name' => $address->company_name,
-                        'buyer_address' => $address->address . ' ' . $address->number,
+                        'buyer_address' => $address->street . ' ' . $address->number,
                         'buyer_city' => $address->city,
                         'buyer_zip' => $address->zip,
                         'country_id' => $address->country_id,

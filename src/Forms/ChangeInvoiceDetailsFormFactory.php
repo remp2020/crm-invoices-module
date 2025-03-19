@@ -58,7 +58,7 @@ class ChangeInvoiceDetailsFormFactory
             $defaults = [
                 'invoice' => $row->invoice,
                 'company_name' => $invoiceAddress->company_name ? $invoiceAddress->company_name : '',
-                'address' => $invoiceAddress->address ? $invoiceAddress->address : '',
+                'street' => $invoiceAddress->street ? $invoiceAddress->street : '',
                 'number' => $invoiceAddress->number,
                 'city' => $invoiceAddress->city,
                 'zip' => $invoiceAddress->zip,
@@ -85,11 +85,11 @@ class ChangeInvoiceDetailsFormFactory
             ->setNullable()
             ->addConditionOn($invoiceCheckbox, Form::EQUAL, true)
             ->setRequired('invoices.frontend.change_invoice_details.company_name.required');
-        $form->addText('address', 'invoices.frontend.change_invoice_details.address.label')
-            ->setHtmlAttribute('placeholder', 'invoices.frontend.change_invoice_details.address.placeholder')
+        $form->addText('street', 'invoices.frontend.change_invoice_details.street.label')
+            ->setHtmlAttribute('placeholder', 'invoices.frontend.change_invoice_details.street.placeholder')
             ->setNullable()
             ->addConditionOn($invoiceCheckbox, Form::EQUAL, true)
-            ->setRequired('invoices.frontend.change_invoice_details.address.required');
+            ->setRequired('invoices.frontend.change_invoice_details.street.required');
         $form->addText('number', 'invoices.frontend.change_invoice_details.number.label')
             ->setHtmlAttribute('placeholder', 'invoices.frontend.change_invoice_details.number.placeholder')
             ->setNullable()
@@ -166,7 +166,7 @@ class ChangeInvoiceDetailsFormFactory
             null,
             null,
             $values->company_name,
-            $values->address,
+            $values->street,
             $values->number,
             $values->city,
             $values->zip,

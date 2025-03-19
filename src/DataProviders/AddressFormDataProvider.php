@@ -43,11 +43,11 @@ class AddressFormDataProvider implements AddressFormDataProviderInterface
                 ->addConditionOn($type, Form::Equal, 'invoice')
                 ->setRequired('invoices.form.invoice.required.company_name');
 
-            /** @var TextInput $address */
-            $address = $form->getComponent('address', false);
-            $address
+            /** @var TextInput $street */
+            $street = $form->getComponent('street', false);
+            $street
                 ->addConditionOn($type, Form::Equal, 'invoice')
-                ->setRequired('invoices.form.invoice.required.address');
+                ->setRequired('invoices.form.invoice.required.street');
 
             /** @var TextInput $number */
             $number = $form->getComponent('number', false);

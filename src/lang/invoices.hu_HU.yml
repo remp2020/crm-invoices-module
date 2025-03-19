@@ -25,7 +25,7 @@ frontend:
             label: Cégnév
             placeholder: "a cég számlán szereplő neve"
             required: "Meg kell adni a cég nevét"
-        address:
+        street:
             label: Utca
             placeholder: "írja be az utcát"
             required: "Meg kell adni az utca nevét"
@@ -129,8 +129,9 @@ form:
     invoice:
         label:
             company_name: Cégnév
-            address: Utcanév
+            street: Utcanév
             number: Házszám
+            street_and_number: Utcanév és házszám
             city: Település
             zip: Irányítószám
             country_id: Ország
@@ -141,8 +142,9 @@ form:
             save: "Adatok mentése"
         placeholder:
             company_name: "a cég számlán szereplő neve"
-            address: "írja be az utcanevet"
+            street: "írja be az utcanevet"
             number: "írja be a házszámot"
+            street_and_number: "írja be az utcanevet és a házszámot""
             city: "írja be a településnevet"
             zip: "írja be az irányítószámot"
             company_id: "például 25412547"
@@ -150,8 +152,9 @@ form:
             company_vat_id: "például SK2541254765"
         required:
             company_name: "Meg kell adni a cég nevét"
-            address: "Meg kell adni az utcanevet"
+            street: "Meg kell adni az utcanevet"
             number: "Meg kell adni a házszámot"
+            street_and_number: "Meg kell adnia az utcanevet és a házszámot."
             city: "Meg kell adni a településnevet"
             zip: "Meg kell adni az irányítószámot"
             country_id: "Meg kell adni az ország nevét"

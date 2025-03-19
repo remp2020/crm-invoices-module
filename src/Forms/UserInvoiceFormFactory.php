@@ -51,8 +51,8 @@ class UserInvoiceFormFactory
             ->setMaxLength(150)
             ->setHtmlAttribute('placeholder', 'invoices.form.invoice.placeholder.company_name')
             ->setRequired('invoices.form.invoice.required.company_name');
-        $form->addText('address', 'invoices.form.invoice.label.address')
-            ->setHtmlAttribute('placeholder', 'invoices.form.invoice.placeholder.address')
+        $form->addText('street', 'invoices.form.invoice.label.street')
+            ->setHtmlAttribute('placeholder', 'invoices.form.invoice.placeholder.street')
             ->setRequired('invoices.form.invoice.required.address');
         $form->addText('number', 'invoices.form.invoice.label.number')
             ->setHtmlAttribute('placeholder', 'invoices.form.invoice.placeholder.number')
@@ -124,7 +124,7 @@ class UserInvoiceFormFactory
                 'company_id' => $invoiceAddress->company_id,
                 'company_tax_id' => $invoiceAddress->company_tax_id,
                 'company_vat_id' => $invoiceAddress->company_vat_id,
-                'address' => $invoiceAddress->address,
+                'street' => $invoiceAddress->street,
                 'number' => $invoiceAddress->number,
                 'zip' => $invoiceAddress->zip,
                 'city' => $invoiceAddress->city,
@@ -157,7 +157,7 @@ class UserInvoiceFormFactory
             null,
             null,
             $values->company_name,
-            $values->address,
+            $values->street,
             $values->number,
             $values->city,
             $values->zip,

@@ -72,8 +72,8 @@ class InvoicesRepository extends Repository
             $buyerName = trim(($address->first_name ?? '') . ' ' . ($address->last_name ?? ''));
         }
         // join street & number into address
-        if ($address->address) {
-            $buyerAddress = trim($address->address . ' ' . $address->number ?? '');
+        if ($address->street) {
+            $buyerAddress = trim($address->street . ' ' . $address->number ?? '');
         }
 
         $data = [

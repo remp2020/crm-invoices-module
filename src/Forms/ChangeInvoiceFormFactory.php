@@ -37,8 +37,8 @@ class ChangeInvoiceFormFactory
         $form->addText('buyer_name', $this->translator->translate('invoices.form.invoice.label.company_name'))
             ->setHtmlAttribute('placeholder', $this->translator->translate('invoices.form.invoice.placeholder.company_name'));
 
-        $form->addText('buyer_address', $this->translator->translate('invoices.form.invoice.label.address'))
-            ->setHtmlAttribute('placeholder', $this->translator->translate('invoices.form.invoice.placeholder.address'));
+        $form->addText('buyer_address', $this->translator->translate('invoices.form.invoice.label.street_and_number'))
+            ->setHtmlAttribute('placeholder', $this->translator->translate('invoices.form.invoice.placeholder.street_and_number'));
 
         $form->addText('buyer_city', $this->translator->translate('invoices.form.invoice.label.city'))
             ->setHtmlAttribute('placeholder', $this->translator->translate('invoices.form.invoice.placeholder.city'));

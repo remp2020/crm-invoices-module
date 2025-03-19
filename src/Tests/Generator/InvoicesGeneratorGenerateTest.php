@@ -479,7 +479,7 @@ class InvoicesGeneratorGenerateTest extends DatabaseTestCase
 
         // and address on invoice is not empty
         $this->assertEquals($address->first_name . ' ' . $address->last_name, $invoice->buyer_name);
-        $this->assertEquals($address->address . ' ' . $address->number, $invoice->buyer_address);
+        $this->assertEquals($address->street . ' ' . $address->number, $invoice->buyer_address);
         $this->assertEquals($address->city, $invoice->buyer_city);
         $this->assertEquals($address->zip, $invoice->buyer_zip);
         $this->assertEquals($address->country_id, $invoice->buyer_country_id);
@@ -776,7 +776,7 @@ class InvoicesGeneratorGenerateTest extends DatabaseTestCase
 
         // and address on invoice is not empty
         $this->assertEquals($address->first_name . ' ' . $address->last_name, $invoice->buyer_name);
-        $this->assertEquals($address->address . ' ' . $address->number, $invoice->buyer_address);
+        $this->assertEquals($address->street . ' ' . $address->number, $invoice->buyer_address);
         $this->assertEquals($address->city, $invoice->buyer_city);
         $this->assertEquals($address->zip, $invoice->buyer_zip);
         $this->assertEquals($address->country_id, $invoice->buyer_country_id);
