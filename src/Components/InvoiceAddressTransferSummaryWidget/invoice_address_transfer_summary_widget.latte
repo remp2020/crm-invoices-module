@@ -7,7 +7,7 @@
       <strong>{=($address->firstName . ' ' . $address->lastName)|trim}</strong><br>
     {/if}
     {if $address->address}
-      {$address->address}<br>
+      {=($address->address . ' ' . $address->number)|trim}<br>
     {/if}
     {if $address->zip || $address->city}
       {=$address->zip . ' ' . $address->city|trim}<br>
