@@ -17,6 +17,7 @@ use Latte\Engine;
 use Latte\Essential\TranslatorExtension;
 use Locale;
 use Malkusch\Lock\Mutex\RedisMutex;
+use Mpdf\MpdfException;
 use Nette\Database\Table\ActiveRow;
 use Tracy\Debugger;
 
@@ -159,7 +160,7 @@ class InvoiceGenerator
     }
 
     /**
-     * @throws InvoiceGenerationException|\Mpdf\MpdfException
+     * @throws InvoiceGenerationException|MpdfException
      */
     public function renderInvoicePDFToFile($filePath, $user, $payment): ?PdfResponse
     {
@@ -220,7 +221,7 @@ class InvoiceGenerator
      *
      * @return array
      * @throws PaymentNotInvoiceableException
-     * @throws InvoiceGenerationException|RedisClientTraitException|\Mpdf\MpdfException
+     * @throws InvoiceGenerationException|RedisClientTraitException|MpdfException
      */
     public function renderInvoiceMailAttachment(ActiveRow $payment): array
     {
@@ -240,7 +241,7 @@ class InvoiceGenerator
      * Generates invoice PDF file and returns contents as string. Invoice must be already generated and linked to payment.
      *
      * @throws InvoiceGenerationException
-     * @throws \Mpdf\MpdfException
+     * @throws MpdfException
      */
     public function generateInvoiceAsString(ActiveRow $payment): string
     {
