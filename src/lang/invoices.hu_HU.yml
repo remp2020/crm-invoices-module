@@ -131,7 +131,7 @@ form:
             company_name: Cégnév
             street: Utcanév
             number: Házszám
-            street_and_number: Utcanév és házszám
+            street_and_number: "Utcanév es házszám"
             city: Település
             zip: Irányítószám
             country_id: Ország
@@ -144,7 +144,7 @@ form:
             company_name: "a cég számlán szereplő neve"
             street: "írja be az utcanevet"
             number: "írja be a házszámot"
-            street_and_number: "írja be az utcanevet és a házszámot""
+            street_and_number: "írja be az utcanevet és a házszámot"
             city: "írja be a településnevet"
             zip: "írja be az irányítószámot"
             company_id: "például 25412547"
