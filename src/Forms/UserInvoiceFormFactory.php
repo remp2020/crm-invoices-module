@@ -53,7 +53,7 @@ class UserInvoiceFormFactory
             ->setRequired('invoices.form.invoice.required.company_name');
         $form->addText('street', 'invoices.form.invoice.label.street')
             ->setHtmlAttribute('placeholder', 'invoices.form.invoice.placeholder.street')
-            ->setRequired('invoices.form.invoice.required.address');
+            ->setRequired('invoices.form.invoice.required.street');
         $form->addText('number', 'invoices.form.invoice.label.number')
             ->setHtmlAttribute('placeholder', 'invoices.form.invoice.placeholder.number')
             ->setRequired('invoices.form.invoice.required.number');
