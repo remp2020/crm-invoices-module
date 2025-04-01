@@ -13,6 +13,7 @@ use Crm\InvoicesModule\Repositories\InvoiceNumbersRepository;
 use Crm\InvoicesModule\Repositories\InvoicesRepository;
 use Crm\InvoicesModule\Seeders\AddressTypesSeeder;
 use Crm\InvoicesModule\Seeders\ConfigsSeeder;
+use Crm\PaymentsModule\Models\Payment\PaymentStatusEnum;
 use Crm\PaymentsModule\Models\PaymentItem\PaymentItemContainer;
 use Crm\PaymentsModule\Repositories\PaymentGatewaysRepository;
 use Crm\PaymentsModule\Repositories\PaymentItemsRepository;
@@ -830,7 +831,7 @@ class InvoicesGeneratorGenerateTest extends DatabaseTestCase
         );
 
         if ($paidAt !== null) {
-            $this->paymentsRepository->updateStatus($payment, PaymentsRepository::STATUS_PAID);
+            $this->paymentsRepository->updateStatus($payment, PaymentStatusEnum::Paid->value);
             $this->paymentsRepository->update($payment, ['paid_at' => $paidAt]);
         }
 

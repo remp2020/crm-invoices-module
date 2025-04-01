@@ -9,8 +9,8 @@ use Crm\InvoicesModule\Forms\UserInvoiceFormFactory;
 use Crm\InvoicesModule\Repositories\InvoicesRepository;
 use Crm\PaymentsModule\Models\Gateways\BankTransfer;
 use Crm\PaymentsModule\Models\OneStopShop\OneStopShop;
+use Crm\PaymentsModule\Models\Payment\PaymentStatusEnum;
 use Crm\PaymentsModule\Models\PaymentAwareInterface;
-use Crm\PaymentsModule\Repositories\PaymentsRepository;
 use Crm\UsersModule\Repositories\CountriesRepository;
 use Nette\Database\Table\ActiveRow;
 
@@ -43,7 +43,7 @@ class PaymentSuccessInvoiceWidget extends BaseLazyWidget
     {
         $payment = $this->getPayment();
 
-        if ($payment->status !== PaymentsRepository::STATUS_PAID && $payment->payment_gateway->code !== BankTransfer::GATEWAY_CODE) {
+        if ($payment->status !== PaymentStatusEnum::Paid->value && $payment->payment_gateway->code !== BankTransfer::GATEWAY_CODE) {
             return;
         }
         if (!$this->invoicesRepository->isPaymentInvoiceable($payment, true) && $payment->payment_gateway->code !== BankTransfer::GATEWAY_CODE) {

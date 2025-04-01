@@ -5,7 +5,7 @@ namespace Crm\InvoicesModule\Events;
 use Crm\ApplicationModule\Hermes\HermesMessage;
 use Crm\ApplicationModule\Models\Config\ApplicationConfig;
 use Crm\PaymentsModule\Events\PaymentChangeStatusEvent;
-use Crm\PaymentsModule\Repositories\PaymentsRepository;
+use Crm\PaymentsModule\Models\Payment\PaymentStatusEnum;
 use League\Event\AbstractListener;
 use League\Event\EventInterface;
 use Tomaj\Hermes\Emitter as HermesEmitter;
@@ -32,7 +32,7 @@ class PaymentStatusChangeHandler extends AbstractListener
 
         $payment = $event->getPayment();
 
-        if ($payment->status !== PaymentsRepository::STATUS_PAID) {
+        if ($payment->status !== PaymentStatusEnum::Paid->value) {
             return;
         }
 

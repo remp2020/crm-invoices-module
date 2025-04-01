@@ -11,6 +11,7 @@ use Crm\InvoicesModule\Hermes\GenerateInvoiceHandler;
 use Crm\InvoicesModule\Seeders\ConfigsSeeder;
 use Crm\PaymentsModule\Events\NewPaymentEvent;
 use Crm\PaymentsModule\Events\PaymentChangeStatusEvent;
+use Crm\PaymentsModule\Models\Payment\PaymentStatusEnum;
 use Crm\PaymentsModule\Models\PaymentItem\PaymentItemContainer;
 use Crm\PaymentsModule\Repositories\PaymentGatewaysRepository;
 use Crm\PaymentsModule\Repositories\PaymentItemsRepository;
@@ -240,7 +241,7 @@ class PaymentStatusChangeHandlerTest extends DatabaseTestCase
         );
 
         if ($paidAt !== null) {
-            $paymentsRepository->updateStatus($payment, PaymentsRepository::STATUS_PAID);
+            $paymentsRepository->updateStatus($payment, PaymentStatusEnum::Paid->value);
             $paymentsRepository->update($payment, ['paid_at' => $paidAt]);
         }
 

@@ -6,6 +6,7 @@ use Crm\ApplicationModule\Presenters\FrontendPresenter;
 use Crm\ApplicationModule\UI\Form;
 use Crm\InvoicesModule\Events\ProformaInvoiceCreatedEvent;
 use Crm\InvoicesModule\Forms\UserInvoiceFormFactory;
+use Crm\PaymentsModule\Models\Payment\PaymentStatusEnum;
 use Crm\PaymentsModule\Repositories\PaymentLogsRepository;
 use Crm\PaymentsModule\Repositories\PaymentsRepository;
 use Nette\Application\Attributes\Persistent;
@@ -45,7 +46,7 @@ class SalesFunnelPresenter extends FrontendPresenter
     public function createComponentProformaInvoiceAddressForm(): Form
     {
         $payment = $this->getPayment($this->variableSymbol);
-        if ($payment->status != PaymentsRepository::STATUS_FORM) {
+        if ($payment->status != PaymentStatusEnum::Form->value) {
             $this->paymentLogsRepository->add(
                 'ERROR',
                 "Payment is not in FORM state when finishing proforma invoice payment - '{$this->variableSymbol}'",

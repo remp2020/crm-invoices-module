@@ -6,6 +6,7 @@ use Crm\ApplicationModule\Tests\DatabaseTestCase;
 use Crm\InvoicesModule\Models\InvoiceNumber\InvoiceNumber;
 use Crm\InvoicesModule\Repositories\InvoiceNumbersRepository;
 use Crm\PaymentsModule\Models\Gateways\BankTransfer;
+use Crm\PaymentsModule\Models\Payment\PaymentStatusEnum;
 use Crm\PaymentsModule\Models\PaymentItem\DonationPaymentItem;
 use Crm\PaymentsModule\Models\PaymentItem\PaymentItemContainer;
 use Crm\PaymentsModule\Repositories\PaymentGatewaysRepository;
@@ -130,7 +131,7 @@ class InvoiceNumbersTest extends DatabaseTestCase
             'variable_symbol' => $variableSymbol,
             'paid_at' => $paidAt,
         ]);
-        $payment = $this->paymentsRepository->updateStatus($payment, PaymentsRepository::STATUS_PAID);
+        $payment = $this->paymentsRepository->updateStatus($payment, PaymentStatusEnum::Paid->value);
         return $payment;
     }
 

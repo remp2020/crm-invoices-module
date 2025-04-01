@@ -8,7 +8,7 @@ use Crm\ApplicationModule\Models\Config\ApplicationConfig;
 use Crm\ApplicationModule\Models\Database\Repository;
 use Crm\ApplicationModule\Repositories\AuditLogRepository;
 use Crm\InvoicesModule\Events\NewInvoiceEvent;
-use Crm\PaymentsModule\Repositories\PaymentsRepository;
+use Crm\PaymentsModule\Models\Payment\PaymentStatusEnum;
 use Crm\SubscriptionsModule\Models\PaymentItem\SubscriptionTypePaymentItem;
 use Crm\UsersModule\Repositories\AddressesRepository;
 use IntlDateFormatter;
@@ -189,7 +189,7 @@ class InvoicesRepository extends Repository
     final public function isInvoiceNumberGeneratable(ActiveRow $payment): bool
     {
         // check payment status
-        if ($payment->status !== PaymentsRepository::STATUS_PAID) {
+        if ($payment->status !== PaymentStatusEnum::Paid->value) {
             return false;
         }
         if ($payment->paid_at === null) {

@@ -7,6 +7,7 @@ use Crm\ApplicationModule\Repositories\ConfigsRepository;
 use Crm\InvoicesModule\Events\PreNotificationEventHandler;
 use Crm\PaymentsModule\Events\PaymentChangeStatusEvent;
 use Crm\PaymentsModule\Events\PaymentStatusChangeHandler;
+use Crm\PaymentsModule\Models\Payment\PaymentStatusEnum;
 use Crm\PaymentsModule\Models\PaymentItem\PaymentItemContainer;
 use Crm\PaymentsModule\Repositories\PaymentGatewaysRepository;
 use Crm\PaymentsModule\Repositories\PaymentMetaRepository;
@@ -180,7 +181,7 @@ class PreNotificationHandlerTest extends BaseTestCase
     private function addPayment($user, $subscriptionType, $paidAtString, $startSubscriptionAtString = '2021-01-01 01:00:00')
     {
         $payment = $this->paymentsRepository->add($subscriptionType, $this->paymentGateway, $user, new PaymentItemContainer(), null, 1, new DateTime($startSubscriptionAtString));
-        $this->paymentsRepository->updateStatus($payment, PaymentsRepository::STATUS_PAID);
+        $this->paymentsRepository->updateStatus($payment, PaymentStatusEnum::Paid->value);
         $this->paymentsRepository->update($payment, ['paid_at' => new DateTime($paidAtString)]);
         return $this->paymentsRepository->find($payment->id);
     }

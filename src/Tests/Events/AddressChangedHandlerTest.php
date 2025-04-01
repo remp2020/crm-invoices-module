@@ -6,6 +6,7 @@ use Crm\ApplicationModule\Tests\DatabaseTestCase;
 use Crm\InvoicesModule\Events\AddressChangedHandler;
 use Crm\InvoicesModule\Hermes\GenerateInvoiceHandler;
 use Crm\InvoicesModule\Seeders\AddressTypesSeeder;
+use Crm\PaymentsModule\Models\Payment\PaymentStatusEnum;
 use Crm\PaymentsModule\Models\PaymentItem\PaymentItemContainer;
 use Crm\PaymentsModule\Repositories\PaymentGatewaysRepository;
 use Crm\PaymentsModule\Repositories\PaymentItemsRepository;
@@ -304,7 +305,7 @@ class AddressChangedHandlerTest extends DatabaseTestCase
         );
 
         if ($paidAt !== null) {
-            $paymentsRepository->updateStatus($payment, PaymentsRepository::STATUS_PAID);
+            $paymentsRepository->updateStatus($payment, PaymentStatusEnum::Paid->value);
             $paymentsRepository->update($payment, ['paid_at' => $paidAt]);
         }
 
