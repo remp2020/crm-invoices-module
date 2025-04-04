@@ -29,10 +29,12 @@ frontend:
             label: Ulice
             placeholder: fakturační adresa
             required: Ulice musí být vyplněna
+            pattern: Ulice má obsahovat pouze písmena, mezery, pomlčky a tečky
         number:
             label: Číslo domu
             placeholder: například 134
             required: Číslo domu musí být vyplněno
+            pattern: Číslo domu má obsahovat pouze číslice, písmena, pomlčky a lomítka
         city:
             label: Město
             placeholder: napište město
@@ -41,6 +43,7 @@ frontend:
             label: PSČ
             placeholder: napište PSČ
             required: PSČ musí být vyplněna
+            pattern: PSČ má obsahovat pouze číslice, písmena, mezery a pomlčky
         company_id:
             label: IČO
             placeholder: například 23590235

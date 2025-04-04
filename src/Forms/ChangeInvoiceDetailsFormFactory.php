@@ -3,8 +3,10 @@
 namespace Crm\InvoicesModule\Forms;
 
 use Crm\ApplicationModule\Forms\Controls\CountriesSelectItemsBuilder;
+use Crm\ApplicationModule\Forms\FormPatterns;
 use Crm\ApplicationModule\Hermes\HermesMessage;
 use Crm\ApplicationModule\Models\Config\ApplicationConfig;
+use Crm\ApplicationModule\Models\DataProvider\DataProviderException;
 use Crm\ApplicationModule\Models\DataProvider\DataProviderManager;
 use Crm\ApplicationModule\UI\Form;
 use Crm\PaymentsModule\Repositories\PaymentsRepository;
@@ -43,8 +45,9 @@ class ChangeInvoiceDetailsFormFactory
     /**
      * @param User $user
      * @return Form
+     * @throws DataProviderException
      */
-    public function create(User $user)
+    public function create(User $user): Form
     {
         $form = new Form;
         $this->user = $user;
@@ -82,28 +85,33 @@ class ChangeInvoiceDetailsFormFactory
         )
             ->setMaxLength(150)
             ->setHtmlAttribute('placeholder', 'invoices.frontend.change_invoice_details.company_name.placeholder')
+            ->setHtmlAttribute('autocomplete', 'organization')
             ->setNullable()
-            ->addConditionOn($invoiceCheckbox, Form::EQUAL, true)
+            ->addConditionOn($invoiceCheckbox, $form::Equal, true)
             ->setRequired('invoices.frontend.change_invoice_details.company_name.required');
         $form->addText('street', 'invoices.frontend.change_invoice_details.street.label')
             ->setHtmlAttribute('placeholder', 'invoices.frontend.change_invoice_details.street.placeholder')
             ->setNullable()
-            ->addConditionOn($invoiceCheckbox, Form::EQUAL, true)
+            ->addConditionOn($invoiceCheckbox, $form::Equal, true)
+            ->addRule($form::Pattern, 'invoices.frontend.change_invoice_details.street.pattern', FormPatterns::STREET_NAME)
             ->setRequired('invoices.frontend.change_invoice_details.street.required');
         $form->addText('number', 'invoices.frontend.change_invoice_details.number.label')
             ->setHtmlAttribute('placeholder', 'invoices.frontend.change_invoice_details.number.placeholder')
             ->setNullable()
-            ->addConditionOn($invoiceCheckbox, Form::EQUAL, true)
+            ->addConditionOn($invoiceCheckbox, $form::Equal, true)
+            ->addRule($form::Pattern, 'invoices.frontend.change_invoice_details.number.pattern', FormPatterns::STREET_NUMBER)
             ->setRequired('invoices.frontend.change_invoice_details.number.required');
         $form->addText('city', 'invoices.frontend.change_invoice_details.city.label')
             ->setHtmlAttribute('placeholder', 'invoices.frontend.change_invoice_details.city.placeholder')
             ->setNullable()
-            ->addConditionOn($invoiceCheckbox, Form::EQUAL, true)
+            ->addConditionOn($invoiceCheckbox, $form::Equal, true)
             ->setRequired('invoices.frontend.change_invoice_details.city.required');
         $form->addText('zip', $this->translator->translate('invoices.frontend.change_invoice_details.zip.label'))
             ->setHtmlAttribute('placeholder', 'invoices.frontend.change_invoice_details.zip.placeholder')
+            ->setHtmlAttribute('autocomplete', 'postal-code')
             ->setNullable()
-            ->addConditionOn($invoiceCheckbox, Form::EQUAL, true)
+            ->addConditionOn($invoiceCheckbox, $form::Equal, true)
+            ->addRule($form::Pattern, 'invoices.frontend.change_invoice_details.zip.pattern', FormPatterns::ZIP_CODE)
             ->setRequired($this->translator->translate('invoices.frontend.change_invoice_details.zip.required'));
         $form->addText('company_id', 'invoices.frontend.change_invoice_details.company_id.label')
             ->setHtmlAttribute('placeholder', 'invoices.frontend.change_invoice_details.company_id.placeholder')
@@ -116,7 +124,7 @@ class ChangeInvoiceDetailsFormFactory
             ->setNullable();
 
         $contactEmail = $this->applicationConfig->get('contact_email');
-        $form->addSelect('country_id', 'invoices.frontend.change_invoice_details.country_id.label', $this->countriesSelectItemsBuilder->getDefaultCountryPair())
+        $form->addSelect('country', 'invoices.frontend.change_invoice_details.country_id.label', $this->countriesSelectItemsBuilder->getDefaultCountryIsoPair())
             ->setOption('id', 'invoice-country')
             ->setOption(
                 'description',
@@ -149,7 +157,7 @@ class ChangeInvoiceDetailsFormFactory
         return $row;
     }
 
-    public function formSucceeded($form, $values)
+    public function formSucceeded($form, $values): void
     {
         $userRow = $this->loadUserRow();
 

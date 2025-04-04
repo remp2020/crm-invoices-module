@@ -30,10 +30,12 @@ frontend:
             label: Ulica
             placeholder: napíšte ulicu
             required: Ulica musí byť vyplnená
+            pattern: Ulica má obsahovať len písmená, medzery, pomĺčky a bodky
         number:
             label: Číslo domu
             placeholder: napríklad 134
             required: Číslo domu musí byť vyplnené
+            pattern: Číslo domu má obsahovať len čislice, písmená, pomĺčky a lomítka
         city:
             label: Mesto
             placeholder: napíšte mesto
@@ -42,6 +44,7 @@ frontend:
             label: PSČ
             placeholder: napíšte PSČ
             required: PSČ musí byť vyplnené
+            pattern: PSČ má obsahovať len čislice, písmená, medzery a pomĺčky
         company_id:
             label: IČO
             placeholder: napríklad 92385982

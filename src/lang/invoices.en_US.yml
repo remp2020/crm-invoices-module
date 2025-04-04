@@ -30,10 +30,12 @@ frontend:
             label: Street
             placeholder: fill in the street
             required: Street is required
+            pattern: The street should only contain letters, spaces, dashes and dots
         number:
             label: House number
             placeholder: e.g. 134
             required: House number is required
+            pattern: The house number should only contain numbers, letters, hyphens and slashes
         city:
             label: City
             placeholder: fill in the city
@@ -42,6 +44,7 @@ frontend:
             label: ZIP
             placeholder: fill in the ZIP code
             required: ZIP is required
+            pattern: The postal code should only contain numbers, letters, spaces and dashes
         company_id:
             label: Company ID
             placeholder: e.g. 23590235

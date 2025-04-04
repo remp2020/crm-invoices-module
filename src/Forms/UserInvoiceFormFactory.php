@@ -4,6 +4,7 @@ namespace Crm\InvoicesModule\Forms;
 
 use Contributte\Translation\Translator;
 use Crm\ApplicationModule\Forms\Controls\CountriesSelectItemsBuilder;
+use Crm\ApplicationModule\Forms\FormPatterns;
 use Crm\ApplicationModule\Models\Config\ApplicationConfig;
 use Crm\ApplicationModule\Models\DataProvider\DataProviderManager;
 use Crm\ApplicationModule\UI\Form;
@@ -53,15 +54,18 @@ class UserInvoiceFormFactory
             ->setRequired('invoices.form.invoice.required.company_name');
         $form->addText('street', 'invoices.form.invoice.label.street')
             ->setHtmlAttribute('placeholder', 'invoices.form.invoice.placeholder.street')
+            ->addRule($form::Pattern, 'invoices.frontend.change_invoice_details.street.pattern', FormPatterns::STREET_NAME)
             ->setRequired('invoices.form.invoice.required.street');
         $form->addText('number', 'invoices.form.invoice.label.number')
             ->setHtmlAttribute('placeholder', 'invoices.form.invoice.placeholder.number')
+            ->addRule($form::Pattern, 'invoices.frontend.change_invoice_details.number.pattern', FormPatterns::STREET_NUMBER)
             ->setRequired('invoices.form.invoice.required.number');
         $form->addText('city', 'invoices.form.invoice.label.city')
             ->setHtmlAttribute('placeholder', 'invoices.form.invoice.placeholder.city')
             ->setRequired('invoices.form.invoice.required.city');
         $form->addText('zip', 'invoices.form.invoice.label.zip')
             ->setHtmlAttribute('placeholder', 'invoices.form.invoice.placeholder.zip')
+            ->addRule($form::Pattern, 'invoices.frontend.change_invoice_details.zip.pattern', FormPatterns::ZIP_CODE)
             ->setRequired('invoices.form.invoice.required.zip');
         $form->addText('company_id', 'invoices.form.invoice.label.company_id')
             ->setNullable()
@@ -73,7 +77,7 @@ class UserInvoiceFormFactory
             ->setNullable()
             ->setHtmlAttribute('placeholder', 'invoices.form.invoice.placeholder.company_vat_id');
 
-        $countrySelect = $form->addSelect('country_id', 'invoices.form.invoice.label.country_id', $this->countriesSelectItemsBuilder->getDefaultCountryPair())
+        $countrySelect = $form->addSelect('country', 'invoices.form.invoice.label.country_id', $this->countriesSelectItemsBuilder->getDefaultCountryIsoPair())
             ->setOption('id', 'invoice-country')
             ->setOption(
                 'description',
@@ -82,12 +86,12 @@ class UserInvoiceFormFactory
 
         // at the moment, only default country is allowed for invoicing (we are missing VATs for other countries)
         // but few legacy invoice addresses contain non-default country
-        $defaultCountryId = $this->countriesRepository->defaultCountry()->id;
-        if (isset($invoiceAddress->country_id) && $invoiceAddress->country_id !== $defaultCountryId) {
+        $defaultCountryIsoCode = $this->countriesRepository->defaultCountry()->iso_code;
+        if (isset($invoiceAddress->country_id) && $invoiceAddress->country->iso_code !== $defaultCountryIsoCode) {
             $country = $this->countriesRepository->find($invoiceAddress->country_id);
             if ($country) {
                 // add user's non-default country into select list; otherwise FORM returns error (out of allowed values)
-                $countrySelect->setItems([$country->id => $country->name]);
+                $countrySelect->setItems([$country->iso_code => $country->name]);
                 // element & element description are highlighted as error when addError is triggered; no need to duplicate message
                 $countrySelect->addError('');
                 // and add bigger error above form
@@ -128,7 +132,7 @@ class UserInvoiceFormFactory
                 'number' => $invoiceAddress->number,
                 'zip' => $invoiceAddress->zip,
                 'city' => $invoiceAddress->city,
-                'country_id' => $invoiceAddress->country_id ?? $defaultCountryId,
+                'country' => $invoiceAddress->country->iso_code ?? $defaultCountryIsoCode,
             ]);
         }
 
@@ -145,10 +149,12 @@ class UserInvoiceFormFactory
 
         // do not allow saving address with non-default country
         // - at the moment we do not have correct VAT for foreign countries
-        if ($values->country_id !== $this->countriesRepository->defaultCountry()->id) {
+        if ($values->country !== $this->countriesRepository->defaultCountry()->iso_code) {
             // no error; error is displayed by form (defined for element country_id)
             return;
         }
+
+        $country = $this->countriesRepository->findByIsoCode($values->country);
 
         $invoiceAddress = $this->addressesRepository->address($user, 'invoice');
         $changeRequest = $this->addressChangeRequestsRepository->add(
@@ -161,7 +167,7 @@ class UserInvoiceFormFactory
             $values->number,
             $values->city,
             $values->zip,
-            $values->country_id,
+            $country->id,
             $values->company_id,
             $values->company_tax_id,
             $values->company_vat_id,

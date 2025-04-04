@@ -29,10 +29,12 @@ frontend:
             label: Utca
             placeholder: "írja be az utcát"
             required: "Meg kell adni az utca nevét"
+            pattern: Az utca csak leveleket, szóközöket, kötőjeleket és pontokat tartalmazhat
         number:
             label: Házszám
             placeholder: "például 134"
             required: "Meg kell adni a házszámot"
+            pattern: A házszám csak számokat, betűket, kötőjeleket és perjeleket tartalmazhat
         city:
             label: Település
             placeholder: "írja be a településnevet"
@@ -41,6 +43,7 @@ frontend:
             label: Irányítószám
             placeholder: "írja be az irányítószámot"
             required: "Meg kell adni az irányítószámot"
+            pattern: Az irányítószám csak számokat, betűket, szóközöket és kötőjeleket tartalmazhat
         company_id:
             label: "IČO (statisztikai számjel)"
             placeholder: "például 25412547"

@@ -20,6 +20,7 @@ frontend:
             required: Straße ist erforderlich
             placeholder: Straße ausfüllen
             label: Straße
+            pattern: Die Straße darf nur Zahlen, Leerzeichen, Bindestriche und Punkte enthalten
         city:
             required: Stadt ist erforderlich
             placeholder: Stadt ausfüllen
@@ -28,6 +29,7 @@ frontend:
             required: PLZ ist erforderlich
             placeholder: PLZ ausfüllen
             label: PLZ
+            pattern: Die Postleitzahl darf nur Zahlen, Buchstaben, Leerzeichen und Bindestriche enthalten
         company_id:
             required: Handelsregisternummer ist erforderlich
             placeholder: z.B. HRB 012345B
@@ -40,6 +42,7 @@ frontend:
             placeholder: z.B. 134A
             label: Hausnummer
             required: Hausnummer ist erforderlich
+            pattern: Die Hausnummer darf nur Zahlen, Buchstaben, Bindestriche und Schrägstriche enthalten
         company_name:
             placeholder: Name der Firma auf der Rechnung
             label: Firmenname
