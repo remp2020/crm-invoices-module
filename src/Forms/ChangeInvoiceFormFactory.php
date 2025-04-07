@@ -7,6 +7,7 @@ use Crm\ApplicationModule\Models\DataProvider\DataProviderManager;
 use Crm\ApplicationModule\UI\Form;
 use Crm\InvoicesModule\Repositories\InvoicesRepository;
 use Crm\UsersModule\DataProviders\AddressFormDataProviderInterface;
+use Crm\UsersModule\Repositories\CountriesRepository;
 use Nette\Localization\Translator;
 use Tomaj\Form\Renderer\BootstrapRenderer;
 
@@ -19,6 +20,7 @@ class ChangeInvoiceFormFactory
         private readonly InvoicesRepository $invoicesRepository,
         private readonly DataProviderManager $dataProviderManager,
         private readonly CountriesSelectItemsBuilder $countriesSelectItemsBuilder,
+        private readonly CountriesRepository $countriesRepository,
     ) {
     }
 
@@ -46,7 +48,7 @@ class ChangeInvoiceFormFactory
         $form->addText('buyer_zip', $this->translator->translate('invoices.form.invoice.label.zip'))
             ->setHtmlAttribute('placeholder', $this->translator->translate('invoices.form.invoice.placeholder.zip'));
 
-        $form->addSelect('country_id', $this->translator->translate('invoices.form.invoice.label.country_id'), $this->countriesSelectItemsBuilder->getAllPairs());
+        $form->addSelect('country', $this->translator->translate('invoices.form.invoice.label.country'), $this->countriesSelectItemsBuilder->getAllIsoPairs());
 
         $form->addText('company_id', $this->translator->translate('invoices.form.invoice.label.company_id'))
             ->setNullable()
@@ -75,13 +77,14 @@ class ChangeInvoiceFormFactory
     public function formSucceeded($form, $values)
     {
         $invoice = $this->invoicesRepository->find($values->invoice_id);
+        $country = $this->countriesRepository->findByIsoCode($values->country);
 
         $this->invoicesRepository->update($invoice, [
             'buyer_name' => $values->buyer_name,
             'buyer_address' => $values->buyer_address,
             'buyer_city' => $values->buyer_city,
             'buyer_zip' => $values->buyer_zip,
-            'buyer_country_id' => $values->country_id,
+            'buyer_country_id' => $country->id,
             'buyer_id' => $values->company_id,
             'buyer_tax_id' => $values->company_tax_id,
             'buyer_vat_id' => $values->company_vat_id
