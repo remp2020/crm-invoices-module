@@ -145,7 +145,7 @@ form:
             street_and_number: Ulice a číslo
             city: Město
             zip: PSČ
-            country_id: Země
+            country: Země
             company_id: IČO
             company_tax_id: DIČ
             company_vat_id: Registrační číslo DPH
@@ -168,7 +168,7 @@ form:
             street_and_number: Ulice a číslo domu musí být vyplněno
             city: Město musí být vyplněno
             zip: PSČ musí být vyplněno
-            country_id: Země musí být vyplněna
+            country: Země musí být vyplněna
             company_id: IČO musí být vyplněno
             company_tax_id: DIČ musí být vyplněno
             company_vat_id: Registrační číslo DPH musí být vyplněno

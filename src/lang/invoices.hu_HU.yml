@@ -137,7 +137,7 @@ form:
             street_and_number: "Utcanév es házszám"
             city: Település
             zip: Irányítószám
-            country_id: Ország
+            country: Ország
             company_id: "IČO (statisztikai számjel)"
             company_tax_id: "DIČ (adószám)"
             company_vat_id: "IČDPH (áfás adószám)"
@@ -160,7 +160,7 @@ form:
             street_and_number: "Meg kell adnia az utcanevet és a házszámot."
             city: "Meg kell adni a településnevet"
             zip: "Meg kell adni az irányítószámot"
-            country_id: "Meg kell adni az ország nevét"
+            country: "Meg kell adni az ország nevét"
             company_id: "Meg kell adni az IČO-t (statisztikai számjelet)"
             company_tax_id: "Meg kell adni a DIČ-et (adószámot)"
             company_vat_id: "Meg kell adni az IČDPH-t (áfás adószámot)"

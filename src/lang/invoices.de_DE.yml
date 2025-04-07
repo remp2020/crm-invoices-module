@@ -132,7 +132,7 @@ form:
             street_and_number: Straße und Hausnummer
             city: Stadt
             zip: PLZ
-            country_id: Land
+            country: Land
             send: Speichern
             company_id: Handelsregisternummer
             company_vat_id: Umsatzsteuer-ID
@@ -153,7 +153,7 @@ form:
             street_and_number: Straße und Hausnummer sind erforderlich
             city: Stadt ist ein Pflichtfeld
             zip: PLZ ist ein Pflichtfeld
-            country_id: Land ist ein Pflichtfeld
+            country: Land ist ein Pflichtfeld
             company_vat_id: Umsatzsteuer-ID ist ein Pflichtfeld
             company_id: Handelsregisternummer ist ein Pflichtfeld
             company_tax_id: Steuernummer ist ein Pflichtfeld

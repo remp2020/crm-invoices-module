@@ -146,7 +146,7 @@ form:
             street_and_number: Street and number
             city: City
             zip: ZIP
-            country_id: Country
+            country: Country
             company_id: Businness ID
             company_tax_id: Tax ID
             company_vat_id: VAT number
@@ -169,7 +169,7 @@ form:
             street_and_number: Street and house number are required
             city: City is required
             zip: ZIP is required
-            country_id: Country is required
+            country: Country is required
             company_id: Business ID is required
             company_tax_id: Tax ID is required
             company_vat_id: VAT number is required
