@@ -258,7 +258,7 @@ class InvoicesAdminPresenter extends AdminPresenter
                         'buyer_address' => $address->street . ' ' . $address->number,
                         'buyer_city' => $address->city,
                         'buyer_zip' => $address->zip,
-                        'country_id' => $address->country_id,
+                        'country' => $address->country->iso_code,
                         'company_id' => $address->company_id,
                         'company_tax_id' => $address->company_tax_id,
                         'company_vat_id' => $address->company_vat_id

@@ -32,35 +32,36 @@ class ChangeInvoiceFormFactory
     {
         $form = new Form;
         $form->setRenderer(new BootstrapRenderer());
+        $form->setTranslator($this->translator);
         $form->addProtection();
 
         $form->addHidden('invoice_id', $id);
 
-        $form->addText('buyer_name', $this->translator->translate('invoices.form.invoice.label.company_name'))
-            ->setHtmlAttribute('placeholder', $this->translator->translate('invoices.form.invoice.placeholder.company_name'));
+        $form->addText('buyer_name', 'invoices.form.invoice.label.company_name')
+            ->setHtmlAttribute('placeholder', 'invoices.form.invoice.placeholder.company_name');
 
-        $form->addText('buyer_address', $this->translator->translate('invoices.form.invoice.label.street_and_number'))
-            ->setHtmlAttribute('placeholder', $this->translator->translate('invoices.form.invoice.placeholder.street_and_number'));
+        $form->addText('buyer_address', 'invoices.form.invoice.label.street_and_number')
+            ->setHtmlAttribute('placeholder', 'invoices.form.invoice.placeholder.street_and_number');
 
-        $form->addText('buyer_city', $this->translator->translate('invoices.form.invoice.label.city'))
-            ->setHtmlAttribute('placeholder', $this->translator->translate('invoices.form.invoice.placeholder.city'));
+        $form->addText('buyer_city', 'invoices.form.invoice.label.city')
+            ->setHtmlAttribute('placeholder', 'invoices.form.invoice.placeholder.city');
 
-        $form->addText('buyer_zip', $this->translator->translate('invoices.form.invoice.label.zip'))
-            ->setHtmlAttribute('placeholder', $this->translator->translate('invoices.form.invoice.placeholder.zip'));
+        $form->addText('buyer_zip', 'invoices.form.invoice.label.zip')
+            ->setHtmlAttribute('placeholder', 'invoices.form.invoice.placeholder.zip');
 
-        $form->addSelect('country', $this->translator->translate('invoices.form.invoice.label.country'), $this->countriesSelectItemsBuilder->getAllIsoPairs());
+        $form->addSelect('country', 'invoices.form.invoice.label.country', $this->countriesSelectItemsBuilder->getAllIsoPairs());
 
-        $form->addText('company_id', $this->translator->translate('invoices.form.invoice.label.company_id'))
+        $form->addText('company_id', 'invoices.form.invoice.label.company_id')
             ->setNullable()
-            ->setHtmlAttribute('placeholder', $this->translator->translate('invoices.form.invoice.placeholder.company_id'));
+            ->setHtmlAttribute('placeholder', 'invoices.form.invoice.placeholder.company_id');
 
-        $form->addText('company_tax_id', $this->translator->translate('invoices.form.invoice.label.company_tax_id'))
+        $form->addText('company_tax_id', 'invoices.form.invoice.label.company_tax_id')
             ->setNullable()
-            ->setHtmlAttribute('placeholder', $this->translator->translate('invoices.form.invoice.placeholder.company_tax_id'));
+            ->setHtmlAttribute('placeholder', 'invoices.form.invoice.placeholder.company_tax_id');
 
-        $form->addText('company_vat_id', $this->translator->translate('invoices.form.invoice.label.company_vat_id'))
+        $form->addText('company_vat_id', 'invoices.form.invoice.label.company_vat_id')
             ->setNullable()
-            ->setHtmlAttribute('placeholder', $this->translator->translate('invoices.form.invoice.placeholder.company_vat_id'));
+            ->setHtmlAttribute('placeholder', 'invoices.form.invoice.placeholder.company_vat_id');
 
         /** @var AddressFormDataProviderInterface[] $providers */
         $providers = $this->dataProviderManager->getProviders('invoices.dataprovider.invoice_form', AddressFormDataProviderInterface::class);
@@ -68,7 +69,7 @@ class ChangeInvoiceFormFactory
             $form = $provider->provide(['form' => $form, 'addressType' => 'invoice']);
         }
 
-        $form->addSubmit('send', $this->translator->translate('invoices.form.invoice.label.send'));
+        $form->addSubmit('send', 'invoices.form.invoice.label.send');
 
         $form->onSuccess[] = [$this, 'formSucceeded'];
         return $form;
