@@ -276,3 +276,10 @@ data_provider:
         invoice_group: Faktury
         payment_group: Platby
         user_group: Uživatelé
+    family_request:
+        vat_mode_automatic: "DPH mód je určen automaticky podle uživatelské adresy:<br><strong>%vat_mode%</strong>"
+        vat_mode:
+            b2c: 'Automatické DPH B2C'
+            b2b: 'Automatické DPH B2B'
+            b2b_non_europe: 'Automatické DPH B2B mimo evropu'
+            b2b_reverse_charge: 'Automatické DPH 0% reverse charge'

@@ -256,3 +256,10 @@ data_provider:
         invoice_group: Számlák
         payment_group: Fizetések
         user_group: Felhasználók
+    family_request:
+        vat_mode_automatic: "Az ÁFA mód a felhasználó címe alapján automatikusan kerül meghatározásra:<br><strong>%vat_mode%</strong>"
+        vat_mode:
+            b2c: 'Automatikus Áfakulcs B2C'
+            b2b: 'Automatikus Áfakulcs B2B'
+            b2b_non_europe: 'Automatikus Áfakulcs B2B Európán kívül'
+            b2b_reverse_charge: 'Automatikus Áfakulcs 0% reverse charge'

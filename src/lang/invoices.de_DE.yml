@@ -251,3 +251,10 @@ data_provider:
         invoice_group: Rechnungen
         payment_group: Zahlungen
         user_group: Nutzer
+    family_request:
+        vat_mode_automatic: "Der Mehrwertsteuermodus wird automatisch anhand der Adresse des Benutzers bestimmt:<br><strong>%vat_mode%</strong>"
+        vat_mode:
+            b2c: 'Automatisch MwSt. B2C'
+            b2b: 'Automatisch MwSt. B2B'
+            b2b_non_europe: 'Automatisch MwSt. B2B außerhalb Europas'
+            b2b_reverse_charge: 'Automatisch MwSt. 0% reverse charge'

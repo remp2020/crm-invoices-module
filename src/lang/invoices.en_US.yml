@@ -277,3 +277,10 @@ data_provider:
         invoice_group: Invoices
         payment_group: Payments
         user_group: Users
+    family_request:
+        vat_mode_automatic: "VAT mode is determined automatically based on the user's address:<br><strong>%vat_mode%</strong>"
+        vat_mode:
+            b2c: 'Automatic VAT B2C'
+            b2b: 'Automatic VAT B2B'
+            b2b_non_europe: 'Automatic VAT B2B outside of europe'
+            b2b_reverse_charge: 'Automatic VAT 0% reverse charge'
