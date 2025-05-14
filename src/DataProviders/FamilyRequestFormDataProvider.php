@@ -49,6 +49,7 @@ class FamilyRequestFormDataProvider implements RequestFormDataProviderInterface
         $invoiceAddressCountry = $this->addressesRepository->address($user, 'invoice')?->country;
         if ($invoiceAddressCountry) {
             $form->getComponent('payment_country_id')
+                ->setItems([$invoiceAddressCountry->id => $invoiceAddressCountry->name])
                 ->setValue($invoiceAddressCountry->id)
                 ->setDisabled();
         }
