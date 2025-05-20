@@ -98,7 +98,7 @@ class HasInvoiceCriteriaTest extends PaymentsTestCase
             null,
             null,
             null,
-            false
+            false,
         );
 
         $paymentsRepository->update($paymentRow, ['paid_at' => new DateTime()]);
@@ -120,7 +120,7 @@ class HasInvoiceCriteriaTest extends PaymentsTestCase
                 'Test',
                 'Test',
                 $country->id,
-                'Test'
+                'Test',
             );
 
             /** @var InvoiceNumbersRepository $invoiceNumbersRepository */

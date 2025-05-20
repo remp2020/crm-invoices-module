@@ -102,13 +102,13 @@ class PaymentStatusChangeHandlerTest extends DatabaseTestCase
                         return false;
                     }
                     return true;
-                })
+                }),
             );
 
         // register observer as hermes handler
         $this->dispatcher->registerHandler(
             'generate_invoice',
-            $generateInvoiceHandlerObserver
+            $generateInvoiceHandlerObserver,
         );
 
         // handle league & hermes events
@@ -134,7 +134,7 @@ class PaymentStatusChangeHandlerTest extends DatabaseTestCase
         // register observer as hermes handler
         $this->dispatcher->registerHandler(
             'generate_invoice',
-            $generateInvoiceHandlerObserver
+            $generateInvoiceHandlerObserver,
         );
 
         // handle league & hermes events
@@ -165,7 +165,7 @@ class PaymentStatusChangeHandlerTest extends DatabaseTestCase
         // register observer as hermes handler
         $this->dispatcher->registerHandler(
             'generate_invoice',
-            $generateInvoiceHandlerObserver
+            $generateInvoiceHandlerObserver,
         );
 
         // handle league & hermes events
@@ -180,7 +180,7 @@ class PaymentStatusChangeHandlerTest extends DatabaseTestCase
         $event = new NewPaymentEvent($payment);
 
         $this->expectExceptionObject(new \Exception(
-            'Invalid type of event. Expected: [Crm\PaymentsModule\Events\PaymentChangeStatusEvent]. Received: [Crm\PaymentsModule\Events\NewPaymentEvent].'
+            'Invalid type of event. Expected: [Crm\PaymentsModule\Events\PaymentChangeStatusEvent]. Received: [Crm\PaymentsModule\Events\NewPaymentEvent].',
         ));
 
         // handle league event
@@ -206,7 +206,7 @@ class PaymentStatusChangeHandlerTest extends DatabaseTestCase
         $user = $userManager->addNewUser('example@example.com', false, 'unknown', null, false);
         $usersRepository->update($user, [
             'invoice' => true,
-            'disable_auto_invoice' => false
+            'disable_auto_invoice' => false,
         ]);
         return $this->user = $user;
     }
@@ -225,7 +225,7 @@ class PaymentStatusChangeHandlerTest extends DatabaseTestCase
     private function addPayment(
         ActiveRow $user,
         DateTime $startSubscriptionAt,
-        ?DateTime $paidAt = null
+        ?DateTime $paidAt = null,
     ): ActiveRow {
         /** @var PaymentsRepository $paymentsRepository */
         $paymentsRepository = $this->getRepository(PaymentsRepository::class);
@@ -237,7 +237,7 @@ class PaymentStatusChangeHandlerTest extends DatabaseTestCase
             new PaymentItemContainer(),
             null,
             1,
-            $startSubscriptionAt
+            $startSubscriptionAt,
         );
 
         if ($paidAt !== null) {

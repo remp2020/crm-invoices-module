@@ -8,7 +8,7 @@ use Nette\Database\Table\ActiveRow;
 class InvoiceNumber implements InvoiceNumberInterface
 {
     public function __construct(
-        private InvoiceNumbersRepository $invoiceNumbersRepository
+        private InvoiceNumbersRepository $invoiceNumbersRepository,
     ) {
     }
 

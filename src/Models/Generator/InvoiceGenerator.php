@@ -39,7 +39,7 @@ class InvoiceGenerator
         private readonly Translator $translator,
         private readonly InvoiceNumberInterface $invoiceNumber,
         RedisClientFactory $redisClientFactory,
-        private readonly AddressesRepository $addressesRepository
+        private readonly AddressesRepository $addressesRepository,
     ) {
         $this->redisClientFactory = $redisClientFactory;
     }
@@ -191,7 +191,7 @@ class InvoiceGenerator
                 'invoice' => $invoice,
                 'config' => $this->applicationConfig,
                 'params' => $this->templateParams,
-            ]
+            ],
         );
 
         if (!$template) {

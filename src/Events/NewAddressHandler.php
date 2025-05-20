@@ -15,7 +15,7 @@ class NewAddressHandler extends AbstractListener
     public function __construct(
         private HermesEmitter $hermesEmitter,
         private PaymentsRepository $paymentsRepository,
-        private UsersRepository $usersRepository
+        private UsersRepository $usersRepository,
     ) {
     }
 
@@ -50,7 +50,7 @@ class NewAddressHandler extends AbstractListener
 
         foreach ($payments as $payment) {
             $this->hermesEmitter->emit(new HermesMessage('generate_invoice', [
-                'payment_id' => $payment->id
+                'payment_id' => $payment->id,
             ]), HermesMessage::PRIORITY_LOW);
         }
     }

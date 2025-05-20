@@ -18,7 +18,7 @@ class PaymentStatusChangeHandler extends AbstractListener
 
     public function __construct(
         ApplicationConfig $applicationConfig,
-        HermesEmitter $hermesEmitter
+        HermesEmitter $hermesEmitter,
     ) {
         $this->applicationConfig = $applicationConfig;
         $this->hermesEmitter = $hermesEmitter;
@@ -42,7 +42,7 @@ class PaymentStatusChangeHandler extends AbstractListener
         }
 
         $this->hermesEmitter->emit(new HermesMessage('generate_invoice', [
-            'payment_id' => $payment->id
+            'payment_id' => $payment->id,
         ]), HermesMessage::PRIORITY_LOW);
     }
 }

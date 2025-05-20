@@ -36,7 +36,7 @@ class FamilyRequestFormDataProvider implements RequestFormDataProviderInterface
         $vatMode = $this->vatModeDetector->userVatMode($user);
 
         $autoVatModeMessage = $this->translator->translate('invoices.data_provider.family_request.vat_mode_automatic', [
-            'vat_mode' => $this->translator->translate('invoices.data_provider.family_request.vat_mode.' . $vatMode->value)
+            'vat_mode' => $this->translator->translate('invoices.data_provider.family_request.vat_mode.' . $vatMode->value),
         ]);
 
         $form->getComponent('no_vat')

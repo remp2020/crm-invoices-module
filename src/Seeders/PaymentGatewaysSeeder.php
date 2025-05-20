@@ -23,7 +23,7 @@ class PaymentGatewaysSeeder implements ISeeder
                 'Proforma invoice',
                 ProformaInvoice::GATEWAY_CODE,
                 200,
-                true
+                true,
             );
             $output->writeln('  <comment>* payment type <info>proforma invoice</info> created</comment>');
         } else {

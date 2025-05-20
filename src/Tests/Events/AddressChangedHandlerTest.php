@@ -99,13 +99,13 @@ class AddressChangedHandlerTest extends DatabaseTestCase
                         return false;
                     }
                     return true;
-                })
+                }),
             );
 
         // register observer as hermes handler
         $this->dispatcher->registerHandler(
             'generate_invoice',
-            $generateInvoiceHandlerObserver
+            $generateInvoiceHandlerObserver,
         );
 
         // handle league & hermes events
@@ -152,13 +152,13 @@ class AddressChangedHandlerTest extends DatabaseTestCase
                         return false;
                     }
                     return true;
-                })
+                }),
             );
 
         // register observer as hermes handler
         $this->dispatcher->registerHandler(
             'generate_invoice',
-            $generateInvoiceHandlerObserver
+            $generateInvoiceHandlerObserver,
         );
 
         // handle league & hermes events
@@ -194,7 +194,7 @@ class AddressChangedHandlerTest extends DatabaseTestCase
         // register observer as hermes handler
         $this->dispatcher->registerHandler(
             'generate_invoice',
-            $generateInvoiceHandlerObserver
+            $generateInvoiceHandlerObserver,
         );
 
         // USER
@@ -224,7 +224,7 @@ class AddressChangedHandlerTest extends DatabaseTestCase
         $event = new UserMetaEvent($user, 'foo', 'bar'); // just random event which doesn't need special entity to mock
 
         $this->expectExceptionObject(new \Exception(
-            'Invalid type of event. Expected: [Crm\UsersModule\Events\AddressChangedEvent]. Received: [Crm\UsersModule\Events\UserMetaEvent].'
+            'Invalid type of event. Expected: [Crm\UsersModule\Events\AddressChangedEvent]. Received: [Crm\UsersModule\Events\UserMetaEvent].',
         ));
 
         // handle event
@@ -247,7 +247,7 @@ class AddressChangedHandlerTest extends DatabaseTestCase
         $user = $userManager->addNewUser('example@example.com', false, 'unknown', null, false);
         $this->usersRepository->update($user, [
             'invoice' => true,
-            'disable_auto_invoice' => false
+            'disable_auto_invoice' => false,
         ]);
         return $this->user = $user;
     }
@@ -289,7 +289,7 @@ class AddressChangedHandlerTest extends DatabaseTestCase
     private function addPayment(
         ActiveRow $user,
         DateTime $startSubscriptionAt,
-        ?DateTime $paidAt = null
+        ?DateTime $paidAt = null,
     ): ActiveRow {
         /** @var PaymentsRepository $paymentsRepository */
         $paymentsRepository = $this->getRepository(PaymentsRepository::class);
@@ -301,7 +301,7 @@ class AddressChangedHandlerTest extends DatabaseTestCase
             new PaymentItemContainer(),
             null,
             1,
-            $startSubscriptionAt
+            $startSubscriptionAt,
         );
 
         if ($paidAt !== null) {

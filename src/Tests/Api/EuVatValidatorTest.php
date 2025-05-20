@@ -79,7 +79,7 @@ class EuVatValidatorTest extends DatabaseTestCase
         $this->assertEquals($response->getIdentifier(), $consultationRow->consultation_number);
         $this->assertEquals(
             $response->toArray(),
-            Json::decode($consultationRow->response, Json::FORCE_ARRAY)
+            Json::decode($consultationRow->response, Json::FORCE_ARRAY),
         );
     }
 
@@ -137,7 +137,7 @@ class EuVatValidatorTest extends DatabaseTestCase
 
         $this->expectExceptionObject(new EuVatValidatorException(
             'Service for VAT ID validation (EU VIES) is not available at the moment, please try again later.',
-            EuVatValidatorException::SERVICE_UNAVAILABLE
+            EuVatValidatorException::SERVICE_UNAVAILABLE,
         ));
         $euVatValidator->validateVat($buyerVatId);
 
@@ -258,7 +258,7 @@ class EuVatValidatorTest extends DatabaseTestCase
         // consultation is too old; return VIES UNAVAILABLE error
         $this->expectExceptionObject(new EuVatValidatorException(
             'Service for VAT ID validation (EU VIES) is not available at the moment, please try again later.',
-            EuVatValidatorException::SERVICE_UNAVAILABLE
+            EuVatValidatorException::SERVICE_UNAVAILABLE,
         ));
         $euVatValidator->validateVat($buyerVatId);
 
@@ -300,7 +300,7 @@ class EuVatValidatorTest extends DatabaseTestCase
 
         $this->expectExceptionObject(new EuVatValidatorException(
             'Service for VAT ID validation (EU VIES) is not available at the moment, please try again later.',
-            EuVatValidatorException::SERVICE_UNAVAILABLE
+            EuVatValidatorException::SERVICE_UNAVAILABLE,
         ));
         $euVatValidator->validateVat($buyerVatId);
 

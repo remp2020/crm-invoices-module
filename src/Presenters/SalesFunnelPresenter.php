@@ -51,7 +51,7 @@ class SalesFunnelPresenter extends FrontendPresenter
                 'ERROR',
                 "Payment is not in FORM state when finishing proforma invoice payment - '{$this->variableSymbol}'",
                 $this->request->getUrl(),
-                $payment->id
+                $payment->id,
             );
             $this->redirect(':SalesFunnel:SalesFunnel:Error');
         }
@@ -93,7 +93,7 @@ class SalesFunnelPresenter extends FrontendPresenter
         $this->paymentLogsRepository->add(
             'ERROR',
             "Cannot load payment with VS '{$variableSymbol}'",
-            $this->request->getUrl()
+            $this->request->getUrl(),
         );
         $this->redirect(':SalesFunnel:SalesFunnel:Error');
     }

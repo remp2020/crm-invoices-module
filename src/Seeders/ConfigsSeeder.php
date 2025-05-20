@@ -18,7 +18,7 @@ class ConfigsSeeder implements ISeeder
     public function __construct(
         private ConfigCategoriesRepository $configCategoriesRepository,
         private ConfigsRepository $configsRepository,
-        private ConfigBuilder $configBuilder
+        private ConfigBuilder $configBuilder,
     ) {
     }
 
@@ -34,7 +34,7 @@ class ConfigsSeeder implements ISeeder
             'invoices.config.supplier_name.name',
             'invoices.config.supplier_name.description',
             null,
-            100
+            100,
         );
 
         $this->addConfig(
@@ -45,7 +45,7 @@ class ConfigsSeeder implements ISeeder
             'invoices.config.supplier_address.name',
             'invoices.config.supplier_address.description',
             null,
-            200
+            200,
         );
 
         $this->addConfig(
@@ -56,7 +56,7 @@ class ConfigsSeeder implements ISeeder
             'invoices.config.supplier_city.name',
             'invoices.config.supplier_city.description',
             null,
-            200
+            200,
         );
 
         $this->addConfig(
@@ -67,7 +67,7 @@ class ConfigsSeeder implements ISeeder
             'invoices.config.supplier_zip.name',
             'invoices.config.supplier_zip.description',
             null,
-            200
+            200,
         );
 
         $this->addConfig(
@@ -78,7 +78,7 @@ class ConfigsSeeder implements ISeeder
             'invoices.config.supplier_id.name',
             'invoices.config.supplier_id.description',
             null,
-            300
+            300,
         );
 
         $this->addConfig(
@@ -89,7 +89,7 @@ class ConfigsSeeder implements ISeeder
             'invoices.config.supplier_tax_id.name',
             'invoices.config.supplier_tax_id.description',
             null,
-            400
+            400,
         );
 
         $this->addConfig(
@@ -100,7 +100,7 @@ class ConfigsSeeder implements ISeeder
             'invoices.config.supplier_vat_id.name',
             'invoices.config.supplier_vat_id.description',
             null,
-            500
+            500,
         );
 
         $this->addConfig(
@@ -111,7 +111,7 @@ class ConfigsSeeder implements ISeeder
             'invoices.config.supplier_bank_account_number.name',
             'invoices.config.supplier_bank_account_number.description',
             null,
-            700
+            700,
         );
 
         $this->addConfig(
@@ -122,7 +122,7 @@ class ConfigsSeeder implements ISeeder
             'invoices.config.supplier_bank_name.name',
             'invoices.config.supplier_bank_name.description',
             null,
-            650
+            650,
         );
 
         $this->addConfig(
@@ -133,7 +133,7 @@ class ConfigsSeeder implements ISeeder
             'invoices.config.supplier_iban.name',
             'invoices.config.supplier_iban.description',
             null,
-            800
+            800,
         );
 
         $this->addConfig(
@@ -144,7 +144,7 @@ class ConfigsSeeder implements ISeeder
             'invoices.config.supplier_swift.name',
             'invoices.config.supplier_swift.description',
             null,
-            900
+            900,
         );
 
         $this->addConfig(
@@ -155,7 +155,7 @@ class ConfigsSeeder implements ISeeder
             'invoices.config.business_register_detail.name',
             'invoices.config.business_register_detail.description',
             null,
-            1000
+            1000,
         );
 
         $this->addConfig(
@@ -166,7 +166,7 @@ class ConfigsSeeder implements ISeeder
             'invoices.config.invoice_constant_symbol.name',
             'invoices.config.invoice_constant_symbol.description',
             '0308',
-            1100
+            1100,
         );
 
         $this->addConfig(
@@ -177,7 +177,7 @@ class ConfigsSeeder implements ISeeder
             'invoices.config.attach_invoice_to_payment_notification.name',
             null,
             true,
-            1200
+            1200,
         );
 
         $this->addConfig(
@@ -188,7 +188,7 @@ class ConfigsSeeder implements ISeeder
             'invoices.config.generate_invoice_after_payment.name',
             null,
             true,
-            1300
+            1300,
         );
 
         $this->addConfig(
@@ -199,7 +199,7 @@ class ConfigsSeeder implements ISeeder
             'invoices.config.generate_invoice_number_for_paid_payment.name',
             'invoices.config.generate_invoice_number_for_paid_payment.description',
             false, // keeping compatible with previous state of invoice generation
-            1400
+            1400,
         );
 
         $this->addConfig(
@@ -214,7 +214,7 @@ class ConfigsSeeder implements ISeeder
             [
                 InvoicesRepository::GENERATE_INVOICE_LIMIT_FROM_PAYMENT => 'invoices.config.generate_invoice_limit_from.options.limit_from_payment',
                 InvoicesRepository::GENERATE_INVOICE_LIMIT_FROM_END_OF_THE_MONTH => 'invoices.config.generate_invoice_limit_from.options.limit_from_end_of_the_month',
-            ]
+            ],
         );
 
         $this->addConfig(
@@ -225,7 +225,7 @@ class ConfigsSeeder implements ISeeder
             'invoices.config.generate_invoice_limit_from_days.name',
             'invoices.config.generate_invoice_limit_from_days.description',
             15, // default set to 15 days from payment paid_at to avoid breaking change
-            1505
+            1505,
         );
     }
 }

@@ -98,13 +98,13 @@ class NewAddressHandlerTest extends DatabaseTestCase
                         return false;
                     }
                     return true;
-                })
+                }),
             );
 
         // register observer as hermes handler
         $this->dispatcher->registerHandler(
             'generate_invoice',
-            $generateInvoiceHandlerObserver
+            $generateInvoiceHandlerObserver,
         );
 
         // handle league & hermes events
@@ -152,13 +152,13 @@ class NewAddressHandlerTest extends DatabaseTestCase
                         return false;
                     }
                     return true;
-                })
+                }),
             );
 
         // register observer as hermes handler
         $this->dispatcher->registerHandler(
             'generate_invoice',
-            $generateInvoiceHandlerObserver
+            $generateInvoiceHandlerObserver,
         );
 
         // handle league & hermes events
@@ -193,7 +193,7 @@ class NewAddressHandlerTest extends DatabaseTestCase
         // register observer as hermes handler
         $this->dispatcher->registerHandler(
             'generate_invoice',
-            $generateInvoiceHandlerObserver
+            $generateInvoiceHandlerObserver,
         );
 
         // handle league & hermes events
@@ -223,7 +223,7 @@ class NewAddressHandlerTest extends DatabaseTestCase
         // register observer as hermes handler
         $this->dispatcher->registerHandler(
             'generate_invoice',
-            $generateInvoiceHandlerObserver
+            $generateInvoiceHandlerObserver,
         );
 
         // handle league & hermes events
@@ -237,7 +237,7 @@ class NewAddressHandlerTest extends DatabaseTestCase
         $event = new AddressChangedEvent($address);
 
         $this->expectExceptionObject(new \Exception(
-            'Invalid type of event. Expected: [Crm\UsersModule\Events\NewAddressEvent]. Received: [Crm\UsersModule\Events\AddressChangedEvent].'
+            'Invalid type of event. Expected: [Crm\UsersModule\Events\NewAddressEvent]. Received: [Crm\UsersModule\Events\AddressChangedEvent].',
         ));
 
         // handle event
@@ -260,7 +260,7 @@ class NewAddressHandlerTest extends DatabaseTestCase
         $user = $userManager->addNewUser('example@example.com', false, 'unknown', null, false);
         $this->usersRepository->update($user, [
             'invoice' => true,
-            'disable_auto_invoice' => false
+            'disable_auto_invoice' => false,
         ]);
         return $this->user = $user;
     }
@@ -279,7 +279,7 @@ class NewAddressHandlerTest extends DatabaseTestCase
     private function addPayment(
         ActiveRow $user,
         DateTime $startSubscriptionAt,
-        ?DateTime $paidAt = null
+        ?DateTime $paidAt = null,
     ): ActiveRow {
         /** @var PaymentsRepository $paymentsRepository */
         $paymentsRepository = $this->getRepository(PaymentsRepository::class);
@@ -291,7 +291,7 @@ class NewAddressHandlerTest extends DatabaseTestCase
             new PaymentItemContainer(),
             null,
             1,
-            $startSubscriptionAt
+            $startSubscriptionAt,
         );
 
         if ($paidAt !== null) {

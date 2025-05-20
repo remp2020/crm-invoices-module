@@ -18,7 +18,7 @@ class InvoiceDetailsWidget extends BaseLazyWidget
     public function __construct(
         LazyWidgetManager $lazyWidgetManager,
         Translator $translator,
-        ChangeInvoiceDetailsFormFactory $changeInvoiceDetailsFormFactory
+        ChangeInvoiceDetailsFormFactory $changeInvoiceDetailsFormFactory,
     ) {
         parent::__construct($lazyWidgetManager);
 
@@ -46,8 +46,8 @@ class InvoiceDetailsWidget extends BaseLazyWidget
                 'invoices.frontend.change_invoice_details.warning',
                 null,
                 [
-                    'link' => $this->presenter->link(':Payments:Payments:my')
-                ]
+                    'link' => $this->presenter->link(':Payments:Payments:my'),
+                ],
             );
 
             $this->presenter->flashMessage($this->translator->translate('invoices.frontend.change_invoice_details.success'));

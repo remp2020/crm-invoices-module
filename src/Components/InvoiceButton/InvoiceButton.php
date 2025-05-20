@@ -25,7 +25,7 @@ class InvoiceButton extends BaseLazyWidget
 
     public function __construct(
         InvoicesRepository $invoicesRepository,
-        LazyWidgetManager $lazyWidgetManager
+        LazyWidgetManager $lazyWidgetManager,
     ) {
         parent::__construct($lazyWidgetManager);
         $this->invoicesRepository = $invoicesRepository;

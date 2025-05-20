@@ -27,7 +27,7 @@ class PreNotificationEventHandler extends AbstractListener
     public function __construct(
         InvoiceGenerator $invoiceGenerator,
         PaymentsRepository $paymentsRepository,
-        ApplicationConfig $applicationConfig
+        ApplicationConfig $applicationConfig,
     ) {
         $this->invoiceGenerator = $invoiceGenerator;
         $this->paymentsRepository = $paymentsRepository;

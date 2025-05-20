@@ -11,7 +11,7 @@ class ReceiptAdminButtonFactory implements WidgetFactoryInterface
     protected LazyWidgetManager $lazyWidgetManager;
 
     public function __construct(
-        LazyWidgetManager $lazyWidgetManager
+        LazyWidgetManager $lazyWidgetManager,
     ) {
         $this->lazyWidgetManager = $lazyWidgetManager;
     }

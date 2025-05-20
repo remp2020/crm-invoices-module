@@ -58,15 +58,15 @@ class InvoiceNumbersTest extends DatabaseTestCase
     public function testThreeWithinMonth()
     {
         $number = $this->invoiceNumber->getNextInvoiceNumber(
-            $this->getConfirmedPayment('0000000001', new DateTime('2001-04-15'))
+            $this->getConfirmedPayment('0000000001', new DateTime('2001-04-15')),
         );
         $this->assertEquals('01m0400001', $number->number);
         $number = $this->invoiceNumber->getNextInvoiceNumber(
-            $this->getConfirmedPayment('0000000002', new DateTime('2001-04-15'))
+            $this->getConfirmedPayment('0000000002', new DateTime('2001-04-15')),
         );
         $this->assertEquals('01m0400002', $number->number);
         $number = $this->invoiceNumber->getNextInvoiceNumber(
-            $this->getConfirmedPayment('0000000003', new DateTime('2001-04-16'))
+            $this->getConfirmedPayment('0000000003', new DateTime('2001-04-16')),
         );
         $this->assertEquals('01m0400003', $number->number);
     }
@@ -74,15 +74,15 @@ class InvoiceNumbersTest extends DatabaseTestCase
     public function testThreeMultipleMonths()
     {
         $number = $this->invoiceNumber->getNextInvoiceNumber(
-            $this->getConfirmedPayment('0000000001', new DateTime('2001-04-15'))
+            $this->getConfirmedPayment('0000000001', new DateTime('2001-04-15')),
         );
         $this->assertEquals('01m0400001', $number->number);
         $number = $this->invoiceNumber->getNextInvoiceNumber(
-            $this->getConfirmedPayment('0000000002', new DateTime('2001-05-15'))
+            $this->getConfirmedPayment('0000000002', new DateTime('2001-05-15')),
         );
         $this->assertEquals('01m0500001', $number->number);
         $number = $this->invoiceNumber->getNextInvoiceNumber(
-            $this->getConfirmedPayment('0000000003', new DateTime('2001-06-16'))
+            $this->getConfirmedPayment('0000000003', new DateTime('2001-06-16')),
         );
         $this->assertEquals('01m0600001', $number->number);
     }
@@ -90,15 +90,15 @@ class InvoiceNumbersTest extends DatabaseTestCase
     public function testCrossMonths()
     {
         $number = $this->invoiceNumber->getNextInvoiceNumber(
-            $this->getConfirmedPayment('0000000001', new DateTime('2001-04-15'))
+            $this->getConfirmedPayment('0000000001', new DateTime('2001-04-15')),
         );
         $this->assertEquals('01m0400001', $number->number);
         $number = $this->invoiceNumber->getNextInvoiceNumber(
-            $this->getConfirmedPayment('0000000002', new DateTime('2001-05-15'))
+            $this->getConfirmedPayment('0000000002', new DateTime('2001-05-15')),
         );
         $this->assertEquals('01m0500001', $number->number);
         $number = $this->invoiceNumber->getNextInvoiceNumber(
-            $this->getConfirmedPayment('0000000003', new DateTime('2001-04-16'))
+            $this->getConfirmedPayment('0000000003', new DateTime('2001-04-16')),
         );
         $this->assertEquals('01m0400002', $number->number);
     }
@@ -106,19 +106,19 @@ class InvoiceNumbersTest extends DatabaseTestCase
     public function testNonstandardOrder()
     {
         $number = $this->invoiceNumber->getNextInvoiceNumber(
-            $this->getConfirmedPayment('0000000003', new DateTime('2001-05-16'))
+            $this->getConfirmedPayment('0000000003', new DateTime('2001-05-16')),
         );
         $this->assertEquals('01m0500001', $number->number);
         $number = $this->invoiceNumber->getNextInvoiceNumber(
-            $this->getConfirmedPayment('0000000003', new DateTime('2001-04-16'))
+            $this->getConfirmedPayment('0000000003', new DateTime('2001-04-16')),
         );
         $this->assertEquals('01m0400001', $number->number);
         $number = $this->invoiceNumber->getNextInvoiceNumber(
-            $this->getConfirmedPayment('0000000003', new DateTime('2001-04-15'))
+            $this->getConfirmedPayment('0000000003', new DateTime('2001-04-15')),
         );
         $this->assertEquals('01m0400002', $number->number);
         $number = $this->invoiceNumber->getNextInvoiceNumber(
-            $this->getConfirmedPayment('0000000003', new DateTime('2001-04-14'))
+            $this->getConfirmedPayment('0000000003', new DateTime('2001-04-14')),
         );
         $this->assertEquals('01m0400003', $number->number);
     }

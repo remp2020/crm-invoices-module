@@ -81,7 +81,7 @@ class UserInvoiceFormFactory
             ->setOption('id', 'invoice-country')
             ->setOption(
                 'description',
-                $this->translator->translate('invoices.form.invoice.options.foreign_country', ['contactEmail' => $this->applicationConfig->get('contact_email')])
+                $this->translator->translate('invoices.form.invoice.options.foreign_country', ['contactEmail' => $this->applicationConfig->get('contact_email')]),
             );
 
         // at the moment, only default country is allowed for invoicing (we are missing VATs for other countries)
@@ -97,7 +97,7 @@ class UserInvoiceFormFactory
                 // and add bigger error above form
                 $form->addError($this->translator->translate(
                     'invoices.form.invoice.options.foreign_country',
-                    ['contactEmail' => $this->applicationConfig->get('contact_email')]
+                    ['contactEmail' => $this->applicationConfig->get('contact_email')],
                 ));
             }
         }
@@ -172,7 +172,7 @@ class UserInvoiceFormFactory
             $values->company_tax_id,
             $values->company_vat_id,
             null,
-            'invoice'
+            'invoice',
         );
 
         $updateArray = [

@@ -88,7 +88,7 @@ class ChangeInvoiceFormFactory
             'buyer_country_id' => $country->id,
             'buyer_id' => $values->company_id,
             'buyer_tax_id' => $values->company_tax_id,
-            'buyer_vat_id' => $values->company_vat_id
+            'buyer_vat_id' => $values->company_vat_id,
         ]);
 
         $this->onSuccess->__invoke($form);

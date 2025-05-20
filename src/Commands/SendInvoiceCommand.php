@@ -22,7 +22,7 @@ class SendInvoiceCommand extends Command
     public function __construct(
         PaymentsRepository $paymentsRepository,
         InvoiceGenerator $invoiceGenerator,
-        Emitter $emitter
+        Emitter $emitter,
     ) {
         parent::__construct();
         $this->paymentsRepository = $paymentsRepository;
@@ -41,13 +41,13 @@ class SendInvoiceCommand extends Command
                 'variable-symbol',
                 null,
                 InputOption::VALUE_REQUIRED,
-                'Transaction identifier'
+                'Transaction identifier',
             )
             ->addOption(
                 'template-code',
                 null,
                 InputOption::VALUE_REQUIRED,
-                'Code of an email to be sent'
+                'Code of an email to be sent',
             );
     }
 
@@ -91,7 +91,7 @@ class SendInvoiceCommand extends Command
             $templateCode,
             [],
             null,
-            [$attachment]
+            [$attachment],
         ));
 
         $output->writeln("Sent invoice <info>{$payment->invoice->invoice_number->number}</info> as an attachment of <info>{$templateCode}</info> to <info>{$payment->user->email}</info>.");

@@ -12,7 +12,7 @@ class InvoiceNumbersRepository extends Repository
 
     public function __construct(
         Explorer $database,
-        AuditLogRepository $auditLogRepository
+        AuditLogRepository $auditLogRepository,
     ) {
         parent::__construct($database);
         $this->auditLogRepository = $auditLogRepository;

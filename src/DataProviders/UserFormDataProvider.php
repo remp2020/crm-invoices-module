@@ -75,7 +75,7 @@ class UserFormDataProvider implements UserFormDataProviderInterface
 
                 foreach ($payments as $payment) {
                     $this->hermesEmitter->emit(new HermesMessage('generate_invoice', [
-                        'payment_id' => $payment->id
+                        'payment_id' => $payment->id,
                     ]), HermesMessage::PRIORITY_LOW);
                 }
             }

@@ -11,7 +11,7 @@ class PaymentInvoiceProvider implements PaymentInvoiceProviderInterface
     private $invoiceGenerator;
 
     public function __construct(
-        InvoiceGenerator $invoiceGenerator
+        InvoiceGenerator $invoiceGenerator,
     ) {
         $this->invoiceGenerator = $invoiceGenerator;
     }

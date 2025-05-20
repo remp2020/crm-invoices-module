@@ -52,7 +52,7 @@ class InvoicesRepository extends Repository
             trigger_error(
                 'Parameter `$invoiceNumber` is deprecated. Set invoice number to payment (`$payment->invoice_number_id`) before adding invoice. ' .
                 'Support will be removed in next major release.',
-                \E_USER_DEPRECATED
+                \E_USER_DEPRECATED,
             );
         } else {
             $invoiceNumber = $payment->invoice_number;
@@ -100,7 +100,7 @@ class InvoicesRepository extends Repository
             // set created_date (which is used as issued_date) to same date as invoice number was generated to follow sequence of numbers / invoices
             'created_date' => $this->applicationConfig->get('generate_invoice_number_for_paid_payment') ? $invoiceNumber->delivered_at : $now,
             'updated_date' => $now,
-            'invoice_number_id' => $invoiceNumber
+            'invoice_number_id' => $invoiceNumber,
         ];
 
         /** @var ActiveRow $invoice */
@@ -113,7 +113,7 @@ class InvoicesRepository extends Repository
 
         $this->emitter->emit(new NewInvoiceEvent($invoice));
         $this->hermesEmitter->emit(new HermesMessage('new-invoice', [
-            'invoice_id' => $invoice->id
+            'invoice_id' => $invoice->id,
         ]));
 
         return $invoice;
@@ -252,7 +252,7 @@ class InvoicesRepository extends Repository
                 $item->amount,
                 $item->amount_without_vat,
                 $item->vat,
-                $this->applicationConfig->get('currency')
+                $this->applicationConfig->get('currency'),
             );
 
             if ($postalFeeVat === null || $item->vat > $postalFeeVat) {

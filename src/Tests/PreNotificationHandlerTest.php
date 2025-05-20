@@ -142,8 +142,8 @@ class PreNotificationHandlerTest extends BaseTestCase
                 null,
                 new NotificationContext([
                     NotificationContext::HERMES_MESSAGE_TYPE => 'foo',
-                ])
-            )
+                ]),
+            ),
         );
 
         $this->assertNotEmpty($event->getAttachments());
@@ -174,7 +174,7 @@ class PreNotificationHandlerTest extends BaseTestCase
     {
         $config = $this->configsRepository->loadByName('attach_invoice_to_payment_notification');
         $this->configsRepository->update($config, [
-            'value' => $allow
+            'value' => $allow,
         ]);
     }
 

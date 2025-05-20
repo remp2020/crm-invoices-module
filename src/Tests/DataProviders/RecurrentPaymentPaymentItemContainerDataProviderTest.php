@@ -102,7 +102,7 @@ final class RecurrentPaymentPaymentItemContainerDataProviderTest extends BaseTes
         $dataProviderManager->registerDataProvider(
             OneStopShopCountryResolutionDataProviderInterface::PATH,
             $this->inject(OneStopShopCountryResolutionDataProvider::class),
-            50
+            50,
         );
         $dataProviderManager->registerDataProvider(
             VatModeDataProviderInterface::PATH,
@@ -836,7 +836,7 @@ final class RecurrentPaymentPaymentItemContainerDataProviderTest extends BaseTes
             paymentGateway: $this->paymentGateway,
             user: $user,
             paymentItemContainer: $paymentItemContainer,
-            paymentCountry: $paymentCountry
+            paymentCountry: $paymentCountry,
         );
 
         // Make manual payment
@@ -931,7 +931,7 @@ final class RecurrentPaymentPaymentItemContainerDataProviderTest extends BaseTes
         ActiveRow $user,
         ActiveRow $country,
         ?string $companyId = null,
-        ?string $companyVatId = null
+        ?string $companyVatId = null,
     ): ActiveRow {
         $old = $this->addressesRepository->userAddresses($user, 'invoice')->fetch();
         if ($old) {

@@ -227,7 +227,7 @@ class InvoicesAdminPresenter extends AdminPresenter
                 'country_id' => $invoice->buyer_country_id,
                 'company_id' => $invoice->buyer_id,
                 'company_tax_id' => $invoice->buyer_tax_id,
-                'company_vat_id' => $invoice->buyer_vat_id
+                'company_vat_id' => $invoice->buyer_vat_id,
             ];
             $form->setDefaults($defaults);
         }
@@ -261,7 +261,7 @@ class InvoicesAdminPresenter extends AdminPresenter
                         'country' => $address->country->iso_code,
                         'company_id' => $address->company_id,
                         'company_tax_id' => $address->company_tax_id,
-                        'company_vat_id' => $address->company_vat_id
+                        'company_vat_id' => $address->company_vat_id,
                     ];
                     $form->setDefaults($defaults);
                 }

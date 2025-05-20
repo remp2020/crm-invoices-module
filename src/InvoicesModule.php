@@ -66,7 +66,7 @@ class InvoicesModule extends CrmModule
             $this->translator->translate('invoices.admin.menu.export'),
             ':Invoices:InvoicesAdmin:default',
             'fa fa-file-invoice',
-            1200
+            1200,
         );
         $menuContainer->attachMenuItemToForeignModule('#payments', $mainMenu, $menuItem);
     }
@@ -82,53 +82,53 @@ class InvoicesModule extends CrmModule
         $widgetManager->registerWidgetFactory(
             'admin.payments.listing.action.menu',
             InvoiceAdminButtonFactory::class,
-            400
+            400,
         );
         $widgetManager->registerWidgetFactory(
             'frontend.payments.listing.receipts',
             InvoiceFrontendButtonFactory::class,
-            400
+            400,
         );
         $widgetManager->registerWidgetFactory(
             'frontend.payments.refund.receipts',
             InvoiceFrontendButtonFactory::class,
-            400
+            400,
         );
         $widgetManager->registerWidgetFactory(
             'frontend.payments.listing.receipts',
             DownloadReceiptButtonFactory::class,
-            500
+            500,
         );
 
         $widgetManager->registerWidgetFactory(
             'admin.payments.listing.action.menu',
             ReceiptAdminButtonFactory::class,
-            500
+            500,
         );
 
         $widgetManager->registerWidget(
             'payment.address',
-            PaymentSuccessInvoiceWidget::class
+            PaymentSuccessInvoiceWidget::class,
         );
 
         $widgetManager->registerWidget(
             'admin.user.list.emailcolumn',
-            InvoiceLabel::class
+            InvoiceLabel::class,
         );
 
         $widgetManager->registerWidget(
             'invoices.frontend.invoice_details',
-            InvoiceDetailsWidget::class
+            InvoiceDetailsWidget::class,
         );
 
         $widgetManager->registerWidget(
             'admin.subscriptions.transfer.summary.content',
-            InvoiceAddressTransferSummaryWidget::class
+            InvoiceAddressTransferSummaryWidget::class,
         );
 
         $widgetManager->registerWidget(
             'admin.payment.payment_country_change.content',
-            ChangePaymentCountryWarningWidget::class
+            ChangePaymentCountryWarningWidget::class,
         );
     }
 
@@ -136,11 +136,11 @@ class InvoicesModule extends CrmModule
     {
         $dispatcher->registerHandler(
             'invoice_zip',
-            $this->getInstance(ZipInvoicesHandler::class)
+            $this->getInstance(ZipInvoicesHandler::class),
         );
         $dispatcher->registerHandler(
             'generate_invoice',
-            $this->getInstance(GenerateInvoiceHandler::class)
+            $this->getInstance(GenerateInvoiceHandler::class),
         );
     }
 
@@ -155,27 +155,27 @@ class InvoicesModule extends CrmModule
     {
         $emitter->addListener(
             AddressChangedEvent::class,
-            AddressChangedHandler::class
+            AddressChangedHandler::class,
         );
         $emitter->addListener(
             AddressRemovedEvent::class,
-            AddressRemovedHandler::class
+            AddressRemovedHandler::class,
         );
         $emitter->addListener(
             PreNotificationEvent::class,
-            PreNotificationEventHandler::class
+            PreNotificationEventHandler::class,
         );
         $emitter->addListener(
             PreNotificationEvent::class,
-            ReceiptPreNotificationEventHandler::class
+            ReceiptPreNotificationEventHandler::class,
         );
         $emitter->addListener(
             NewAddressEvent::class,
-            NewAddressHandler::class
+            NewAddressHandler::class,
         );
         $emitter->addListener(
             PaymentChangeStatusEvent::class,
-            PaymentStatusChangeHandler::class
+            PaymentStatusChangeHandler::class,
         );
     }
 
@@ -198,28 +198,28 @@ class InvoicesModule extends CrmModule
         );
         $dataProviderManager->registerDataProvider(
             'users.dataprovider.user_form',
-            $this->getInstance(UserFormDataProvider::class)
+            $this->getInstance(UserFormDataProvider::class),
         );
 
         $dataProviderManager->registerDataProvider(
             'admin.dataprovider.config_form',
-            $this->getInstance(ConfigFormDataProvider::class)
+            $this->getInstance(ConfigFormDataProvider::class),
         );
 
         $dataProviderManager->registerDataProvider(
             'users.dataprovider.address_form',
-            $this->getInstance(AddressFormDataProvider::class)
+            $this->getInstance(AddressFormDataProvider::class),
         );
 
         $dataProviderManager->registerDataProvider(
             'invoices.dataprovider.invoice_address_form',
-            $this->getInstance(AddressFormDataProvider::class)
+            $this->getInstance(AddressFormDataProvider::class),
         );
 
         $dataProviderManager->registerDataProvider(
             OneStopShopCountryResolutionDataProviderInterface::PATH,
             $this->getInstance(OneStopShopCountryResolutionDataProvider::class),
-            50
+            50,
         );
 
         $dataProviderManager->registerDataProvider(
@@ -245,7 +245,7 @@ class InvoicesModule extends CrmModule
 
         $dataProviderManager->registerDataProvider(
             'family.dataprovider.request_form',
-            $this->getInstance(FamilyRequestFormDataProvider::class)
+            $this->getInstance(FamilyRequestFormDataProvider::class),
         );
     }
 

@@ -86,7 +86,7 @@ class InvoicesRepositoryTest extends DatabaseTestCase
             // subscriptions
             SubscriptionExtensionMethodsSeeder::class,
             SubscriptionLengthMethodSeeder::class,
-            SubscriptionTypeNamesSeeder::class
+            SubscriptionTypeNamesSeeder::class,
         ];
     }
 
@@ -295,12 +295,12 @@ class InvoicesRepositoryTest extends DatabaseTestCase
     {
         $limitFromConfig = $this->configsRepository->loadByName(InvoicesRepository::GENERATE_INVOICE_LIMIT_FROM);
         $this->configsRepository->update($limitFromConfig, [
-            'value' => InvoicesRepository::GENERATE_INVOICE_LIMIT_FROM_PAYMENT
+            'value' => InvoicesRepository::GENERATE_INVOICE_LIMIT_FROM_PAYMENT,
         ]);
 
         $limitFromDaysConfig = $this->configsRepository->loadByName(InvoicesRepository::GENERATE_INVOICE_LIMIT_FROM_DAYS);
         $this->configsRepository->update($limitFromDaysConfig, [
-            'value' => 15
+            'value' => 15,
         ]);
 
         $user = $this->getUser();
@@ -316,12 +316,12 @@ class InvoicesRepositoryTest extends DatabaseTestCase
     {
         $limitFromConfig = $this->configsRepository->loadByName(InvoicesRepository::GENERATE_INVOICE_LIMIT_FROM);
         $this->configsRepository->update($limitFromConfig, [
-            'value' => InvoicesRepository::GENERATE_INVOICE_LIMIT_FROM_PAYMENT
+            'value' => InvoicesRepository::GENERATE_INVOICE_LIMIT_FROM_PAYMENT,
         ]);
 
         $limitFromDaysConfig = $this->configsRepository->loadByName(InvoicesRepository::GENERATE_INVOICE_LIMIT_FROM_DAYS);
         $this->configsRepository->update($limitFromDaysConfig, [
-            'value' => 15
+            'value' => 15,
         ]);
 
         $user = $this->getUser();
@@ -337,12 +337,12 @@ class InvoicesRepositoryTest extends DatabaseTestCase
     {
         $limitFromConfig = $this->configsRepository->loadByName(InvoicesRepository::GENERATE_INVOICE_LIMIT_FROM);
         $this->configsRepository->update($limitFromConfig, [
-            'value' => InvoicesRepository::GENERATE_INVOICE_LIMIT_FROM_END_OF_THE_MONTH
+            'value' => InvoicesRepository::GENERATE_INVOICE_LIMIT_FROM_END_OF_THE_MONTH,
         ]);
 
         $limitFromDaysConfig = $this->configsRepository->loadByName(InvoicesRepository::GENERATE_INVOICE_LIMIT_FROM_DAYS);
         $this->configsRepository->update($limitFromDaysConfig, [
-            'value' => 15
+            'value' => 15,
         ]);
 
         $user = $this->getUser();
@@ -358,12 +358,12 @@ class InvoicesRepositoryTest extends DatabaseTestCase
     {
         $limitFromConfig = $this->configsRepository->loadByName(InvoicesRepository::GENERATE_INVOICE_LIMIT_FROM);
         $this->configsRepository->update($limitFromConfig, [
-            'value' => InvoicesRepository::GENERATE_INVOICE_LIMIT_FROM_END_OF_THE_MONTH
+            'value' => InvoicesRepository::GENERATE_INVOICE_LIMIT_FROM_END_OF_THE_MONTH,
         ]);
 
         $limitFromDaysConfig = $this->configsRepository->loadByName(InvoicesRepository::GENERATE_INVOICE_LIMIT_FROM_DAYS);
         $this->configsRepository->update($limitFromDaysConfig, [
-            'value' => 15
+            'value' => 15,
         ]);
 
         $user = $this->getUser();
@@ -394,7 +394,7 @@ class InvoicesRepositoryTest extends DatabaseTestCase
         $user = $userManager->addNewUser('example@example.com', false, 'unknown', null, false);
         $usersRepository->update($user, [
             'invoice' => true,
-            'disable_auto_invoice' => false
+            'disable_auto_invoice' => false,
         ]);
         return $this->user = $user;
     }
@@ -414,7 +414,7 @@ class InvoicesRepositoryTest extends DatabaseTestCase
         ActiveRow $user,
         DateTime $startSubscriptionAt,
         DateTime $paidAt = null,
-        ActiveRow $subscriptionType = null
+        ActiveRow $subscriptionType = null,
     ): ActiveRow {
         if ($subscriptionType) {
             $paymentItemContainer = (new PaymentItemContainer())
@@ -430,7 +430,7 @@ class InvoicesRepositoryTest extends DatabaseTestCase
             $paymentItemContainer,
             null,
             $subscriptionType ? $subscriptionType->price : 1,
-            $startSubscriptionAt
+            $startSubscriptionAt,
         );
 
         if ($paidAt !== null) {

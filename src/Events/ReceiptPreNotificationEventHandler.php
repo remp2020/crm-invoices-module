@@ -18,7 +18,7 @@ class ReceiptPreNotificationEventHandler extends AbstractListener
 
     public function __construct(
         private ReceiptGenerator $receiptGenerator,
-        private PaymentsRepository $paymentsRepository
+        private PaymentsRepository $paymentsRepository,
     ) {
     }
 

@@ -230,7 +230,7 @@ class IsPaymentInvoiceableTest extends DatabaseTestCase
         $payment = $this->addPayment(
             $this->getUser(),
             new DateTime(),
-            new DateTime()
+            new DateTime(),
         );
 
         // add address that is not an invoice address type
@@ -262,7 +262,7 @@ class IsPaymentInvoiceableTest extends DatabaseTestCase
         $user = $userManager->addNewUser('example@example.com', false, 'unknown', null, false);
         $usersRepository->update($user, [
             'invoice' => true,
-            'disable_auto_invoice' => false
+            'disable_auto_invoice' => false,
         ]);
         return $this->user = $user;
     }
@@ -281,7 +281,7 @@ class IsPaymentInvoiceableTest extends DatabaseTestCase
     private function addPayment(
         ActiveRow $user,
         DateTime $startSubscriptionAt,
-        ?DateTime $paidAt = null
+        ?DateTime $paidAt = null,
     ): ActiveRow {
         $payment = $this->paymentsRepository->add(
             null,
@@ -290,7 +290,7 @@ class IsPaymentInvoiceableTest extends DatabaseTestCase
             new PaymentItemContainer(),
             null,
             1,
-            $startSubscriptionAt
+            $startSubscriptionAt,
         );
 
         if ($paidAt !== null) {

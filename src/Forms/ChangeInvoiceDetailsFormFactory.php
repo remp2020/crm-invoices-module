@@ -67,7 +67,7 @@ class ChangeInvoiceDetailsFormFactory
                 'zip' => $invoiceAddress->zip,
                 'company_id' => $invoiceAddress->company_id,
                 'company_tax_id' => $invoiceAddress->company_tax_id,
-                'company_vat_id' => $invoiceAddress->company_vat_id
+                'company_vat_id' => $invoiceAddress->company_vat_id,
             ];
         }
 
@@ -81,7 +81,7 @@ class ChangeInvoiceDetailsFormFactory
             'company_name',
             $this->translator->translate('invoices.frontend.change_invoice_details.company_name.label'),
             null,
-            1
+            1,
         )
             ->setMaxLength(150)
             ->setHtmlAttribute('placeholder', 'invoices.frontend.change_invoice_details.company_name.placeholder')
@@ -128,7 +128,7 @@ class ChangeInvoiceDetailsFormFactory
             ->setOption('id', 'invoice-country')
             ->setOption(
                 'description',
-                $this->translator->translate('invoices.frontend.change_invoice_details.country_id.foreign_country', ['contactEmail' => $contactEmail])
+                $this->translator->translate('invoices.frontend.change_invoice_details.country_id.foreign_country', ['contactEmail' => $contactEmail]),
             );
 
         $form->onSuccess[] = [$this, 'formSucceeded'];
@@ -183,7 +183,7 @@ class ChangeInvoiceDetailsFormFactory
             $values->company_tax_id,
             $values->company_vat_id,
             null,
-            'invoice'
+            'invoice',
         );
         if ($changeRequest) {
             $this->addressChangeRequestsRepository->acceptRequest($changeRequest);
@@ -199,7 +199,7 @@ class ChangeInvoiceDetailsFormFactory
 
                 foreach ($payments as $payment) {
                     $this->hermesEmitter->emit(new HermesMessage('generate_invoice', [
-                        'payment_id' => $payment->id
+                        'payment_id' => $payment->id,
                     ]), HermesMessage::PRIORITY_LOW);
                 }
             }

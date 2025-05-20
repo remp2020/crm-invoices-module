@@ -41,7 +41,7 @@ class UniversalSearchDataProvider implements UniversalSearchDataProviderInterfac
                 $result[$this->translator->translate('invoices.data_provider.universal_search.user_group')][] = [
                     'id' => 'user_id' . $payment->user->id,
                     'text' => $payment->user->email,
-                    'url' => $this->linkGenerator->link('Users:UsersAdmin:show', ['id' => $payment->user->id])
+                    'url' => $this->linkGenerator->link('Users:UsersAdmin:show', ['id' => $payment->user->id]),
                 ];
             }
         }

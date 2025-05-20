@@ -17,7 +17,7 @@ class GenerateInvoiceHandler implements HandlerInterface
 
     public function __construct(
         InvoiceGenerator $invoiceGenerator,
-        PaymentsRepository $paymentsRepository
+        PaymentsRepository $paymentsRepository,
     ) {
         $this->invoiceGenerator = $invoiceGenerator;
         $this->paymentsRepository = $paymentsRepository;

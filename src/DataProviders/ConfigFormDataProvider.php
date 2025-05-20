@@ -32,8 +32,8 @@ class ConfigFormDataProvider implements ConfigFormDataProviderInterface
                 ->setRequired($this->translator->translate(
                     'invoices.config.generate_invoice_number_for_paid_payment.required_because_of_invoice_limit_from_days',
                     [
-                        'days' => self::GENERATE_INVOICE_NUMBER_LIMIT
-                    ]
+                        'days' => self::GENERATE_INVOICE_NUMBER_LIMIT,
+                    ],
                 ));
         }
         return $form;

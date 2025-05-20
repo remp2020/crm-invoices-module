@@ -68,7 +68,7 @@ class EuVatValidator
                     'soap_fault_code' => $soapFault->faultcode ?? null,
                     'soap_fault_string' => $soapFault->faultstring ?? null,
                     'soap_fault_actor' => $soapFault->faultactor ?? null,
-                    'request_vat_id' => $vatId
+                    'request_vat_id' => $vatId,
                 ]), Debugger::ERROR);
 
                 // check previous validations (if caller set datetime threshold); CheckVatResponse contains date of validation
@@ -89,7 +89,7 @@ class EuVatValidator
                 throw new EuVatValidatorException(
                     'Service for VAT ID validation (EU VIES) is not available at the moment, please try again later.',
                     EuVatValidatorException::SERVICE_UNAVAILABLE,
-                    $soapFault
+                    $soapFault,
                 );
             }
 

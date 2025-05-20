@@ -15,7 +15,7 @@ class InvoiceAdminButtonFactory implements WidgetFactoryInterface
 
     public function __construct(
         InvoicesRepository $invoicesRepository,
-        LazyWidgetManager $lazyWidgetManager
+        LazyWidgetManager $lazyWidgetManager,
     ) {
         $this->lazyWidgetManager = $lazyWidgetManager;
         $this->invoicesRepository = $invoicesRepository;

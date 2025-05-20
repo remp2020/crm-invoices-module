@@ -22,7 +22,7 @@ class ChangeInvoiceItemsFormFactory
     public function __construct(
         Translator $translator,
         InvoicesRepository $invoicesRepository,
-        InvoiceItemsRepository $invoiceItemsRepository
+        InvoiceItemsRepository $invoiceItemsRepository,
     ) {
         $this->translator = $translator;
         $this->invoicesRepository = $invoicesRepository;
@@ -61,8 +61,8 @@ class ChangeInvoiceItemsFormFactory
                         ['viewHTML'],
                         ['undo', 'redo'],
                         ['formatting'],
-                        ['strong', 'em', 'del']
-                    ]]
+                        ['strong', 'em', 'del'],
+                    ]],
                 );
 
             $defaults['items'][$itemName] = $item->text;
@@ -84,7 +84,7 @@ class ChangeInvoiceItemsFormFactory
             $invoiceItem = $this->invoiceItemsRepository->find($itemId);
 
             $this->invoiceItemsRepository->update($invoiceItem, [
-                'text' => $value
+                'text' => $value,
             ]);
         }
 

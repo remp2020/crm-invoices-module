@@ -31,7 +31,7 @@ class ZipInvoicesHandler implements HandlerInterface
         InvoicesRepository $invoicesRepository,
         PaymentsRepository $paymentsRepository,
         InvoiceZipGenerator $invoiceZipGenerator,
-        InvoiceSandbox $invoiceSandbox
+        InvoiceSandbox $invoiceSandbox,
     ) {
         $this->invoiceNumbersRepository = $invoiceNumbersRepository;
         $this->invoicesRepository = $invoicesRepository;

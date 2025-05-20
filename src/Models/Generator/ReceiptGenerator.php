@@ -82,7 +82,7 @@ class ReceiptGenerator
                 'config' => $this->applicationConfig,
                 'user' => $payment->user,
                 'date' => $payment->paid_at,
-            ]
+            ],
         );
 
         if (!$template) {

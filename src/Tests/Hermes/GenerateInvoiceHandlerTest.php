@@ -101,7 +101,7 @@ class GenerateInvoiceHandlerTest extends DatabaseTestCase
             $this->getUser(),
             $this->getSubscriptionType(),
             new DateTime(),
-            new DateTime()
+            new DateTime(),
         );
 
         $this->addUserAddress('invoice');
@@ -111,7 +111,7 @@ class GenerateInvoiceHandlerTest extends DatabaseTestCase
         $this->assertEquals(0, $this->invoicesRepository->totalCount());
 
         $message = new HermesMessage('generate_invoice', [
-            'payment_id' => $payment->id
+            'payment_id' => $payment->id,
         ]);
 
         // *******************************************************************
@@ -147,7 +147,7 @@ class GenerateInvoiceHandlerTest extends DatabaseTestCase
 
         // empty payment_id
         $message = new HermesMessage('generate_invoice', [
-            'payment_id' => null
+            'payment_id' => null,
         ]);
         $result = $this->generateInvoiceHandler->handle($message);
         $this->assertFalse($result);
@@ -165,7 +165,7 @@ class GenerateInvoiceHandlerTest extends DatabaseTestCase
         // assert there is no payment and use random ID
         $this->assertEquals(0, $this->paymentsRepository->totalCount());
         $message = new HermesMessage('generate_invoice', [
-            'payment_id' => 123456
+            'payment_id' => 123456,
         ]);
 
         // *******************************************************************
@@ -184,7 +184,7 @@ class GenerateInvoiceHandlerTest extends DatabaseTestCase
             $this->getUser(),
             $this->getSubscriptionType(),
             new DateTime(),
-            new DateTime()
+            new DateTime(),
         );
         $this->addUserAddress('invoice');
 
@@ -204,7 +204,7 @@ class GenerateInvoiceHandlerTest extends DatabaseTestCase
         $this->assertEquals(1, $this->invoicesRepository->totalCount());
 
         $message = new HermesMessage('generate_invoice', [
-            'payment_id' => $payment->id
+            'payment_id' => $payment->id,
         ]);
 
         // *******************************************************************
@@ -227,7 +227,7 @@ class GenerateInvoiceHandlerTest extends DatabaseTestCase
             $this->getUser(),
             $this->getSubscriptionType(),
             new DateTime(),
-            null // payment not paid
+            null, // payment not paid
         );
 
         $this->addUserAddress('invoice');
@@ -237,7 +237,7 @@ class GenerateInvoiceHandlerTest extends DatabaseTestCase
         $this->assertEquals(0, $this->invoicesRepository->totalCount());
 
         $message = new HermesMessage('generate_invoice', [
-            'payment_id' => $payment->id
+            'payment_id' => $payment->id,
         ]);
 
         // *******************************************************************
@@ -328,7 +328,7 @@ class GenerateInvoiceHandlerTest extends DatabaseTestCase
         ActiveRow $user,
         ActiveRow $subscriptionType,
         DateTime $startSubscriptionAt,
-        ?DateTime $paidAt = null
+        ?DateTime $paidAt = null,
     ): ActiveRow {
         $paymentItemContainer = (new PaymentItemContainer())
             ->addItems(SubscriptionTypePaymentItem::fromSubscriptionType($subscriptionType));
@@ -340,7 +340,7 @@ class GenerateInvoiceHandlerTest extends DatabaseTestCase
             $paymentItemContainer,
             null,
             null,
-            $startSubscriptionAt
+            $startSubscriptionAt,
         );
 
         if ($paidAt !== null) {

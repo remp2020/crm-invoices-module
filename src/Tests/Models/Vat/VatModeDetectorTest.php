@@ -133,7 +133,7 @@ class VatModeDetectorTest extends DatabaseTestCase
         ActiveRow $user,
         ActiveRow $country,
         ?string $companyId = null,
-        ?string $companyVatId = null
+        ?string $companyVatId = null,
     ): ActiveRow {
         return $this->addressesRepository->add(
             user: $user,

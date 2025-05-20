@@ -47,7 +47,7 @@ final class RecurrentPaymentPaymentItemContainerDataProvider implements Recurren
         ) {
             $parentPaymentItemContainer = $this->paymentItemContainerFactory->createFromPayment(
                 $parentPayment,
-                [SubscriptionTypePaymentItem::TYPE]
+                [SubscriptionTypePaymentItem::TYPE],
             );
             // mark container as already reverse-charge applied
             $parentPaymentItemContainer->setPaymentMeta(VatProcessor::PAYMENT_META_VAT_MODE, VatMode::B2BReverseCharge->value);
