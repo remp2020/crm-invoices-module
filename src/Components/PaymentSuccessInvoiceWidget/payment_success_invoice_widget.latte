@@ -1,26 +1,26 @@
-{if $oneStopShopDisabledEditing}
-    <h3>{_invoices.component.payment_success_invoice_widget.unable_to_create_invoice_address}</h3>
-{else}
-    {snippet invoiceFormSnippet}
-        <div id="invoiceFormHeader" class="additionalform-header {if $control['userInvoiceForm']['done']->value != 0}done{/if}">
-            <div class="additionalform-header-box" data-toggle="collapse" data-target="#user-invoice-form">
-                <i class="fa-regular fa-file-lines" aria-hidden="true"></i>
-                <div style="display: inline-block">{_invoices.component.payment_success_invoice_widget.require_invoice}</div>
-                <div class="open">{_invoices.component.payment_success_invoice_widget.fill_invoice_address}<i class="fa fa-chevron-down" aria-hidden="true"></i></div>
-                <div class="done">{_invoices.component.payment_success_invoice_widget.saved} <i class="fa fa-check" aria-hidden="true"></i></div>
-            </div>
-
-            <span class="additionalform-header-info">{_invoices.component.payment_success_invoice_widget.require_invoice_info}</span>
+{snippet invoiceFormSnippet}
+    <div id="invoiceFormHeader" class="additionalform-header {if $control['userInvoiceForm']['done']->value != 0}done{/if}">
+        <div class="additionalform-header-box" data-toggle="collapse" data-target="#user-invoice-form">
+            <i class="fa-regular fa-file-lines" aria-hidden="true"></i>
+            <div style="display: inline-block">{_invoices.component.payment_success_invoice_widget.require_invoice}</div>
+            <div class="open">{_invoices.component.payment_success_invoice_widget.fill_invoice_address}<i class="fa fa-chevron-down" aria-hidden="true"></i></div>
+            <div class="done">{_invoices.component.payment_success_invoice_widget.saved} <i class="fa fa-check" aria-hidden="true"></i></div>
         </div>
 
-        <div id="user-invoice-form" n:class="($control['userInvoiceForm']->hasErrors() or $presenter->isAjax()) ? 'collapse in' : 'collapse'">
-            {control userInvoiceForm}
-        </div>
+        <span class="additionalform-header-info">{_invoices.component.payment_success_invoice_widget.require_invoice_info}</span>
+    </div>
 
-        <script n:if="$presenter->isAjax()">
-            handleFormSaved('#invoiceFormHeader');
-        </script>
-    {/snippet}
+    <div id="user-invoice-form" n:class="($control['userInvoiceForm']->hasErrors() or $presenter->isAjax()) ? 'collapse in' : 'collapse'">
+        {control userInvoiceForm}
+    </div>
 
-{/if}
+    <script n:if="$presenter->isAjax()">
+        handleFormSaved('#invoiceFormHeader');
 
+        setTimeout(function () {
+            $('#invoiceFormHeader').removeClass('done')
+            $('.done').hide();
+            $('.open').show();
+        }, 3000);
+    </script>
+{/snippet}

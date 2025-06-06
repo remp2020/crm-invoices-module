@@ -8,10 +8,8 @@ use Crm\ApplicationModule\UI\Form;
 use Crm\InvoicesModule\Forms\UserInvoiceFormFactory;
 use Crm\InvoicesModule\Repositories\InvoicesRepository;
 use Crm\PaymentsModule\Models\Gateways\BankTransfer;
-use Crm\PaymentsModule\Models\OneStopShop\OneStopShop;
 use Crm\PaymentsModule\Models\Payment\PaymentStatusEnum;
 use Crm\PaymentsModule\Models\PaymentAwareInterface;
-use Crm\UsersModule\Repositories\CountriesRepository;
 use Nette\Database\Table\ActiveRow;
 
 /**
@@ -27,9 +25,7 @@ class PaymentSuccessInvoiceWidget extends BaseLazyWidget
 
     public function __construct(
         LazyWidgetManager $lazyWidgetManager,
-        private InvoicesRepository $invoicesRepository,
-        private CountriesRepository $countriesRepository,
-        private OneStopShop $oneStopShop,
+        readonly private InvoicesRepository $invoicesRepository,
     ) {
         parent::__construct($lazyWidgetManager);
     }
@@ -45,17 +41,6 @@ class PaymentSuccessInvoiceWidget extends BaseLazyWidget
 
         if ($payment->status !== PaymentStatusEnum::Paid->value && $payment->payment_gateway->code !== BankTransfer::GATEWAY_CODE) {
             return;
-        }
-        if (!$this->invoicesRepository->isPaymentInvoiceable($payment, true) && $payment->payment_gateway->code !== BankTransfer::GATEWAY_CODE) {
-            return;
-        }
-
-        if ($this->oneStopShop->isEnabled() &&
-            $payment->payment_country &&
-            $payment->payment_country?->id !== $this->countriesRepository->defaultCountry()->id) {
-            $this->template->oneStopShopDisabledEditing = true;
-        } else {
-            $this->template->oneStopShopDisabledEditing = false;
         }
 
         $this->template->payment = $payment;

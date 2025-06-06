@@ -68,7 +68,10 @@ class ChangeInvoiceDetailsFormFactory
                 'company_id' => $invoiceAddress->company_id,
                 'company_tax_id' => $invoiceAddress->company_tax_id,
                 'company_vat_id' => $invoiceAddress->company_vat_id,
+                'country' => $invoiceAddress->country->iso_code,
             ];
+        } else {
+            $defaults['country'] = $this->countriesRepository->defaultCountry()->iso_code;
         }
 
         $form->setRenderer(new BootstrapRenderer());
@@ -124,7 +127,7 @@ class ChangeInvoiceDetailsFormFactory
             ->setNullable();
 
         $contactEmail = $this->applicationConfig->get('contact_email');
-        $form->addSelect('country', 'invoices.frontend.change_invoice_details.country_id.label', $this->countriesSelectItemsBuilder->getDefaultCountryIsoPair())
+        $form->addSelect('country', 'invoices.frontend.change_invoice_details.country_id.label', $this->countriesSelectItemsBuilder->getAllIsoPairs())
             ->setOption('id', 'invoice-country')
             ->setOption(
                 'description',
@@ -167,6 +170,8 @@ class ChangeInvoiceDetailsFormFactory
             $changedInvoicing = true; // saving for later because $userRow is updated
         }
 
+        $country = $this->countriesRepository->findByIsoCode($values->country);
+
         $invoiceAddress = $this->addressesRepository->address($userRow, 'invoice');
         $changeRequest = $this->addressChangeRequestsRepository->add(
             $userRow,
@@ -178,7 +183,7 @@ class ChangeInvoiceDetailsFormFactory
             $values->number,
             $values->city,
             $values->zip,
-            $this->countriesRepository->defaultCountry()->id,
+            $country->id,
             $values->company_id,
             $values->company_tax_id,
             $values->company_vat_id,

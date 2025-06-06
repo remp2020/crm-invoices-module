@@ -9,6 +9,7 @@ use Crm\InvoicesModule\Forms\UserInvoiceFormFactory;
 use Crm\PaymentsModule\Models\Payment\PaymentStatusEnum;
 use Crm\PaymentsModule\Repositories\PaymentLogsRepository;
 use Crm\PaymentsModule\Repositories\PaymentsRepository;
+use Crm\UsersModule\Repositories\AddressesRepository;
 use Nette\Application\Attributes\Persistent;
 use Nette\Application\BadRequestException;
 use Nette\Database\Table\ActiveRow;
@@ -23,13 +24,19 @@ class SalesFunnelPresenter extends FrontendPresenter
         private readonly PaymentsRepository $paymentsRepository,
         private readonly PaymentLogsRepository $paymentLogsRepository,
         private readonly UserInvoiceFormFactory $userInvoiceFormFactory,
+        private readonly AddressesRepository $addressesRepository,
     ) {
         parent::__construct();
     }
 
     public function renderProforma(): void
     {
-        $this->getPayment($this->variableSymbol); // just check existence of payment
+        $payment = $this->getPayment($this->variableSymbol); // just check existence of payment
+
+        $invoiceAddress = $this->addressesRepository->address($payment->user, 'invoice');
+        if ($invoiceAddress) {
+            $this->redirect('proformaSuccess');
+        }
     }
 
     public function renderProformaSuccess(): void
