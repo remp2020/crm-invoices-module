@@ -263,3 +263,6 @@ data_provider:
             b2b: 'Automatikus Áfakulcs B2B'
             b2b_non_europe: 'Automatikus Áfakulcs B2B Európán kívül'
             b2b_reverse_charge: 'Automatikus Áfakulcs 0% reverse charge'
+    payment_audit_log_history:
+        invoice_created: "Számla létrehozva: <a href='%invoiceLink%' target='_blank'>%variableSymbol%</a>"
+        invoice_updated: "Számla frissítve: <a href='%invoiceLink%' target='_blank'>%variableSymbol%</a>"

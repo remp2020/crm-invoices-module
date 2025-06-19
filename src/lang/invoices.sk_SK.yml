@@ -287,3 +287,6 @@ data_provider:
             b2b: 'Automatické DPH B2B'
             b2b_non_europe: 'Automatické DPH B2B mimo európy'
             b2b_reverse_charge: 'Automatické DPH 0% reverse charge'
+    payment_audit_log_history:
+        invoice_created: "Faktúra bola vygenerovaná: <a href='%invoiceLink%' target='_blank'>%variableSymbol%</a>"
+        invoice_updated: "Faktúra bola upravená: <a href='%invoiceLink%' target='_blank'>%variableSymbol%</a>"

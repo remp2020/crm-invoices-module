@@ -29,6 +29,7 @@ use Crm\InvoicesModule\DataProviders\ConfigFormDataProvider;
 use Crm\InvoicesModule\DataProviders\FamilyRequestFormDataProvider;
 use Crm\InvoicesModule\DataProviders\InvoicesUserDataProvider;
 use Crm\InvoicesModule\DataProviders\OneStopShopCountryResolutionDataProvider;
+use Crm\InvoicesModule\DataProviders\PaymentAuditLogHistoryDataProvider;
 use Crm\InvoicesModule\DataProviders\RecurrentPaymentPaymentItemContainerDataProvider;
 use Crm\InvoicesModule\DataProviders\SalesFunnelTwigVariablesDataProvider;
 use Crm\InvoicesModule\DataProviders\SubscriptionTransferFormDataProvider;
@@ -246,6 +247,11 @@ class InvoicesModule extends CrmModule
         $dataProviderManager->registerDataProvider(
             'family.dataprovider.request_form',
             $this->getInstance(FamilyRequestFormDataProvider::class),
+        );
+
+        $dataProviderManager->registerDataProvider(
+            'payments.dataprovider.payment_audit_log_history',
+            $this->getInstance(PaymentAuditLogHistoryDataProvider::class),
         );
     }
 
