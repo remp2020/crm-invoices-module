@@ -43,7 +43,6 @@ services:
 	- Crm\InvoicesModule\DataProviders\VatModeDataProvider
 	- Crm\InvoicesModule\DataProviders\RecurrentPaymentPaymentItemContainerDataProvider
 	- Crm\InvoicesModule\DataProviders\SalesFunnelTwigVariablesDataProvider
-	- Crm\InvoicesModule\DataProviders\FamilyRequestFormDataProvider
 	- Crm\InvoicesModule\DataProviders\PaymentAuditLogHistoryDataProvider
 
 	- Crm\InvoicesModule\Events\AddressChangedHandler

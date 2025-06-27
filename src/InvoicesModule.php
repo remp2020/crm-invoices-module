@@ -26,7 +26,6 @@ use Crm\InvoicesModule\Components\PaymentSuccessInvoiceWidget\PaymentSuccessInvo
 use Crm\InvoicesModule\DataProviders\AddressFormDataProvider;
 use Crm\InvoicesModule\DataProviders\ChangePaymentCountryDataProvider;
 use Crm\InvoicesModule\DataProviders\ConfigFormDataProvider;
-use Crm\InvoicesModule\DataProviders\FamilyRequestFormDataProvider;
 use Crm\InvoicesModule\DataProviders\InvoicesUserDataProvider;
 use Crm\InvoicesModule\DataProviders\OneStopShopCountryResolutionDataProvider;
 use Crm\InvoicesModule\DataProviders\PaymentAuditLogHistoryDataProvider;
@@ -242,11 +241,6 @@ class InvoicesModule extends CrmModule
         $dataProviderManager->registerDataProvider(
             'sales_funnel.dataprovider.twig_variables',
             $this->getInstance(SalesFunnelTwigVariablesDataProvider::class),
-        );
-
-        $dataProviderManager->registerDataProvider(
-            'family.dataprovider.request_form',
-            $this->getInstance(FamilyRequestFormDataProvider::class),
         );
 
         $dataProviderManager->registerDataProvider(
