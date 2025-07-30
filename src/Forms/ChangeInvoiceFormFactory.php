@@ -5,8 +5,8 @@ namespace Crm\InvoicesModule\Forms;
 use Crm\ApplicationModule\Forms\Controls\CountriesSelectItemsBuilder;
 use Crm\ApplicationModule\Models\DataProvider\DataProviderManager;
 use Crm\ApplicationModule\UI\Form;
+use Crm\InvoicesModule\DataProviders\InvoiceFormDataProviderInterface;
 use Crm\InvoicesModule\Repositories\InvoicesRepository;
-use Crm\UsersModule\DataProviders\AddressFormDataProviderInterface;
 use Crm\UsersModule\Repositories\CountriesRepository;
 use Nette\Localization\Translator;
 use Tomaj\Form\Renderer\BootstrapRenderer;
@@ -34,6 +34,8 @@ class ChangeInvoiceFormFactory
         $form->setRenderer(new BootstrapRenderer());
         $form->setTranslator($this->translator);
         $form->addProtection();
+
+        $invoice = $this->invoicesRepository->find($id);
 
         $form->addHidden('invoice_id', $id);
 
@@ -63,10 +65,10 @@ class ChangeInvoiceFormFactory
             ->setNullable()
             ->setHtmlAttribute('placeholder', 'invoices.form.invoice.placeholder.company_vat_id');
 
-        /** @var AddressFormDataProviderInterface[] $providers */
-        $providers = $this->dataProviderManager->getProviders('invoices.dataprovider.invoice_form', AddressFormDataProviderInterface::class);
-        foreach ($providers as $sorting => $provider) {
-            $form = $provider->provide(['form' => $form, 'addressType' => 'invoice']);
+        /** @var InvoiceFormDataProviderInterface[] $providers */
+        $providers = $this->dataProviderManager->getProviders('invoices.dataprovider.invoice_form', InvoiceFormDataProviderInterface::class);
+        foreach ($providers as $provider) {
+            $form = $provider->provide(form: $form, invoice: $invoice);
         }
 
         $form->addSubmit('send', 'invoices.form.invoice.label.send');
@@ -90,6 +92,12 @@ class ChangeInvoiceFormFactory
             'buyer_tax_id' => $values->company_tax_id,
             'buyer_vat_id' => $values->company_vat_id,
         ]);
+
+        /** @var InvoiceFormDataProviderInterface[] $providers */
+        $providers = $this->dataProviderManager->getProviders('invoices.dataprovider.invoice_form', InvoiceFormDataProviderInterface::class);
+        foreach ($providers as $provider) {
+            [$form, $values] = $provider->formSucceeded(form: $form, values: $values);
+        }
 
         $this->onSuccess->__invoke($form);
     }
