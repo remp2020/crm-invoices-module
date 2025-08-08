@@ -13,6 +13,8 @@ use Tracy\Debugger;
 
 class EuVatValidator
 {
+    public const VAT_ID_CONSULTATION_TYPE = 'vies';
+
     private ?\DateInterval $offlineValidationThreshold = null;
 
     public function __construct(
@@ -75,6 +77,7 @@ class EuVatValidator
                 if ($this->offlineValidationThreshold !== null) {
                     $lastVatIdValidConsultation = $this->vatIdConsultationsRepository->findLastByVatId(
                         $vatId,
+                        self::VAT_ID_CONSULTATION_TYPE,
                         (new \DateTime())->sub($this->offlineValidationThreshold),
                     );
                     if ($lastVatIdValidConsultation !== null) {
@@ -104,6 +107,7 @@ class EuVatValidator
             // log consultation number; helpful in case of audit (present when VAT ID is valid)
             $this->vatIdConsultationsRepository->add(
                 vatIdWithPrefix: $vatId,
+                type: self::VAT_ID_CONSULTATION_TYPE,
                 consultationNumber: $response->getIdentifier(),
                 dateOfValidation: $response->getRequestDate(),
                 response: $response->toArray(),

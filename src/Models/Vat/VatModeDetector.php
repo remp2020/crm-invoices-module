@@ -2,7 +2,6 @@
 
 namespace Crm\InvoicesModule\Models\Vat;
 
-use Crm\InvoicesModule\Models\Api\EuVatValidator;
 use Crm\InvoicesModule\Models\Api\EuVatValidatorException;
 use Crm\PaymentsModule\Models\VatRate\VatMode;
 use Crm\PaymentsModule\Repositories\VatRatesRepository;
@@ -19,13 +18,13 @@ final class VatModeDetector
         private readonly AddressesRepository $addressesRepository,
         private readonly VatRatesRepository $vatRatesRepository,
         private readonly CountriesRepository $countriesRepository,
-        private EuVatValidator $euVatValidator,
+        private VatValidatorServiceInterface $vatValidatorService,
     ) {
     }
 
-    public function setEuVatValidator(EuVatValidator $euVatValidator)
+    public function setVatValidatorService(VatValidatorServiceInterface $vatValidatorService)
     {
-        $this->euVatValidator = $euVatValidator;
+        $this->vatValidatorService = $vatValidatorService;
     }
 
     public function userVatMode(ActiveRow $user): VatMode
@@ -51,16 +50,16 @@ final class VatModeDetector
         }
 
         try {
-            $checkVatResponse = $this->euVatValidator->validateVat($invoiceAddress->company_vat_id);
+            $checkVatResponse = $this->vatValidatorService->validateVatId($invoiceAddress->company_vat_id);
 
             // Apply reverse-charge only for valid 'company_vat_id'
             if ($checkVatResponse->isValid()) {
                 return VatMode::B2BReverseCharge;
             }
             return VatMode::B2B;
-        } catch (EuVatValidatorException $euVatValidatorException) {
+        } catch (EuVatValidatorException|VatValidatorServiceException $exception) {
             // Log exception, but do not crash payment process, treat VAT ID as invalid ID (= B2B)
-            Debugger::log($euVatValidatorException->getMessage(), ILogger::EXCEPTION);
+            Debugger::log($exception->getMessage(), ILogger::EXCEPTION);
             return VatMode::B2B;
         }
     }

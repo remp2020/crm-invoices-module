@@ -5,8 +5,9 @@ namespace Crm\InvoicesModule\Tests\Models\Vat;
 
 use Crm\ApplicationModule\Seeders\CountriesSeeder;
 use Crm\ApplicationModule\Tests\DatabaseTestCase;
-use Crm\InvoicesModule\Models\Api\EuVatValidator;
 use Crm\InvoicesModule\Models\Vat\VatModeDetector;
+use Crm\InvoicesModule\Models\Vat\VatValidatorService;
+use Crm\InvoicesModule\Models\Vat\VatValidatorServiceResponse;
 use Crm\InvoicesModule\Seeders\AddressTypesSeeder;
 use Crm\PaymentsModule\Models\VatRate\VatMode;
 use Crm\PaymentsModule\Repositories\VatRatesRepository;
@@ -17,7 +18,6 @@ use Crm\UsersModule\Repositories\AddressTypesRepository;
 use Crm\UsersModule\Repositories\AddressesMetaRepository;
 use Crm\UsersModule\Repositories\AddressesRepository;
 use Crm\UsersModule\Repositories\CountriesRepository;
-use DragonBe\Vies\CheckVatResponse;
 use Nette\Database\Table\ActiveRow;
 use PHPUnit\Framework\Attributes\DataProvider;
 
@@ -153,19 +153,18 @@ class VatModeDetectorTest extends DatabaseTestCase
 
     private function prepareVatDetector(string $paymentCountryCode, bool $validVatIdResponse = false): VatModeDetector
     {
-        $euVatValidator = \Mockery::mock(EuVatValidator::class)
-            ->shouldReceive('validateVat')
-            ->andReturn(new CheckVatResponse([
-                'countryCode' => $paymentCountryCode,
-                'vatNumber' => 'some_vat_id',
-                'requestDate' => new \DateTime(),
-                'valid' => $validVatIdResponse,
-            ]))
+        $vatValidatorService = \Mockery::mock(VatValidatorService::class)
+            ->shouldReceive('validateVatId')
+            ->andReturn(new VatValidatorServiceResponse(
+                isValid: $validVatIdResponse,
+                vatNumber: 'some_vat_id',
+                countryCode: $paymentCountryCode,
+            ))
             ->getMock();
 
 
         return $this->container->createInstance(VatModeDetector::class, [
-            'euVatValidator' => $euVatValidator,
+            'vatValidatorService' => $vatValidatorService,
         ]);
     }
 

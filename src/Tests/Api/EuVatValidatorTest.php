@@ -156,6 +156,7 @@ class EuVatValidatorTest extends DatabaseTestCase
         $requestDate = new \DateTime('2 months ago');
         $this->vatIdConsultationsRepository->add(
             $buyerVatId,
+            EuVatValidator::VAT_ID_CONSULTATION_TYPE,
             $consultationNumber,
             $requestDate,
             [
@@ -196,6 +197,7 @@ class EuVatValidatorTest extends DatabaseTestCase
         $requestDate = new \DateTime('2 months ago');
         $this->vatIdConsultationsRepository->add(
             $buyerVatId,
+            EuVatValidator::VAT_ID_CONSULTATION_TYPE,
             $consultationNumber,
             $requestDate,
             [
@@ -236,6 +238,7 @@ class EuVatValidatorTest extends DatabaseTestCase
         $requestDate = new \DateTime('4 months ago');
         $this->vatIdConsultationsRepository->add(
             $buyerVatId,
+            EuVatValidator::VAT_ID_CONSULTATION_TYPE,
             $consultationNumber,
             $requestDate,
             [
@@ -277,6 +280,7 @@ class EuVatValidatorTest extends DatabaseTestCase
         $requestDate = new \DateTime('2 months ago');
         $this->vatIdConsultationsRepository->add(
             $buyerVatId,
+            EuVatValidator::VAT_ID_CONSULTATION_TYPE,
             $consultationNumber,
             $requestDate,
             [

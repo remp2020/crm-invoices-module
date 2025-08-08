@@ -8,8 +8,9 @@ use Crm\ApplicationModule\Seeders\CountriesSeeder;
 use Crm\InvoicesModule\DataProviders\OneStopShopCountryResolutionDataProvider;
 use Crm\InvoicesModule\DataProviders\RecurrentPaymentPaymentItemContainerDataProvider;
 use Crm\InvoicesModule\DataProviders\VatModeDataProvider;
-use Crm\InvoicesModule\Models\Api\EuVatValidator;
 use Crm\InvoicesModule\Models\Vat\VatModeDetector;
+use Crm\InvoicesModule\Models\Vat\VatValidatorService;
+use Crm\InvoicesModule\Models\Vat\VatValidatorServiceResponse;
 use Crm\InvoicesModule\Repositories\InvoiceNumbersRepository;
 use Crm\InvoicesModule\Repositories\InvoicesRepository;
 use Crm\InvoicesModule\Seeders\AddressTypesSeeder;
@@ -54,7 +55,6 @@ use Crm\UsersModule\Repositories\AddressesRepository;
 use Crm\UsersModule\Repositories\CountriesRepository;
 use Crm\UsersModule\Repositories\LoginAttemptsRepository;
 use Crm\UsersModule\Repositories\UsersRepository;
-use DragonBe\Vies\CheckVatResponse;
 use Nette\Database\Table\ActiveRow;
 
 final class RecurrentPaymentPaymentItemContainerDataProviderTest extends BaseTestCase
@@ -811,18 +811,18 @@ final class RecurrentPaymentPaymentItemContainerDataProviderTest extends BaseTes
 
     private function mockEuVatValidator(string $countryCode, string $vatId, bool $validVatIdResponse = false): void
     {
-        $validator = \Mockery::mock(EuVatValidator::class)
-            ->shouldReceive('validateVat')
-            ->andReturn(new CheckVatResponse([
-                'countryCode' => $countryCode,
-                'vatNumber' => $vatId,
-                'requestDate' => new \DateTime(),
-                'valid' => $validVatIdResponse,
-            ]))
+        $validatorService = \Mockery::mock(VatValidatorService::class)
+            ->shouldReceive('validateVatId')
+            ->andReturn(new VatValidatorServiceResponse(
+                isValid: $validVatIdResponse,
+                vatNumber: $vatId,
+                countryCode: $countryCode,
+            ))
             ->getMock();
 
+        /** @var VatModeDetector $vatModeDetector */
         $vatModeDetector = $this->inject(VatModeDetector::class);
-        $vatModeDetector->setEuVatValidator($validator);
+        $vatModeDetector->setVatValidatorService($validatorService);
     }
 
     private function makePayment(

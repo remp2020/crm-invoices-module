@@ -10,10 +10,16 @@ final class VatIdConsultationsRepository extends Repository
 {
     protected $tableName = 'vat_id_consultations';
 
-    public function add(string $vatIdWithPrefix, string $consultationNumber, \DateTime $dateOfValidation, array $response)
-    {
+    public function add(
+        string $vatIdWithPrefix,
+        string $type,
+        string $consultationNumber,
+        \DateTime $dateOfValidation,
+        array $response,
+    ) {
         $consultation = $this->getTable()->where([
             'consultation_number' => $consultationNumber,
+            'type' => $type,
         ])->fetch();
 
         if ($consultation) {
@@ -25,6 +31,7 @@ final class VatIdConsultationsRepository extends Repository
 
         $this->insert([
             'vat_id' => $vatIdWithPrefix,
+            'type' => $type,
             'consultation_number' => $consultationNumber,
             'date_of_validation' => $dateOfValidation,
             'response' => Json::encode($response),
@@ -39,9 +46,16 @@ final class VatIdConsultationsRepository extends Repository
     /**
      * @param \DateTime|null $dateOfValidationThreshold Provide if
      */
-    public function findLastByVatId(string $vatId, \DateTime $dateOfValidationThreshold = null): ?ActiveRow
-    {
-        $selection = $this->getTable()->where('vat_id = ?', $vatId)->order('date_of_validation DESC');
+    public function findLastByVatId(
+        string $vatId,
+        string $type,
+        \DateTime $dateOfValidationThreshold = null,
+    ): ?ActiveRow {
+        $selection = $this->getTable()->where([
+            'vat_id' => $vatId,
+            'type' => $type,
+        ])->order('date_of_validation DESC');
+
         if ($dateOfValidationThreshold !== null) {
             $selection->where('date_of_validation >= ?', $dateOfValidationThreshold);
         }

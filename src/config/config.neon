@@ -67,6 +67,7 @@ services:
 		setup:
 			- setOfflineValidationThreshold('P3M')
 	euVatValidatorFactory: Crm\InvoicesModule\Models\Api\EuVatValidatorFactoryInterface
+	vatValidatorService: Crm\InvoicesModule\Models\Vat\VatValidatorService
 
 	invoiceSandbox: Crm\InvoicesModule\Models\Sandbox\InvoiceSandbox('/tmp')
 
