@@ -35,7 +35,6 @@ class VatValidatorService implements VatValidatorServiceInterface
                 return $countryVatValidator->validateVat($vatId);
             } catch (VatValidatorServiceException $vatValidatorServiceException) {
                 Debugger::log($vatValidatorServiceException->getMessage(), Debugger::ERROR);
-                throw $vatValidatorServiceException;
             }
         }
 
