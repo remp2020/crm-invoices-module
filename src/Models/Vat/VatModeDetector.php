@@ -50,7 +50,7 @@ final class VatModeDetector
         }
 
         try {
-            $checkVatResponse = $this->vatValidatorService->validateVatId($invoiceAddress->company_vat_id);
+            $checkVatResponse = $this->vatValidatorService->validateVatId($invoiceAddress->company_vat_id, $invoiceAddress->company_id);
 
             // Apply reverse-charge only for valid 'company_vat_id'
             if ($checkVatResponse->isValid()) {
