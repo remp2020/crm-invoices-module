@@ -49,12 +49,12 @@
       </thead>
       <tbody>
         <tr n:foreach="$sandboxFiles as $file">
-          {var $createdAt = \Nette\Utils\DateTime::from($file->getCTime())}
+          {var $createdAt = \Nette\Utils\DateTime::from($file->lastModified())}
           <td class="text-muted">{$createdAt|userDate}</td>
-          <td>{$file->getBaseName()} <span class="label label-default">{$file->getSize()|bytes}</span></td>
+          <td>{basename($file->path())} <span class="label label-default">{$file->fileSize()|bytes}</span></td>
           <td>
-            <a n:href="downloadExport! $file->getBaseName()" class="btn btn-sm btn-info" title="{_invoices.admin.default.download}"><i class="fa fa-download"></i></a>
-            <a n:href="delete! $file->getBaseName()" class="btn btn-sm btn-danger" title="{_invoices.admin.default.delete}"><i class="fa fa-trash"></i></a>
+            <a n:href="downloadExport! basename($file->path())" class="btn btn-sm btn-info" title="{_invoices.admin.default.download}"><i class="fa fa-download"></i></a>
+            <a n:href="delete! basename($file->path())" class="btn btn-sm btn-danger" title="{_invoices.admin.default.delete}"><i class="fa fa-trash"></i></a>
           </td>
         </tr>
       </tbody>

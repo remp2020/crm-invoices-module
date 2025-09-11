@@ -16,7 +16,7 @@ use Crm\InvoicesModule\Repositories\InvoicesRepository;
 use Crm\PaymentsModule\Repositories\PaymentsRepository;
 use Crm\UsersModule\Repositories\AddressesRepository;
 use Nette\Application\BadRequestException;
-use Nette\Application\Responses\FileResponse;
+use Nette\Application\Responses\CallbackResponse;
 use Nette\Application\Responses\TextResponse;
 use Nette\DI\Attributes\Inject;
 use Nette\Utils\DateTime;
@@ -170,8 +170,20 @@ class InvoicesAdminPresenter extends AdminPresenter
      */
     public function handleDownloadExport($fileName)
     {
-        $response = new FileResponse($this->invoiceSandbox->getFilePath($fileName));
-        $response->resuming = false;
+        if (!$this->invoiceSandbox->fileExists($fileName)) {
+            throw new BadRequestException("File '$fileName' not found");
+        }
+
+        $this->getHttpResponse()->addHeader('Content-Type', 'application/octet-stream');
+        $this->getHttpResponse()->addHeader('Content-Disposition', "attachment; filename=" . $fileName);
+
+        $response = new CallbackResponse(function () use ($fileName) {
+            $stream = $this->invoiceSandbox->readFileStream($fileName);
+            if ($stream) {
+                fpassthru($stream);
+                fclose($stream);
+            }
+        });
         $this->sendResponse($response);
     }
 

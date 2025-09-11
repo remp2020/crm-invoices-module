@@ -1,34 +1,31 @@
 <?php
+declare(strict_types=1);
 
 namespace Crm\InvoicesModule\Models\Sandbox;
 
+use Crm\ApplicationModule\Application\Managers\ApplicationMountManager;
 use Nette\InvalidArgumentException;
-use Nette\Utils\Finder;
-use RuntimeException;
 
 class InvoiceSandbox
 {
-    private $folder;
+    public const INVOICE_SANDBOX_BUCKET_NAME = 'invoice-sandbox';
 
-    public function __construct($folder)
-    {
-        // todo: zober posledny znak / ak existuje
-        if ($folder[strlen($folder) - 1] == '/') {
-            $folder = substr($folder, 0, strlen($folder) - 1);
-        }
-
-        $this->folder = $folder;
+    public function __construct(
+        private readonly ApplicationMountManager $mountManager,
+    ) {
     }
 
     public function getFileList()
     {
+        $contents = $this->mountManager->getListContents(self::INVOICE_SANDBOX_BUCKET_NAME);
         $result = [];
-        foreach (Finder::findFiles('*')->in($this->folder) as $key => $file) {
-            $result[] = $file;
+
+        foreach ($contents as $content) {
+            if ($content['type'] === 'file') {
+                $result[] = $content;
+            }
         }
-        usort($result, function ($file1, $file2) {
-            return ($file1->getCTime() <=> $file2->getCTime()) * -1;
-        });
+
         return $result;
     }
 
@@ -41,22 +38,22 @@ class InvoiceSandbox
             $newName = basename($localFile);
         }
 
-        $target = $this->folder . '/' . $newName;
-        $result = copy($localFile, $target);
-        if (!$result) {
-            throw new RuntimeException("Cannot copy '$localFile' to '$target'");
-        }
+        $fileContents = file_get_contents($localFile);
+
+        $path = $this->mountManager->getFilePath(self::INVOICE_SANDBOX_BUCKET_NAME, $newName);
+        $this->mountManager->write($path, $fileContents);
 
         unlink($localFile);
     }
 
-    public function removeFile($fileName)
+    public function removeFile($fileName): bool
     {
-        $file = $this->folder . '/' . $fileName;
-        if (!file_exists($file)) {
-            throw new InvalidArgumentException("File '$file' doesn't exists");
+        $path = $this->mountManager->getFilePath(self::INVOICE_SANDBOX_BUCKET_NAME, $fileName);
+        if (!$this->mountManager->has($path)) {
+            throw new InvalidArgumentException("File '$fileName' doesn't exists");
         }
-        return unlink($file);
+        $this->mountManager->delete($path);
+        return !$this->mountManager->has($path);
     }
 
     public function clearOld()
@@ -64,8 +61,23 @@ class InvoiceSandbox
         // todo
     }
 
-    public function getFilePath(string $fileName)
+    private function getFilePath(string $fileName)
     {
-        return $this->folder . '/' . $fileName;
+        return $this->mountManager->getFilePath(self::INVOICE_SANDBOX_BUCKET_NAME, $fileName);
+    }
+
+    public function readFileStream(string $fileName)
+    {
+        $path = $this->getFilePath($fileName);
+        if (!$this->mountManager->has($path)) {
+            throw new InvalidArgumentException("File '$fileName' doesn't exists");
+        }
+        return $this->mountManager->readStream($path);
+    }
+
+    public function fileExists(string $fileName): bool
+    {
+        $path = $this->getFilePath($fileName);
+        return $this->mountManager->has($path);
     }
 }

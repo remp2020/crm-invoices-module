@@ -69,7 +69,15 @@ services:
 	euVatValidatorFactory: Crm\InvoicesModule\Models\Api\EuVatValidatorFactoryInterface
 	vatValidatorService: Crm\InvoicesModule\Models\Vat\VatValidatorService
 
-	invoiceSandbox: Crm\InvoicesModule\Models\Sandbox\InvoiceSandbox('/tmp')
+	invoiceSandbox: Crm\InvoicesModule\Models\Sandbox\InvoiceSandbox
+	invoiceSandboxAdapter: League\Flysystem\Local\LocalFilesystemAdapter(
+		'%appDir%/../content/invoice-sandbox',
+		League\Flysystem\UnixVisibility\PortableVisibilityConverter(directoryPublic: 0755),
+	)
+	invoiceSandboxFileSystem: League\Flysystem\Filesystem(@invoiceSandboxAdapter)
+	mountManagerConfig:
+		setup:
+			- mountFilesystem(Crm\InvoicesModule\Models\Sandbox\InvoiceSandbox::INVOICE_SANDBOX_BUCKET_NAME, @invoiceSandboxFileSystem)
 
 	invoicesPreNotificationEventHandler:
 		factory: Crm\InvoicesModule\Events\PreNotificationEventHandler
