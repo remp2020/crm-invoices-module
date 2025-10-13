@@ -17,10 +17,14 @@
         <div class="col-md-8">
             <blockquote>
                 <p class="lead">
-                    {_invoices.frontend.proforma_invoice.success.account_number}: {$bankNumber} {if !empty($bankIban)}
-                        (IBAN: {$bankIban}{if $bankSwift} SWIFT: {$bankSwift}{/if})
-                    {/if}<br>
+                    {if !empty($bankIban)}
+                        IBAN: {$bankIban}<br>
+                        {if !empty($bankSwift)}SWIFT: {$bankSwift}<br>{/if}
+                    {/if}
+                    {_invoices.frontend.proforma_invoice.success.account_number}: {$bankNumber}
                     <br>
+                    {_payments.frontend.banktransfer.account_name}: {$bankAccountName}
+                    <br><br>
                     {_invoices.frontend.proforma_invoice.success.amount}: <strong>{$payment->amount|price}</strong><br>
                     {_invoices.frontend.proforma_invoice.success.variable_symbol}: <strong>{$payment->variable_symbol}</strong><br>
                     {_invoices.frontend.proforma_invoice.success.recipient_message}: <strong>{$note}</strong><br>

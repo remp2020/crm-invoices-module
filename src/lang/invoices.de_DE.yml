@@ -66,6 +66,7 @@ frontend:
             thank_you: Vielen Dank für Ihre Bestellung, die Rechnung wird Ihnen innerhalb von 3 Werktagen per E-Mail zugestellt.
             amount: Summe
             account_number: Kontonummer
+            account_name: Name des Empfängers
             variable_symbol: Transaktions-ID
             recipient_message: Verwendungszweck
             delay_info: Es kann 2 bis 3 Werktage dauern, bis der Betrag gutgeschrieben wird. Das Abonnement wird erst nach Gutschrift der Zahlung auf unserem Konto aktiviert.
@@ -194,6 +195,7 @@ invoice_template:
     sum_remains_to_pay: Restbetrag
     summary: Zusammenfassung
     bank_account: Bankkonto
+    bank_account_name: Name des Empfängers
     bank: Bank
     bank_iban: IBAN
     bank_swift: SWIFT

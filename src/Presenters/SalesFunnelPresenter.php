@@ -45,6 +45,7 @@ class SalesFunnelPresenter extends FrontendPresenter
 
         $this->template->payment = $payment;
         $this->template->bankNumber = $this->applicationConfig->get('supplier_bank_account_number');
+        $this->template->bankAccountName = $this->applicationConfig->get('supplier_name');
         $this->template->bankIban = $this->applicationConfig->get('supplier_iban');
         $this->template->bankSwift = $this->applicationConfig->get('supplier_swift');
         $this->template->note = sprintf('VS%s', $payment->variable_symbol);

@@ -75,6 +75,7 @@ frontend:
             thank_you: Thank you for the order, the invoice will be sent to your email within 3 working days.
             amount: Amount
             account_number: Account number
+            account_name: Beneficiary name
             variable_symbol: Variable symbol
             recipient_message: Message for recipient
             delay_info: Payment settlement can take up to 2 business days. Subscription will be started after the payment is settled on our account.
@@ -208,6 +209,7 @@ invoice_template:
     sum_remains_to_pay: Remains to pay
     summary: Summary
     bank_account: Bank account
+    bank_account_name: Beneficiary name
     bank: Bank
     bank_iban: IBAN
     bank_swift: SWIFT

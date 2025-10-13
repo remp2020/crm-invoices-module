@@ -75,6 +75,7 @@ frontend:
             thank_you: Ďakujeme za vašu objednávku, predfaktúru Vám zašleme do 3 pracovných dní e-mailom.
             amount: Suma
             account_number: Číslo účtu
+            account_name: Názov príjemcu
             variable_symbol: Variabilný symbol
             recipient_message: Správa pre prijímateľa
             delay_info: Pripísanie platby na účet môže trvať 1 až 2 pracovné dni. Nákup Vám bude potvrdený až po pripísaní platby na náš účet.
@@ -211,6 +212,7 @@ invoice_template:
     sum_remains_to_pay: Zostáva na úhradu
     summary: Zhrnutie
     bank_account: Bankový účet
+    bank_account_name: Názov príjemcu
     bank: Banka
     bank_iban: IBAN
     bank_swift: SWIFT
