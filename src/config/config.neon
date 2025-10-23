@@ -98,3 +98,8 @@ services:
 	paymentInvoiceProvider:
 		setup:
 			- register(Crm\InvoicesModule\DataProviders\PaymentInvoiceProvider())
+
+	userAddressListConfig:
+		setup:
+			- addIconMapping(invoice, fa-file-lines)
+			- addAlwaysVisibleTypes(invoice)
