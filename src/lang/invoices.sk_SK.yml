@@ -62,7 +62,8 @@ frontend:
             required: Krajina musí byť vyplnená
             foreign_country: "Pre informácie o doručení do zahraničia nás, prosím, kontaktujte na %contactEmail%"
         success: Vaša adresa bola úspešne zmenená.
-        warning: "Faktúru si môžete vygenerovať len do 14 dní po zaplatení. Pre vygenerovanie faktúr <a href='%link%' style='text-decoration: underline;'>kliknite sem</a>."
+        warning: "Faktúru si môžete vygenerovať len do 14 dní po zaplatení. Pre vygenerovanie faktúr <a href='%link%' style='text-decoration: underline;'>kliknite sem</a>.
+                  <br>Existujúce faktúry neboli zmenené. Ak potrebujete zmeniť už vygenerovanú faktúru, kontaktujte podporu na <a href='mailto:%contactEmail%' style='text-decoration: underline;'>%contactEmail%</a>."
     download_receipt:
         header: Potvrdenie
         download: Stiahnuť potvrdenie

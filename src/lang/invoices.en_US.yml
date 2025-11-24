@@ -62,7 +62,8 @@ frontend:
             required: Country is required
             foreign_country: "For delivery to foreign countries please contact us through %contactEmail%"
         success: Your address was successfuly changed.
-        warning: "You can generate an invoice only within 14 days of payment. You can generate invoices <a href='%link%' style='text-decoration: underline;'>here</a>."
+        warning: "You can generate an invoice only within 14 days of payment. You can generate invoices <a href='%link%' style='text-decoration: underline;'>here</a>.
+                  <br>Existing invoices remain unchanged. If you need to modify an already generated invoice, please contact support at <a href='mailto:%contactEmail%' style='text-decoration: underline;'>%contactEmail%</a>."
     download_receipt:
         header: Receipt
         download: Download receipt

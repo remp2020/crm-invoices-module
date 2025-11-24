@@ -57,7 +57,8 @@ frontend:
             placeholder: "például SK2541254765"
             required: "Meg kell adni az IČDPH-t (áfás adószámot)"
         success: "Sikeres címváltoztatás."
-        warning: "A számlát csak a kifizetés utáni 14 napon belül hozhatja létre. A számla létrehozásához <a href='%link%' style='text-decoration: underline;'>kattintson ide</a>."
+        warning: "A számlát csak a kifizetés utáni 14 napon belül hozhatja létre. A számla létrehozásához <a href='%link%' style='text-decoration: underline;'>kattintson ide</a>.
+                  <br>A már meglévő számlákon a címek nem változnak. Ha egy már létrehozott számlát szeretne módosítani, vegye fel a kapcsolatot az ügyfélszolgálattal a <a href='mailto:%contactEmail%' style='text-decoration: underline;'>%contactEmail%</a> címen."
     download_receipt:
         download: Igazolás letöltése
     proforma_invoice:
