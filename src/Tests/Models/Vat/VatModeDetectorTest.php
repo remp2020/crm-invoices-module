@@ -90,6 +90,14 @@ class VatModeDetectorTest extends DatabaseTestCase
                 'paymentCountryCode' => 'FR',
                 'expectedResult' => VatMode::B2BReverseCharge,
             ],
+            'noCompanyIdWithValidCompanyVatId_noCompany_reverseCharge' => [
+                'companyId' => '',
+                'companyVatId' => 'company_vat_id',
+                'validCompanyVatId' => true,
+                'euCountry' => true,
+                'paymentCountryCode' => 'FR',
+                'expectedResult' => VatMode::B2BReverseCharge,
+            ],
             'companyIdWithValidCompanyVatIdNonEurope' => [
                 'companyId' => 'company_id',
                 'companyVatId' => 'company_vat_id',

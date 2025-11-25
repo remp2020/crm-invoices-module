@@ -25,14 +25,14 @@ class VatValidatorService implements VatValidatorServiceInterface
         $this->validatorsForCountry[$countryCode] = $vatValidator;
     }
 
-    public function validateVatId(string $vatId, string $companyId): VatValidatorServiceResponseInterface
+    public function validateVatId(string $vatId): VatValidatorServiceResponseInterface
     {
         $countryCode = substr($vatId, 0, 2);
         if (isset($this->validatorsForCountry[$countryCode])) {
             $countryVatValidator = $this->validatorsForCountry[$countryCode];
 
             try {
-                return $countryVatValidator->validateVat($vatId, $companyId);
+                return $countryVatValidator->validateVat($vatId);
             } catch (VatValidatorServiceException $vatValidatorServiceException) {
                 Debugger::log($vatValidatorServiceException->getMessage(), Debugger::ERROR);
             }
