@@ -23,18 +23,16 @@ class AddressFormDataProvider implements AddressFormDataProviderInterface
         $type = $form->getComponent('type', false);
 
         if ($type) {
-            $invoiceToggleIds = [];
             $firstName = $form->getComponent('first_name', false);
-            if ($firstName) {
-                $invoiceToggleIds[] = '#' . $firstName->getOption('id');
-            }
             $lastName = $form->getComponent('last_name', false);
-            if ($lastName) {
-                $invoiceToggleIds[] = '#' . $lastName->getOption('id');
-            }
 
-            $type->addCondition(Form::NotEqual, 'invoice')
-                ->toggle(implode(', ', $invoiceToggleIds));
+            $type->addCondition(Form::Equal, 'invoice')
+                ->addConditionOn($firstName, Form::Blank)
+                ->toggle($firstName->getOption('id'), false);
+
+            $type->addCondition(Form::Equal, 'invoice')
+                ->addConditionOn($lastName, Form::Blank)
+                ->toggle($lastName->getOption('id'), false);
 
             /** @var TextInput $companyName */
             $companyName = $form->getComponent('company_name', false);
