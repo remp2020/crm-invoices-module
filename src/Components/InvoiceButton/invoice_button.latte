@@ -2,7 +2,7 @@
     <li class="menuitem-header" data-dropdown-section="{_invoices.frontend.invoice_button.header}">
         {_invoices.frontend.invoice_button.header}
     </li>
-	{if $payment->invoice || $hasBillingDataProvider}
+	{if $payment->invoice || ($hasBillingDataProvider && $paymentInvoicable)}
     <li>
       <a href="{plink :Invoices:InvoicesAdmin:downloadInvoice $payment->id}">
         <i class="fa fa-download"></i> {_invoices.frontend.invoice_button.download}
