@@ -2,13 +2,13 @@
     <li class="menuitem-header" data-dropdown-section="{_invoices.frontend.invoice_button.header}">
         {_invoices.frontend.invoice_button.header}
     </li>
-	{if $payment->invoice}
+	{if $payment->invoice || $hasBillingDataProvider}
     <li>
       <a href="{plink :Invoices:InvoicesAdmin:downloadInvoice $payment->id}">
         <i class="fa fa-download"></i> {_invoices.frontend.invoice_button.download}
       </a>
     </li>
-    <li>
+    <li n:if="isset($payment->invoice_id)">
       <a href="{plink :Invoices:InvoicesAdmin:edit $payment->invoice->id}">
         <i class="fa fa-edit"></i> {_invoices.frontend.invoice_button.edit}
       </a>

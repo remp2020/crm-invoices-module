@@ -5,12 +5,13 @@ namespace Crm\InvoicesModule\Presenters;
 use Contributte\PdfResponse\PdfResponse;
 use Crm\AdminModule\Presenters\AdminPresenter;
 use Crm\ApplicationModule\Hermes\HermesMessage;
+use Crm\ApplicationModule\Models\DataProvider\DataProviderManager;
 use Crm\ApplicationModule\UI\Form;
 use Crm\InvoicesModule\Forms\ChangeInvoiceFormFactory;
 use Crm\InvoicesModule\Forms\ChangeInvoiceItemsFormFactory;
+use Crm\InvoicesModule\Models\BillingDataProviderInterface;
 use Crm\InvoicesModule\Models\Generator\InvoiceGenerator;
 use Crm\InvoicesModule\Models\Sandbox\InvoiceSandbox;
-use Crm\InvoicesModule\Models\Sandbox\InvoiceZipGenerator;
 use Crm\InvoicesModule\Repositories\InvoiceNumbersRepository;
 use Crm\InvoicesModule\Repositories\InvoicesRepository;
 use Crm\PaymentsModule\Repositories\PaymentsRepository;
@@ -18,42 +19,26 @@ use Crm\UsersModule\Repositories\AddressesRepository;
 use Nette\Application\BadRequestException;
 use Nette\Application\Responses\CallbackResponse;
 use Nette\Application\Responses\TextResponse;
-use Nette\DI\Attributes\Inject;
 use Nette\Utils\DateTime;
 use Tomaj\Form\Renderer\BootstrapInlineRenderer;
 use Tomaj\Hermes\Emitter;
 
 class InvoicesAdminPresenter extends AdminPresenter
 {
-    #[Inject]
-    public InvoiceGenerator $invoiceGenerator;
-
-    #[Inject]
-    public PaymentsRepository $paymentsRepository;
-
-    #[Inject]
-    public InvoiceNumbersRepository $invoiceNumbersRepository;
-
-    #[Inject]
-    public InvoicesRepository $invoiceRepository;
-
-    #[Inject]
-    public InvoiceZipGenerator $invoiceZipGenerator;
-
-    #[Inject]
-    public InvoiceSandbox $invoiceSandbox;
-
-    #[Inject]
-    public Emitter $hermesEmitter;
-
-    #[Inject]
-    public ChangeInvoiceFormFactory $changeInvoiceFormFactory;
-
-    #[Inject]
-    public ChangeInvoiceItemsFormFactory $changeInvoiceItemsFormFactory;
-
-    #[Inject]
-    public AddressesRepository $addressesRepository;
+    public function __construct(
+        private readonly InvoiceGenerator $invoiceGenerator,
+        private readonly PaymentsRepository $paymentsRepository,
+        private readonly InvoiceNumbersRepository $invoiceNumbersRepository,
+        private readonly InvoicesRepository $invoiceRepository,
+        private readonly InvoiceSandbox $invoiceSandbox,
+        private readonly Emitter $hermesEmitter,
+        private readonly ChangeInvoiceFormFactory $changeInvoiceFormFactory,
+        private readonly ChangeInvoiceItemsFormFactory $changeInvoiceItemsFormFactory,
+        private readonly AddressesRepository $addressesRepository,
+        private readonly DataProviderManager $dataProviderManager,
+    ) {
+        parent::__construct();
+    }
 
     /**
      * @admin-access-level read
@@ -63,6 +48,15 @@ class InvoicesAdminPresenter extends AdminPresenter
         $payment = $this->paymentsRepository->find($id);
         if (!$payment) {
             throw new BadRequestException();
+        }
+
+        /** @var BillingDataProviderInterface[] $providers */
+        $providers = $this->dataProviderManager->getProviders('invoices.billing_provider', BillingDataProviderInterface::class);
+        foreach ($providers as $provider) {
+            if ($provider->isAvailable($payment)) {
+                $response = $provider->generate($payment);
+                $this->sendResponse($response);
+            }
         }
 
         $pdf = null;

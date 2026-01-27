@@ -5,6 +5,7 @@ namespace Crm\InvoicesModule\Repositories;
 use Crm\ApplicationModule\Helpers\UserDateHelper;
 use Crm\ApplicationModule\Hermes\HermesMessage;
 use Crm\ApplicationModule\Models\Config\ApplicationConfig;
+use Crm\ApplicationModule\Models\DataProvider\DataProviderManager;
 use Crm\ApplicationModule\Models\Database\Repository;
 use Crm\ApplicationModule\Repositories\AuditLogRepository;
 use Crm\InvoicesModule\Events\NewInvoiceEvent;
@@ -37,6 +38,7 @@ class InvoicesRepository extends Repository
         private UserDateHelper $userDateHelper,
         private Emitter $emitter,
         private \Tomaj\Hermes\Emitter $hermesEmitter,
+        private readonly DataProviderManager $dataProviderManager,
     ) {
         parent::__construct($database);
 

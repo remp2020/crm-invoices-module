@@ -5,7 +5,7 @@ frontend:
     invoice_button:
         header: Invoice
         no_invoice: No invoice
-        not_available_anymore: Invoice not available anymore
+        not_available_anymore: Not available anymore
         generate: Generate invoice
         system_error: System failure! Please contact tech support!
         invoice: invoice

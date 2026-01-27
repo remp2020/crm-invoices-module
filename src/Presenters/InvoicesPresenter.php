@@ -3,31 +3,37 @@
 namespace Crm\InvoicesModule\Presenters;
 
 use Contributte\PdfResponse\PdfResponse;
+use Crm\ApplicationModule\Models\DataProvider\DataProviderManager;
 use Crm\ApplicationModule\Presenters\FrontendPresenter;
-use Crm\InvoicesModule\Forms\ChangeInvoiceDetailsFormFactory;
+use Crm\InvoicesModule\Models\BillingDataProviderInterface;
 use Crm\InvoicesModule\Models\Generator\InvoiceGenerator;
 use Crm\InvoicesModule\Repositories\InvoicesRepository;
 use Crm\PaymentsModule\Repositories\PaymentsRepository;
 use Nette\Application\BadRequestException;
-use Nette\DI\Attributes\Inject;
 
 class InvoicesPresenter extends FrontendPresenter
 {
-    #[Inject]
-    public InvoiceGenerator $invoiceGenerator;
-
-    #[Inject]
-    public InvoicesRepository $invoicesRepository;
-
-    #[Inject]
-    public PaymentsRepository $paymentsRepository;
-
-    #[Inject]
-    public ChangeInvoiceDetailsFormFactory $changeInvoiceDetailsFormFactory;
+    public function __construct(
+        private readonly InvoiceGenerator $invoiceGenerator,
+        private readonly InvoicesRepository $invoicesRepository,
+        private readonly PaymentsRepository $paymentsRepository,
+        private readonly DataProviderManager $dataProviderManager,
+    ) {
+        parent::__construct();
+    }
 
     public function actionDownloadInvoice($id)
     {
         list($user, $payment) = $this->getUserPayment($id);
+
+        /** @var BillingDataProviderInterface[] $providers */
+        $providers = $this->dataProviderManager->getProviders('invoices.billing_provider', BillingDataProviderInterface::class);
+        foreach ($providers as $provider) {
+            if ($provider->isAvailable($payment)) {
+                $response = $provider->generate($payment);
+                $this->sendResponse($response);
+            }
+        }
 
         $pdf = null;
         if ($payment->invoice) {
