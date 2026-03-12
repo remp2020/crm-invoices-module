@@ -49,7 +49,7 @@ final class VatIdConsultationsRepository extends Repository
     public function findLastByVatId(
         string $vatId,
         string $type,
-        \DateTime $dateOfValidationThreshold = null,
+        ?\DateTime $dateOfValidationThreshold = null,
     ): ?ActiveRow {
         $selection = $this->getTable()->where([
             'vat_id' => $vatId,

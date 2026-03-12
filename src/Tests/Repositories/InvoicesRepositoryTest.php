@@ -413,8 +413,8 @@ class InvoicesRepositoryTest extends DatabaseTestCase
     private function addPayment(
         ActiveRow $user,
         DateTime $startSubscriptionAt,
-        DateTime $paidAt = null,
-        ActiveRow $subscriptionType = null,
+        ?DateTime $paidAt = null,
+        ?ActiveRow $subscriptionType = null,
     ): ActiveRow {
         if ($subscriptionType) {
             $paymentItemContainer = (new PaymentItemContainer())
