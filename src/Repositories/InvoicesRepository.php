@@ -5,7 +5,6 @@ namespace Crm\InvoicesModule\Repositories;
 use Crm\ApplicationModule\Helpers\UserDateHelper;
 use Crm\ApplicationModule\Hermes\HermesMessage;
 use Crm\ApplicationModule\Models\Config\ApplicationConfig;
-use Crm\ApplicationModule\Models\DataProvider\DataProviderManager;
 use Crm\ApplicationModule\Models\Database\Repository;
 use Crm\ApplicationModule\Repositories\AuditLogRepository;
 use Crm\InvoicesModule\Events\NewInvoiceEvent;
@@ -31,14 +30,13 @@ class InvoicesRepository extends Repository
 
     public function __construct(
         Explorer $database,
-        private ApplicationConfig $applicationConfig,
-        private AddressesRepository $addressesRepository,
-        private InvoiceItemsRepository $invoiceItemsRepository,
+        private readonly ApplicationConfig $applicationConfig,
+        private readonly AddressesRepository $addressesRepository,
+        private readonly InvoiceItemsRepository $invoiceItemsRepository,
         AuditLogRepository $auditLogRepository,
         private UserDateHelper $userDateHelper,
-        private Emitter $emitter,
-        private \Tomaj\Hermes\Emitter $hermesEmitter,
-        private readonly DataProviderManager $dataProviderManager,
+        private readonly Emitter $emitter,
+        private readonly \Tomaj\Hermes\Emitter $hermesEmitter,
     ) {
         parent::__construct($database);
 
@@ -47,19 +45,9 @@ class InvoicesRepository extends Repository
         $this->userDateHelper->setFormat([IntlDateFormatter::MEDIUM, IntlDateFormatter::SHORT]);
     }
 
-    final public function add(ActiveRow $user, ActiveRow $payment, ActiveRow $invoiceNumber = null)
+    final public function add(ActiveRow $user, ActiveRow $payment)
     {
-        if ($invoiceNumber !== null) {
-            // remp/crm#2804
-            trigger_error(
-                'Parameter `$invoiceNumber` is deprecated. Set invoice number to payment (`$payment->invoice_number_id`) before adding invoice. ' .
-                'Support will be removed in next major release.',
-                \E_USER_DEPRECATED,
-            );
-        } else {
-            $invoiceNumber = $payment->invoice_number;
-        }
-
+        $invoiceNumber = $payment->invoice_number;
         $now =  new DateTime();
 
         $address = $this->addressesRepository->address($user, 'invoice');
