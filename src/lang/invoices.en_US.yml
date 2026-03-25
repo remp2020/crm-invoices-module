@@ -287,6 +287,9 @@ data_provider:
             b2b: 'Automatic VAT B2B'
             b2b_non_europe: 'Automatic VAT B2B outside of europe'
             b2b_reverse_charge: 'Automatic VAT 0% reverse charge'
+    payments_admin_filter_form:
+        invoice_number:
+            label: Invoice number
     payment_audit_log_history:
         invoice_created: "Invoice was generated: <a href='%invoiceLink%' target='_blank'>%variableSymbol%</a>"
         invoice_updated: "Invoice was updated: <a href='%invoiceLink%' target='_blank'>%variableSymbol%</a>"

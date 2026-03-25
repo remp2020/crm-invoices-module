@@ -29,9 +29,11 @@ use Crm\InvoicesModule\DataProviders\ConfigFormDataProvider;
 use Crm\InvoicesModule\DataProviders\InvoicesUserDataProvider;
 use Crm\InvoicesModule\DataProviders\OneStopShopCountryResolutionDataProvider;
 use Crm\InvoicesModule\DataProviders\PaymentAuditLogHistoryDataProvider;
+use Crm\InvoicesModule\DataProviders\PaymentsAdminFilterFormDataProvider;
 use Crm\InvoicesModule\DataProviders\RecurrentPaymentPaymentItemContainerDataProvider;
 use Crm\InvoicesModule\DataProviders\SalesFunnelTwigVariablesDataProvider;
 use Crm\InvoicesModule\DataProviders\SubscriptionTransferFormDataProvider;
+use Crm\InvoicesModule\DataProviders\UniversalSearchDataProvider;
 use Crm\InvoicesModule\DataProviders\UserFormDataProvider;
 use Crm\InvoicesModule\DataProviders\VatModeDataProvider;
 use Crm\InvoicesModule\Events\AddressChangedHandler;
@@ -246,6 +248,16 @@ class InvoicesModule extends CrmModule
         $dataProviderManager->registerDataProvider(
             'payments.dataprovider.payment_audit_log_history',
             $this->getInstance(PaymentAuditLogHistoryDataProvider::class),
+        );
+
+        $dataProviderManager->registerDataProvider(
+            'payments.dataprovider.payments_filter_form',
+            $this->getInstance(PaymentsAdminFilterFormDataProvider::class),
+        );
+
+        $dataProviderManager->registerDataProvider(
+            'admin.dataprovider.universal_search',
+            $this->getInstance(UniversalSearchDataProvider::class),
         );
     }
 
