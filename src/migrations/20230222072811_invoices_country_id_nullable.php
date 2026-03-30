@@ -18,7 +18,7 @@ class InvoicesCountryIdNullable extends AbstractMigration
         // run this part only if you are sure that
         // setting default country as buyer's country for all invoices without country is correct step
         if ($run = false) {
-            /** @var Core $app */
+            /** @var Core|null $app */
             $app = $GLOBALS['application'] ?? null;
             if (!$app) {
                 throw new \Exception("Unable to load application from \$GLOBALS['application'] variable, cannot load default country.");

@@ -5,7 +5,6 @@ namespace Crm\InvoicesModule\Presenters;
 use Crm\AdminModule\Presenters\AdminPresenter;
 use Crm\InvoicesModule\Models\Generator\ReceiptGenerator;
 use Crm\PaymentsModule\Repositories\PaymentsRepository;
-use Nette\Application\BadRequestException;
 use Nette\DI\Attributes\Inject;
 
 class ReceiptsAdminPresenter extends AdminPresenter
@@ -24,9 +23,6 @@ class ReceiptsAdminPresenter extends AdminPresenter
         $payment = $this->paymentsRepository->find($paymentId);
 
         $pdf = $this->receiptGenerator->generate($payment);
-        if (!$pdf) {
-            throw new BadRequestException();
-        }
 
         $this->sendResponse($pdf);
         $this->terminate();
