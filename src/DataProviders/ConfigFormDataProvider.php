@@ -24,7 +24,7 @@ class ConfigFormDataProvider implements ConfigFormDataProviderInterface
 
         /** @var Form $form */
         $form = $params['form'];
-        if ($form->getComponent('generate_invoice_number_for_paid_payment', false)) {
+        if ($form->getComponent(name: 'generate_invoice_number_for_paid_payment', throw: false) !== null) {
             $generateInvoiceLimitFromDays = $form->getComponent(InvoicesRepository::GENERATE_INVOICE_LIMIT_FROM_DAYS);
 
             $form->getComponent('generate_invoice_number_for_paid_payment')
