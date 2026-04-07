@@ -11,8 +11,6 @@ use Crm\InvoicesModule\Models\Vat\VatValidatorServiceResponse;
 use Crm\InvoicesModule\Seeders\AddressTypesSeeder;
 use Crm\PaymentsModule\Models\VatRate\VatMode;
 use Crm\PaymentsModule\Repositories\VatRatesRepository;
-use Crm\ProductsModule\Repositories\PostalFeesRepository;
-use Crm\RespektCzModule\Seeders\PostalFeesSeeder;
 use Crm\UsersModule\Models\Builder\UserBuilder;
 use Crm\UsersModule\Repositories\AddressTypesRepository;
 use Crm\UsersModule\Repositories\AddressesMetaRepository;
@@ -168,7 +166,6 @@ class VatModeDetectorTest extends DatabaseTestCase
             AddressesMetaRepository::class,
             VatRatesRepository::class,
             CountriesRepository::class,
-            PostalFeesRepository::class,
         ];
     }
 
@@ -176,7 +173,6 @@ class VatModeDetectorTest extends DatabaseTestCase
     {
         return [
             CountriesSeeder::class,
-            PostalFeesSeeder::class,
             AddressTypesSeeder::class,
         ];
     }
