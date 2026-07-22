@@ -68,11 +68,11 @@ frontend:
         download: Stáhnout potvrzení
     proforma_invoice:
         address_form:
-            title: Platba předfakturou
+            title: Platba zálohovou fakturou
             form_title: Pro dokončení objednávky prosím vyplňte fakturační údaje
         success:
-            title: Platba předfakturou
-            thank_you: Děkujeme za vaši objednávku, předfakturu Vám zašleme do 3 pracovních dnů e-mailem.
+            title: Platba zálohovou fakturou
+            thank_you: Děkujeme za vaši objednávku, zálohovou fakturu Vám zašleme do 3 pracovních dnů e-mailem.
             amount: Částka
             account_number: Číslo účtu
             account_name: Název příjemce
