@@ -72,7 +72,7 @@ frontend:
             form_title: Pro dokončení objednávky prosím vyplňte fakturační údaje
         success:
             title: Platba zálohovou fakturou
-            thank_you: Děkujeme za vaši objednávku, zálohovou fakturu Vám zašleme do 3 pracovních dnů e-mailem.
+            thank_you: Děkujeme za objednávku, zálohovou fakturu vám obratem zašleme e-mailem.
             amount: Částka
             account_number: Číslo účtu
             account_name: Název příjemce
