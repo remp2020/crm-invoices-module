@@ -2,27 +2,24 @@
 
 namespace Crm\InvoicesModule\Components\InvoiceButton;
 
-use Crm\ApplicationModule\Models\DataProvider\DataProviderManager;
 use Crm\ApplicationModule\Models\Widget\LazyWidgetManager;
 use Crm\ApplicationModule\Models\Widget\WidgetFactoryInterface;
 use Crm\ApplicationModule\Models\Widget\WidgetInterface;
-use Crm\InvoicesModule\Repositories\InvoicesRepository;
+use Crm\InvoicesModule\Models\Invoice\PaymentInvoiceStatusResolver;
 
 class InvoiceFrontendButtonFactory implements WidgetFactoryInterface
 {
     public function __construct(
-        private readonly InvoicesRepository $invoicesRepository,
         private readonly LazyWidgetManager $lazyWidgetManager,
-        private readonly DataProviderManager $dataProviderManager,
+        private readonly PaymentInvoiceStatusResolver $paymentInvoiceStatusResolver,
     ) {
     }
 
     public function create(): WidgetInterface
     {
         return new InvoiceButton(
-            invoicesRepository: $this->invoicesRepository,
             lazyWidgetManager: $this->lazyWidgetManager,
-            dataProviderManager: $this->dataProviderManager,
+            paymentInvoiceStatusResolver: $this->paymentInvoiceStatusResolver,
         );
     }
 }

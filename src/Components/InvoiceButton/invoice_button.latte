@@ -2,7 +2,7 @@
     <li class="menuitem-header" data-dropdown-section="{_invoices.frontend.invoice_button.header}">
         {_invoices.frontend.invoice_button.header}
     </li>
-	{if $payment->invoice || ($hasBillingDataProvider && $paymentInvoicable)}
+	{if $status->isDownloadable()}
     <li>
       <a href="{plink :Invoices:InvoicesAdmin:downloadInvoice $payment->id}">
         <i class="fa fa-download"></i> {_invoices.frontend.invoice_button.download}
@@ -13,22 +13,19 @@
         <i class="fa fa-edit"></i> {_invoices.frontend.invoice_button.edit}
       </a>
     </li>
-	{elseif $paymentInvoicable}
-		{var $invoiceAddress = $payment->user->related('addresses')->where('deleted_at IS NULL')->where(['type' => 'invoice'])->limit(1)->fetch()}
-		{if $invoiceAddress}
-			<li>
-			  <a href="{plink :Invoices:InvoicesAdmin:downloadInvoice $payment->id}" target="_bank">
-			    <i class="fa fa-magic"></i> {_invoices.frontend.invoice_button.generate}
-        </a>
-      </li>
-		{else}
-      <li>
-			  <a href="{plink :Users:AddressAdmin:new userId => $payment->user->id}">
-			    <i class="fa fa-star-half-stroke"></i> {_invoices.frontend.invoice_button.invoice_details}
-        </a>
-      </li>
-		{/if}
-	{elseif $paidButNotInvoiceableAnymore}
+	{elseif $status->isGeneratable()}
+    <li>
+      <a href="{plink :Invoices:InvoicesAdmin:downloadInvoice $payment->id}" target="_bank">
+        <i class="fa fa-magic"></i> {_invoices.frontend.invoice_button.generate}
+      </a>
+    </li>
+	{elseif $status->invoiceable}
+    <li>
+      <a href="{plink :Users:AddressAdmin:new userId => $payment->user->id}">
+        <i class="fa fa-star-half-stroke"></i> {_invoices.frontend.invoice_button.invoice_details}
+      </a>
+    </li>
+	{elseif $status->periodExpired}
     <li>
       <a class="disabled">
         <i class="fa fa-ban"></i> {_invoices.frontend.invoice_button.not_available_anymore}
@@ -43,11 +40,11 @@
 	{/if}
 
 {else}
-	{if $payment->invoice}
+	{if $status->isDownloadable()}
 	   	<a target="_blank" class="btn btn-sm btn-primary" href="{plink :Invoices:Invoices:DownloadInvoice $payment->id}"><i class="fa fa-download"></i> {_invoices.frontend.invoice_button.download}</a>
-	{elseif $paymentInvoicable}
+	{elseif $status->isGeneratable()}
 		<a target="_blank" class="btn btn-sm btn-primary" href="{plink :Invoices:Invoices:DownloadInvoice $payment->id}"><i class="fa fa-magic"></i> {_invoices.frontend.invoice_button.generate}</a>
-	{elseif $paidButNotInvoiceableAnymore}
+	{elseif $status->periodExpired}
 		<span class="btn btn-sm btn-default disabled">
 			<i class="fa fa-ban"></i> {_invoices.frontend.invoice_button.not_available_anymore}
 		</span>

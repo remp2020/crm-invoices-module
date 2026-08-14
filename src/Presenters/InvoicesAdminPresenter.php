@@ -5,12 +5,11 @@ namespace Crm\InvoicesModule\Presenters;
 use Contributte\PdfResponse\PdfResponse;
 use Crm\AdminModule\Presenters\AdminPresenter;
 use Crm\ApplicationModule\Hermes\HermesMessage;
-use Crm\ApplicationModule\Models\DataProvider\DataProviderManager;
 use Crm\ApplicationModule\UI\Form;
 use Crm\InvoicesModule\Forms\ChangeInvoiceFormFactory;
 use Crm\InvoicesModule\Forms\ChangeInvoiceItemsFormFactory;
-use Crm\InvoicesModule\Models\BillingDataProviderInterface;
 use Crm\InvoicesModule\Models\Generator\InvoiceGenerator;
+use Crm\InvoicesModule\Models\Invoice\PaymentInvoiceStatusResolver;
 use Crm\InvoicesModule\Models\Sandbox\InvoiceSandbox;
 use Crm\InvoicesModule\Repositories\InvoiceNumbersRepository;
 use Crm\InvoicesModule\Repositories\InvoicesRepository;
@@ -35,7 +34,7 @@ class InvoicesAdminPresenter extends AdminPresenter
         private readonly ChangeInvoiceFormFactory $changeInvoiceFormFactory,
         private readonly ChangeInvoiceItemsFormFactory $changeInvoiceItemsFormFactory,
         private readonly AddressesRepository $addressesRepository,
-        private readonly DataProviderManager $dataProviderManager,
+        private readonly PaymentInvoiceStatusResolver $paymentInvoiceStatusResolver,
     ) {
         parent::__construct();
     }
@@ -50,20 +49,16 @@ class InvoicesAdminPresenter extends AdminPresenter
             throw new BadRequestException();
         }
 
-        /** @var BillingDataProviderInterface[] $providers */
-        $providers = $this->dataProviderManager->getProviders('invoices.billing_provider', BillingDataProviderInterface::class);
-        foreach ($providers as $provider) {
-            if ($provider->isAvailable($payment)) {
-                $response = $provider->generate($payment);
-                $this->sendResponse($response);
-            }
+        $status = $this->paymentInvoiceStatusResolver->resolve($payment);
+        if ($status->isExternal()) {
+            $this->sendResponse($status->billingProvider->generate($payment));
         }
 
         $pdf = null;
-        if ($payment->invoice) {
+        if ($status->invoiceExists) {
             $pdf = $this->invoiceGenerator->renderInvoicePDF($payment->user, $payment);
             $pdf->setSaveMode(PdfResponse::INLINE);
-        } elseif ($this->invoiceRepository->isPaymentInvoiceable($payment)) {
+        } elseif ($status->isGeneratable()) {
             $pdf = $this->invoiceGenerator->generate($payment->user, $payment);
         }
 

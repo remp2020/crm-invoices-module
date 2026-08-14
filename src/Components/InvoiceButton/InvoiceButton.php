@@ -2,12 +2,9 @@
 
 namespace Crm\InvoicesModule\Components\InvoiceButton;
 
-use Crm\ApplicationModule\Models\DataProvider\DataProviderManager;
 use Crm\ApplicationModule\Models\Widget\BaseLazyWidget;
 use Crm\ApplicationModule\Models\Widget\LazyWidgetManager;
-use Crm\InvoicesModule\Models\BillingDataProviderInterface;
-use Crm\InvoicesModule\Repositories\InvoicesRepository;
-use Nette\Utils\DateTime;
+use Crm\InvoicesModule\Models\Invoice\PaymentInvoiceStatusResolver;
 
 /**
  * Download invoice button widget.
@@ -24,9 +21,8 @@ class InvoiceButton extends BaseLazyWidget
     private bool $admin = false;
 
     public function __construct(
-        protected readonly InvoicesRepository $invoicesRepository,
         LazyWidgetManager $lazyWidgetManager,
-        protected readonly DataProviderManager $dataProviderManager,
+        protected readonly PaymentInvoiceStatusResolver $paymentInvoiceStatusResolver,
     ) {
         parent::__construct($lazyWidgetManager);
     }
@@ -48,25 +44,8 @@ class InvoiceButton extends BaseLazyWidget
 
     public function render($payment)
     {
-        $isInvoiceable = $this->invoicesRepository->isPaymentInvoiceable($payment);
-        $hasBillingDataProvider = false;
-
-        if (!$isInvoiceable) {
-            /** @var BillingDataProviderInterface[] $providers */
-            $providers = $this->dataProviderManager->getProviders('invoices.billing_provider', BillingDataProviderInterface::class);
-            foreach ($providers as $provider) {
-                if ($provider->isAvailable($payment)) {
-                    $isInvoiceable = $provider->isInvoiceable($payment);
-                    $hasBillingDataProvider = true;
-                    break;
-                }
-            }
-        }
-
-        $this->template->hasBillingDataProvider = $hasBillingDataProvider;
         $this->template->payment = $payment;
-        $this->template->paymentInvoicable = $isInvoiceable;
-        $this->template->paidButNotInvoiceableAnymore = $payment->paid_at !== null && !$this->invoicesRepository->paymentInInvoiceablePeriod($payment, new DateTime());
+        $this->template->status = $this->paymentInvoiceStatusResolver->resolve($payment);
         $this->template->admin = $this->admin;
         $this->template->setFile(__DIR__ . '/' . $this->templateName);
         $this->template->render();

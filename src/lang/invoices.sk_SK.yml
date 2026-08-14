@@ -6,11 +6,11 @@ frontend:
         header: Faktúra
         no_invoice: Bez faktúry
         not_available_anymore: Faktúra už nedostupná
-        generate: Vygeneruj faktúru
+        generate: Vygenerovať faktúru
         system_error: Systémová chyba! Prosím kontaktujte technickú podporu!
         invoice: Faktúra
-        download: Stiahni faktúru
-        edit: Uprav faktúru
+        download: Stiahnuť faktúru
+        edit: Upraviť faktúru
         invoice_details: Fakturačné údaje
 
     invoice_details:
@@ -138,6 +138,19 @@ component:
 
     change_payment_country_warning_widget:
         changing_invoice_warning_message: K platbe prislúcha aj faktúra ktorej položky budú pregenerované a bude ju následne potrebné zaslať zákazníkovi.
+
+    payment_invoice_detail_widget:
+        header: Faktúra
+        external_billing: Faktúru k tejto platbe spravuje externý poskytovateľ platieb.
+        invoice_number_reserved: "Pre túto platbu je rezervované číslo faktúry %number%, faktúra však ešte nebola vygenerovaná."
+        reason:
+            not_paid: Platba nie je uhradená.
+            missing_paid_at: Platbe chýba dátum úhrady.
+            user_invoicing_disabled: Používateľ má vypnuté fakturovanie.
+            auto_invoice_disabled: Používateľ má vypnuté automatické generovanie faktúr.
+            marked_not_invoiceable: Platba je označená ako nefakturovateľná.
+            missing_invoice_address: Používateľ nemá vyplnenú fakturačnú adresu.
+            country_mismatch: Krajina platby sa nezhoduje s krajinou fakturačnej adresy.
 
 form:
     invoice:

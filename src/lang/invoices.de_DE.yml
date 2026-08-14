@@ -122,6 +122,19 @@ component:
         company_vat_id: Umsatzsteuer-ID
     change_payment_country_warning_widget:
         changing_invoice_warning_message: Zur Zahlung gehört auch eine Rechnung, deren Posten neu erstellt werden und die dann an den Kunden gesendet werden muss.
+
+    payment_invoice_detail_widget:
+        header: Invoice
+        external_billing: The invoice for this payment is managed by the external payment provider.
+        invoice_number_reserved: "Invoice number %number% is reserved for this payment, but the invoice has not been generated yet."
+        reason:
+            not_paid: The payment is not paid.
+            missing_paid_at: The payment is missing a paid date.
+            user_invoicing_disabled: The user has invoicing disabled.
+            auto_invoice_disabled: The user has automatic invoice generation disabled.
+            marked_not_invoiceable: The payment is marked as not invoiceable.
+            missing_invoice_address: The user has no invoice address.
+            country_mismatch: The payment country doesn't match the invoice address country.
 form:
     invoice:
         label:

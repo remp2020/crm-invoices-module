@@ -30,6 +30,8 @@ services:
 	- Crm\InvoicesModule\Components\InvoiceLabel\InvoiceLabel
 	- Crm\InvoicesModule\Components\InvoiceButton\InvoiceAdminButtonFactory
 	- Crm\InvoicesModule\Components\InvoiceButton\InvoiceFrontendButtonFactory
+	- Crm\InvoicesModule\Components\InvoiceAdminHeaderButton\InvoiceAdminHeaderButton
+	- Crm\InvoicesModule\Components\PaymentInvoiceDetailWidget\PaymentInvoiceDetailWidget
 	- Crm\InvoicesModule\Components\PaymentSuccessInvoiceWidget\PaymentSuccessInvoiceWidget
 
 	- Crm\InvoicesModule\DataProviders\UserFormDataProvider
@@ -62,6 +64,7 @@ services:
 
 	- Crm\InvoicesModule\Models\Sandbox\InvoiceZipGenerator
 	- Crm\InvoicesModule\Models\Vat\VatModeDetector
+	- Crm\InvoicesModule\Models\Invoice\PaymentInvoiceStatusResolver
 
 	euVatValidator:
 		factory: Crm\InvoicesModule\Models\Api\EuVatValidator

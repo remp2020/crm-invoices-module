@@ -1,0 +1,62 @@
+<h3 class="page-header">
+{if $invoice}
+  {_invoices.component.payment_invoice_detail_widget.header} {$invoice->invoice_number?->number}
+  <a href="{plink :Invoices:InvoicesAdmin:downloadInvoice $payment->id}" target="_blank" class="btn btn-xs btn-default pull-right" style="margin-left: 5px;" title="{_invoices.frontend.invoice_button.download}">
+    <i class="fa fa-download"></i> {_invoices.frontend.invoice_button.download}
+  </a>
+  <a href="{plink :Invoices:InvoicesAdmin:edit $invoice->id}" class="btn btn-xs btn-default pull-right" title="{_invoices.frontend.invoice_button.edit}">
+    <i class="fa fa-edit"></i> {_invoices.frontend.invoice_button.edit}
+  </a>
+{else}
+  {_invoices.component.payment_invoice_detail_widget.header}
+{/if}
+</h3>
+<ul class="list-group">
+{if $status->isExternal()}
+  <li class="list-group-item">
+    {_invoices.component.payment_invoice_detail_widget.external_billing}
+  </li>
+  <li class="list-group-item" n:if="$status->isDownloadable()">
+    <a href="{plink :Invoices:InvoicesAdmin:downloadInvoice $payment->id}" target="_blank" class="btn btn-sm btn-default">
+      <i class="fa fa-download"></i> {_invoices.frontend.invoice_button.download}
+    </a>
+  </li>
+{elseif $invoice}
+  <li class="list-group-item">
+    <b>{_invoices.invoice_template.date_issued}:</b>&nbsp;{$invoice->created_date|userDate}
+  </li>
+  <li class="list-group-item">
+    <b>{_invoices.invoice_template.buyer}:</b>&nbsp;{$invoice->buyer_name}<br>
+    {$invoice->buyer_address}, {$invoice->buyer_zip} {$invoice->buyer_city}<br>
+    {$invoice->buyer_country?->name}
+  <li class="list-group-item" n:if="$invoice->buyer_id || $invoice->buyer_tax_id || $invoice->buyer_vat_id">
+    <span n:if="$invoice->buyer_id"><b>{_invoices.invoice_template.company_id}:</b>&nbsp;{$invoice->buyer_id}<br></span>
+    <span n:if="$invoice->buyer_tax_id"><b>{_invoices.invoice_template.company_tax_id}:</b>&nbsp;{$invoice->buyer_tax_id}<br></span>
+    <span n:if="$invoice->buyer_vat_id"><b>{_invoices.invoice_template.company_vat_id}:</b>&nbsp;{$invoice->buyer_vat_id}</span>
+  </li>
+{else}
+  <li class="list-group-item" n:if="$payment->invoice_number_id">
+    <small>{_invoices.component.payment_invoice_detail_widget.invoice_number_reserved, ['number' => $payment->invoice_number->number]}</small>
+  </li>
+  {if $status->isGeneratable()}
+  <li class="list-group-item">
+    <a href="{plink :Invoices:InvoicesAdmin:downloadInvoice $payment->id}" target="_blank" class="btn btn-sm btn-default">
+      <i class="fa fa-magic"></i> {_invoices.frontend.invoice_button.generate}
+    </a>
+  </li>
+  {elseif $status->blockedReasonKey}
+  <li class="list-group-item">
+    <span class="text-muted">{$status->blockedReasonKey|translate}</span>
+    <div n:if="$status->invoiceable && !$status->hasInvoiceAddress">
+      <a href="{plink :Users:AddressAdmin:new userId => $payment->user->id}">
+        <i class="fa fa-star-half-stroke"></i> {_invoices.frontend.invoice_button.invoice_details}
+      </a>
+    </div>
+  </li>
+  {else}
+  <li class="list-group-item">
+    <span class="text-muted">{_invoices.frontend.invoice_button.no_invoice}</span>
+  </li>
+  {/if}
+{/if}
+</ul>

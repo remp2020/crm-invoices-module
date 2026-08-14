@@ -18,10 +18,12 @@ use Crm\InvoicesModule\Components\ChangePaymentCountryWarningWidget\ChangePaymen
 use Crm\InvoicesModule\Components\DownloadReceiptButton\DownloadReceiptButtonFactory;
 use Crm\InvoicesModule\Components\DownloadReceiptButton\ReceiptAdminButtonFactory;
 use Crm\InvoicesModule\Components\InvoiceAddressTransferSummaryWidget\InvoiceAddressTransferSummaryWidget;
+use Crm\InvoicesModule\Components\InvoiceAdminHeaderButton\InvoiceAdminHeaderButton;
 use Crm\InvoicesModule\Components\InvoiceButton\InvoiceAdminButtonFactory;
 use Crm\InvoicesModule\Components\InvoiceButton\InvoiceFrontendButtonFactory;
 use Crm\InvoicesModule\Components\InvoiceDetailsWidget\InvoiceDetailsWidget;
 use Crm\InvoicesModule\Components\InvoiceLabel\InvoiceLabel;
+use Crm\InvoicesModule\Components\PaymentInvoiceDetailWidget\PaymentInvoiceDetailWidget;
 use Crm\InvoicesModule\Components\PaymentSuccessInvoiceWidget\PaymentSuccessInvoiceWidget;
 use Crm\InvoicesModule\DataProviders\AddressFormDataProvider;
 use Crm\InvoicesModule\DataProviders\ChangePaymentCountryDataProvider;
@@ -131,6 +133,17 @@ class InvoicesModule extends CrmModule
         $widgetManager->registerWidget(
             'admin.payment.payment_country_change.content',
             ChangePaymentCountryWarningWidget::class,
+        );
+
+        $widgetManager->registerWidget(
+            'admin.payment.actions.header',
+            InvoiceAdminHeaderButton::class,
+        );
+
+        $widgetManager->registerWidget(
+            'admin.payments.show.right.top',
+            PaymentInvoiceDetailWidget::class,
+            200,
         );
     }
 
