@@ -6,11 +6,14 @@ use Crm\InvoicesModule\Models\Generator\InvoiceGenerator;
 use Crm\InvoicesModule\Models\Generator\PaymentNotInvoiceableException;
 use Crm\PaymentsModule\Repositories\PaymentsRepository;
 use Tomaj\Hermes\Handler\HandlerInterface;
+use Tomaj\Hermes\Handler\RetryTrait;
 use Tomaj\Hermes\MessageInterface;
 use Tracy\Debugger;
 
 class GenerateInvoiceHandler implements HandlerInterface
 {
+    use RetryTrait;
+
     private InvoiceGenerator $invoiceGenerator;
 
     private PaymentsRepository $paymentsRepository;
