@@ -35,20 +35,20 @@ class InvoiceDetailsWidget extends BaseLazyWidget
 
     public function createComponentChangeInvoiceDetailsForm()
     {
-        $form = $this->changeInvoiceDetailsFormFactory->create($this->presenter->user);
+        $form = $this->changeInvoiceDetailsFormFactory->create($this->getPresenter()->user);
 
         $this->changeInvoiceDetailsFormFactory->onSuccess = function ($form, $user) {
             $message = $this->translator->translate(
                 'invoices.frontend.change_invoice_details.warning',
                 [
-                    'link' => $this->presenter->link(':Payments:Payments:my'),
+                    'link' => $this->getPresenter()->link(':Payments:Payments:my'),
                     'contactEmail' => $this->applicationConfig->get('contact_email'),
                 ],
             );
 
-            $this->presenter->flashMessage($this->translator->translate('invoices.frontend.change_invoice_details.success'));
-            $this->presenter->flashMessage($message, 'warning');
-            $this->presenter->redirect('this');
+            $this->getPresenter()->flashMessage($this->translator->translate('invoices.frontend.change_invoice_details.success'));
+            $this->getPresenter()->flashMessage($message, 'warning');
+            $this->getPresenter()->redirect('this');
         };
         return $form;
     }
