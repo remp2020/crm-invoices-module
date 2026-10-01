@@ -8,6 +8,7 @@ use Crm\ApplicationModule\Models\Config\ApplicationConfig;
 use Crm\ApplicationModule\Models\Database\Repository;
 use Crm\ApplicationModule\Repositories\AuditLogRepository;
 use Crm\InvoicesModule\Events\NewInvoiceEvent;
+use Crm\InvoicesModule\Models\Invoice\InvoiceBuyerTrait;
 use Crm\PaymentsModule\Models\Payment\PaymentStatusEnum;
 use Crm\SubscriptionsModule\Models\PaymentItem\SubscriptionTypePaymentItem;
 use Crm\UsersModule\Repositories\AddressesRepository;
@@ -21,6 +22,8 @@ use Tracy\ILogger;
 
 class InvoicesRepository extends Repository
 {
+    use InvoiceBuyerTrait;
+
     public const GENERATE_INVOICE_LIMIT_FROM = 'generate_invoice_limit_from';
     public const GENERATE_INVOICE_LIMIT_FROM_DAYS = 'generate_invoice_limit_from_days';
     public const GENERATE_INVOICE_LIMIT_FROM_END_OF_THE_MONTH = 'limit_from_end_of_month';
@@ -55,20 +58,9 @@ class InvoicesRepository extends Repository
             throw new \Exception("Buyer's address is missing. Invoice for payment VS [{$payment->variable_symbol}] cannot be created.");
         }
 
-        // use company name if set; otherwise join first name & last name
-        if (isset($address->company_name) && !empty(trim($address->company_name))) {
-            $buyerName = trim($address->company_name);
-        } else {
-            $buyerName = trim(($address->first_name ?? '') . ' ' . ($address->last_name ?? ''));
-        }
-        // join street & number into address
-        if ($address->street) {
-            $buyerAddress = trim($address->street . ' ' . $address->number ?? '');
-        }
-
         $data = [
-            'buyer_name' => !empty($buyerName) ? $buyerName : null,
-            'buyer_address' => $buyerAddress ?? null,
+            'buyer_name' => $this->buyerName($address),
+            'buyer_address' => $this->buyerAddress($address),
             'buyer_zip' => $address->zip ?? null,
             'buyer_city' => $address->city ?? null,
             'buyer_country_id' => $address->country_id ?? null,
