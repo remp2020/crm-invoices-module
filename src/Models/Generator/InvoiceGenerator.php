@@ -11,6 +11,7 @@ use Crm\ApplicationModule\Models\Redis\RedisClientTrait;
 use Crm\ApplicationModule\Models\Redis\RedisClientTraitException;
 use Crm\InvoicesModule\Models\InvoiceNumber\InvoiceNumberInterface;
 use Crm\InvoicesModule\Repositories\InvoicesRepository;
+use Crm\PaymentsModule\Models\VatRate\VatProcessor;
 use Crm\PaymentsModule\Repositories\PaymentsRepository;
 use Crm\UsersModule\Repositories\AddressesRepository;
 use Latte\Engine;
@@ -40,6 +41,7 @@ class InvoiceGenerator
         private readonly InvoiceNumberInterface $invoiceNumber,
         RedisClientFactory $redisClientFactory,
         private readonly AddressesRepository $addressesRepository,
+        private readonly VatProcessor $vatProcessor,
     ) {
         $this->redisClientFactory = $redisClientFactory;
     }
@@ -191,6 +193,7 @@ class InvoiceGenerator
                 'invoice' => $invoice,
                 'config' => $this->applicationConfig,
                 'params' => $this->templateParams,
+                'reverseCharge' => $this->vatProcessor->isReverseChargePayment($payment),
             ],
         );
 

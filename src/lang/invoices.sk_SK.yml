@@ -218,6 +218,7 @@ invoice_template:
     note:
         title: Poznámka
         invoice_paid: "Faktúra už bola uhradená, prosím, neuhrádzajte!"
+        reverse_charge: "Faktúra v režime prenesenej daňovej povinnosti (reverse charge) — daň odvedie zákazník."
     price_no_vat: Základ DPH
     vat_amount: Výška DPH
     item_sum: Spolu
