@@ -97,7 +97,12 @@ class InvoiceGenerator
         // load before mutex in case config is not in cache (do not want to slow down mutex)
         $generateInvoiceNumberForPaidPayment = filter_var($this->applicationConfig->get('generate_invoice_number_for_paid_payment'), FILTER_VALIDATE_BOOLEAN);
 
-        $mutex = new RedisMutex($this->redis(), 'invoice_generator_' . $payment->id);
+        $mutex = new RedisMutex(
+            client: $this->redis(),
+            name: 'invoice_generator_' . $payment->id,
+            acquireTimeout: 3,
+            expireTimeout: 30,
+        );
         $mutex->synchronized(function () use ($user, $payment, $generateInvoiceNumberForPaidPayment) {
             // refresh to have current data
             $payment = $this->paymentsRepository->find($payment->id);
