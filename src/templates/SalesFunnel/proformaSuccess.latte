@@ -30,7 +30,7 @@
                     {_invoices.frontend.proforma_invoice.success.recipient_message}: <strong>{$note}</strong><br>
                 </p>
 
-                {control simpleWidget 'invoices.frontend.proforma_invoice.success.payment_details_content', $payment}
+                {control simpleWidget, 'invoices.frontend.proforma_invoice.success.payment_details_content', $payment}
             </blockquote>
 
             <p class="text-muted">
@@ -39,7 +39,7 @@
         </div>
 
         <div class="col-md-4" style="max-height: 240px;">
-            {control simpleWidget 'payments.banktransfer.right', [
+            {control simpleWidget, 'payments.banktransfer.right', [
                 'payment' => $payment,
                 'note' => $note,
             ]}
